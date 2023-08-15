@@ -3,16 +3,13 @@ import dj_database_url
 from .common import *
 
 SECRET_KEY = os.environ["SECRET_KEY"]
-STRIPE_SK = os.environ["STRIPE_SK"]
-PRICE_PARCEL_BY_KG = os.environ["PRICE_PARCEL_BY_KG"]
-PRICE_FLIGTH_BY_KG = os.environ["PRICE_FLIGTH_BY_KG"]
 DEFAULT_FROM_EMAIL = os.environ["DEFAULT_FROM_EMAIL"]
 
-EMAIL_HOST = os.environ["EMAIL_HOST"]
-EMAIL_HOST_USER = os.environ["EMAIL_HOST_USER"]
-EMAIL_HOST_PASSWORD = os.environ["EMAIL_HOST_PASSWORD"]
-EMAIL_PORT = os.environ["EMAIL_PORT"]  # 25
-EMAIL_USE_TLS = os.environ["EMAIL_USE_TLS"]
+# EMAIL_HOST = os.environ["EMAIL_HOST"]
+# EMAIL_HOST_USER = os.environ["EMAIL_HOST_USER"]
+# EMAIL_HOST_PASSWORD = os.environ["EMAIL_HOST_PASSWORD"]
+# EMAIL_PORT = os.environ["EMAIL_PORT"]  # 25
+# EMAIL_USE_TLS = os.environ["EMAIL_USE_TLS"]
 
 DEBUG = False
 ALLOWED_HOSTS = ["camaramzapi.herokuapp.com"]
