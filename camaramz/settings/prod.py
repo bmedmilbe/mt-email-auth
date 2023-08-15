@@ -12,7 +12,7 @@ SECRET_KEY = os.environ["SECRET_KEY"]
 # EMAIL_USE_TLS = os.environ["EMAIL_USE_TLS"]
 
 DEBUG = False
-ALLOWED_HOSTS = ["camaramzapi.herokuapp.com"]
+ALLOWED_HOSTS = ["camaramzapi-6cf2b687304f.herokuapp.com"]
 DJANGO_SETTINGS_MODULE = os.environ["DJANGO_SETTINGS_MODULE"]
 
 
