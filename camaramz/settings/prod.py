@@ -3,7 +3,7 @@ import dj_database_url
 from .common import *
 
 SECRET_KEY = os.environ["SECRET_KEY"]
-DEFAULT_FROM_EMAIL = os.environ["DEFAULT_FROM_EMAIL"]
+# DEFAULT_FROM_EMAIL = os.environ["DEFAULT_FROM_EMAIL"]
 
 # EMAIL_HOST = os.environ["EMAIL_HOST"]
 # EMAIL_HOST_USER = os.environ["EMAIL_HOST_USER"]
