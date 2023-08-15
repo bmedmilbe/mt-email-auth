@@ -49,13 +49,17 @@ CORS_ALLOW_ALL_ORIGINS = True
 
 DATABASES = {"default": dj_database_url.config()}
 
-# DATABASES = {
-#     "default": {
-#         "ENGINE":   "django.db.backends.postgresql",
-#         "NAME": os.environ["DB_NAME"],
-#         "USER": os.environ["DB_USER"],
-#         "HOST": os.environ["DB_HOST"],
-#         "PASSWORD": os.environ["DB_PASSWORD"],
-#         "PORT": "",
-#     }
-# }
+# SECURITY WARNING: keep the secret key used in production secret!
+SECRET_KEY = os.environ["SECRET_KEY"]
+
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = False
+
+ALLOWED_HOSTS = ["camaramz.herokuapp.com"]
+
+
+AWS_ACCESS_KEY_ID=os.environ['AWS_ACCESS_KEY_ID']
+AWS_SECRET_ACCESS_KEY=os.environ['AWS_SECRET_ACCESS_KEY']
+AWS_STORAGE_BUCKET_NAME=os.environ['AWS_STORAGE_BUCKET_NAME'] 
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com'% AWS_STORAGE_BUCKET_NAME
+
