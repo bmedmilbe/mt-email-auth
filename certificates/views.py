@@ -1,0 +1,872 @@
+# Create your views here.
+
+# from msilib.schema import File
+import stripe
+
+import os
+from io import BytesIO
+from django.conf import settings
+from django.shortcuts import get_object_or_404
+from django.db.models.aggregates import Count
+from django.db.models import Q
+from django.shortcuts import render
+import certificates
+from certificates.serializers import CertificateDateSerializer, CertificateModelAutoConstrucaoCreateSerializer, CertificateModelAutoConstrucaoSerializer, CertificateModelAutoModCovalCreateSerializer, CertificateModelAutoModCovalSerializer, CertificateModelCertCompraCovalCreateSerializer, CertificateModelCertCompraCovalSerializer, CertificateModelEnterroCreateSerializer, CertificateModelEnterroSerializer, CertificateModelFifthCreateSerializer, CertificateModelFifthSerializer, CertificateModelLicBarracaCreateSerializer, CertificateModelLicBarracaSerializer, CertificateModelLicencaBuffetCreateSerializer, CertificateModelLicencaBuffetSerializer, CertificateModelOneCreateSerializer, CertificateModelOneSerializer, CertificateModelSeventhCreateSerializer, CertificateModelSeventhSerializer, CertificateModelThreeCreateSerializer, CertificateModelThreeSerializer, CertificateModelTwoCreateSerializer, CertificateModelTwoSerializer, CertificateSimpleParentSerializer, CertificateSimplePersonSerializer, CertificateSinglePersonSerializer, CertificateTitleSerializer, CountrySerializer, CountySerializer, CovalSetUpSerializer, HouseCreateSerializer, HouseSerializer, IDTypeSerializer, InstituitionSerializer, PersonBirthAddressCreateSerializer, PersonBirthAddressSerializer, PersonCreateOrUpdateSerializer, PersonSerializer, StreetSerializer, TownSerializer
+
+
+from rest_framework.views import APIView, Response
+from rest_framework.viewsets import ModelViewSet, GenericViewSet
+from rest_framework.decorators import action, api_view
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework import mixins, serializers
+from django.http import HttpResponse
+from django.template.loader import get_template
+from xhtml2pdf import pisa
+from rest_framework.permissions import (
+    IsAuthenticated,
+    IsAdminUser,
+    IsAuthenticatedOrReadOnly,
+    AllowAny,
+)
+from pprint import pprint
+from uuid import uuid4
+from decimal import Decimal
+# from poster.serializers import (
+#     AddressFromSavedSerializer,
+#     AddressFromSerializer,
+#     AddressToSavedSerializer,
+#     AddressToSerializer,
+#     AirportSerializer,
+#     CartCreateSerializer,
+#     CartSerializer,
+#     CountrySerializer,
+#     CustomerAddressCreateSerializer,
+#     CustomerAddressSerializer,
+#     CustomerSerializer,
+#     CustomerUpdateSerializer,
+#     FligthCreateSerializer,
+#     FligthSerializer,
+#     FligthUpdateSerializer,
+#     FligthsCompanySerializer,
+#     MessagesSerializer,
+#     ParcelCreateSerializer,
+#     ParcelSerializer,
+#     ReceiverCreateSerializer,
+#     ReceiverSerializer,
+#     ShippimentFligthCreateSerializer,
+#     ShippimentFligthSerializer,
+#     ShippimentFligthUpdateSerializer,
+#     WeigthSerializer,
+# )
+
+from .models import (
+  
+    CertificateDate,
+    CertificateSimpleParent,
+    CertificateSimplePerson,
+    CertificateSinglePerson,
+    CertificateTitle,
+    CertificateTypes,
+    Country,
+    County,
+    Coval,
+    Customer,
+    House,
+    IDType,
+    Instituition,
+   
+    Messages,
+   
+
+
+    Certificate,
+    Person,
+    PersonBirthAddress,
+    Street,
+    Town
+)
+
+from .helpers import get_customer
+
+
+class CountrysViewSet(
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    GenericViewSet,
+):
+    queryset = Country.objects.all()
+
+    serializer_class = CountrySerializer
+
+
+class IdTypeViewSet( mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    GenericViewSet):
+    queryset = IDType.objects.all().order_by("name")
+    serializer_class = IDTypeSerializer
+
+class StreetsViewSet(ModelViewSet):
+    serializer_class = StreetSerializer
+
+    def get_queryset(self):
+        return Street.objects.all()
+    
+
+
+class InstituitionsViewSet(ModelViewSet):
+    serializer_class = InstituitionSerializer
+
+    def get_queryset(self):
+        return Instituition.objects.all()
+    
+# class CartsViewSet(
+#     mixins.UpdateModelMixin,
+#     mixins.CreateModelMixin,
+#     mixins.RetrieveModelMixin,
+#     mixins.DestroyModelMixin,
+#     GenericViewSet,
+# ):
+#     http_method_names = ["get", "post", "patch", "delete"]
+
+#     def get_queryset(self):
+#         return Cart.objects.all()
+
+#     def get_serializer_class(self):
+#         if self.request.method == "POST":
+#             return CartCreateSerializer
+#         return CartSerializer
+
+
+# class AddressFromsViewSet(
+#     mixins.UpdateModelMixin,
+#     mixins.CreateModelMixin,
+#     mixins.RetrieveModelMixin,
+#     mixins.DestroyModelMixin,
+#     GenericViewSet,
+# ):
+#     http_method_names = ["get", "post", "patch", "delete"]
+
+#     def get_queryset(self):
+#         return AddressFrom.objects.all()
+
+#     def get_serializer_class(self):
+#         # if self.request.method == "POST":
+#         #     return AddressFromCreateSerializer
+#         return AddressFromSerializer
+
+
+# class AddressFromsSavedViewSet(
+#     mixins.UpdateModelMixin,
+#     mixins.CreateModelMixin,
+#     mixins.RetrieveModelMixin,
+#     mixins.DestroyModelMixin,
+#     GenericViewSet,
+# ):
+#     http_method_names = ["post", "patch", "delete"]
+
+#     def get_queryset(self):
+#         return AddressFrom.objects.all()
+
+#     def get_serializer_class(self):
+#         # if self.request.method == "POST":
+#         #     return AddressFromCreateSerializer
+#         return AddressFromSavedSerializer
+
+#     def get_serializer_context(self):
+#         return {"customer_id": get_customer(self.request.user).id}
+
+
+# class AddressTosViewSet(
+#     mixins.UpdateModelMixin,
+#     mixins.CreateModelMixin,
+#     mixins.RetrieveModelMixin,
+#     mixins.DestroyModelMixin,
+#     GenericViewSet,
+# ):
+#     http_method_names = ["post", "patch", "delete"]
+
+#     def get_queryset(self):
+#         return AddressTo.objects.all()
+
+#     def get_serializer_class(self):
+#         # if self.request.method == "POST":
+#         #     return AddressToCreateSerializer
+#         return AddressToSerializer
+
+
+# class AddressTosSavedViewSet(
+#     mixins.UpdateModelMixin,
+#     mixins.CreateModelMixin,
+#     mixins.RetrieveModelMixin,
+#     mixins.DestroyModelMixin,
+#     GenericViewSet,
+# ):
+#     http_method_names = ["post", "patch", "delete"]
+
+#     def get_queryset(self):
+#         return AddressFrom.objects.all()
+
+#     def get_serializer_class(self):
+#         # if self.request.method == "POST":
+#         #     return AddressFromCreateSerializer
+#         return AddressToSavedSerializer
+
+#     def get_serializer_context(self):
+#         return {"customer_id": get_customer(self.request.user).id}
+
+
+# class AirportsViewSet(
+#     mixins.ListModelMixin,
+#     mixins.RetrieveModelMixin,
+#     GenericViewSet,
+# ):
+#     queryset = Airport.objects.select_related("country").all()
+
+#     serializer_class = AirportSerializer
+
+
+# class WeigthsViewSet(
+#     mixins.ListModelMixin,
+#     mixins.RetrieveModelMixin,
+#     GenericViewSet,
+# ):
+#     queryset = Weigth.objects.all()
+
+#     serializer_class = WeigthSerializer
+
+
+# class FligthsCompanysViewSet(
+#     mixins.ListModelMixin,
+#     mixins.RetrieveModelMixin,
+#     GenericViewSet,
+# ):
+#     queryset = FligthsCompany.objects.all()
+
+#     serializer_class = FligthsCompanySerializer
+
+
+# class ReceiversViewSet(
+#     mixins.ListModelMixin,
+#     mixins.RetrieveModelMixin,
+#     mixins.CreateModelMixin,
+#     mixins.DestroyModelMixin,
+#     GenericViewSet,
+# ):
+#     permission_classes = [IsAuthenticated]
+
+#     def get_queryset(self):
+#         return (
+#             Receiver.objects.select_related("country")
+#             .filter(customer__id=get_customer(self.request.user).id)
+#             .order_by("name")
+#         )
+
+#     def get_serializer_class(self):
+#         if self.request.method == "POST":
+#             return ReceiverCreateSerializer
+#         return ReceiverSerializer
+
+#     def get_serializer_context(self):
+#         return {"customer_id": get_customer(self.request.user).id}
+
+
+# class ParcelsViewSet(ModelViewSet):
+#     permission_classes = [IsAuthenticated]
+
+#     def get_queryset(self):
+#         return (
+#             Parcel.objects.filter(customer__id=get_customer(self.request.user).id)
+#             .select_related("customer")
+#             .select_related("receiver")
+#             .order_by("-id")
+#         )
+
+#     def get_serializer_class(self):
+#         if self.request.method == "POST":
+#             return ParcelCreateSerializer
+#         return ParcelSerializer
+
+#     def get_serializer_context(self):
+#         return {"customer_id": get_customer(self.request.user).id}
+
+#     @action(detail=False, methods=["POST"])
+#     def secret(self, request, *args, **kwargs):
+#         if request.method == "POST":
+#             serializer = ParcelCreateSerializer(data=request.data)
+#             if not serializer.is_valid():
+#                 raise serializers.ValidationError({"cart": "This cart is not valid"})
+#             elif not Cart.objects.filter(id=request.data["cart_id"]).exists():
+#                 raise serializers.ValidationError({"cart": "This cart does not exists"})
+
+#             stripe.api_key = settings.STRIPE_SK
+#             cart_id = request.data["cart_id"]
+#             # cart_item = CartItem.objects.get(cart_id= request.kwargs.get('cart_pk'))
+#             # cart = request.data.get('cart')
+
+#             cart = Cart.objects.get(id=cart_id)
+
+#             # pprint(cart)
+
+#             sub_total = settings.PRICE_PARCEL_BY_KG * cart.weigth.quantity
+
+#             total = round(Decimal((sub_total + Decimal(0.2))) / Decimal(0.975), 2)
+
+#             tax_list = [0.115 if 1 == "PR" else 0]
+
+#             fee = (Decimal(total) * Decimal(0.025)) + Decimal(0.2)
+#             # pprint(f"Sub total: {sub_total} Fee: {fee} Total: {total}")
+
+#             tax = round(sub_total * Decimal(tax_list[0]), 2)
+
+#             # pprint(f"total: {total}")
+
+#             # pprint(total)
+
+#             stripe_total = int(total * 100)
+#             # return 0
+#             intent = stripe.PaymentIntent.create(
+#                 amount=stripe_total,
+#                 currency="gbp" if cart.country_from.id == 3 else "eur",
+#                 automatic_payment_methods={"enabled": True},
+#             )
+#             return Response(
+#                 data={"tax": tax, "client_secret": intent.client_secret},
+#                 status=status.HTTP_201_CREATED,
+#             )
+#         return Response(status=status.HTTP_400_BAD_REQUEST)
+
+
+# class FligthsViewSet(
+#     ModelViewSet,
+# ):
+#     permission_classes = [IsAuthenticated]
+
+#     def get_queryset(self):
+#         return (
+#             Fligth.objects.filter(customer__id=get_customer(self.request.user).id)
+#             .select_related("customer")
+#             .select_related("departure_from")
+#             .select_related("arrive_to")
+#             .select_related("company")
+#             .order_by("-id")
+#         )
+
+#     def get_serializer_class(self):
+#         if self.request.method == "POST":
+#             return FligthCreateSerializer
+#         elif self.request.method == "PUT":
+#             return FligthUpdateSerializer
+#         return FligthSerializer
+
+#     def get_serializer_context(self):
+#         return {"customer_id": get_customer(self.request.user).id}
+
+
+# class ShippimentFligthsViewSet(ModelViewSet):
+#     permission_classes = [IsAdminUser]
+
+#     def get_queryset(self):
+#         return (
+#             ShippimentFligth.objects.select_related("parcel")
+#             .select_related("fligth")
+#             .select_related("colaborator_from")
+#             .select_related("colaborator_to")
+#             .filter(
+#                 Q(colaborator_from__customer__id=get_customer(self.request.user).id)
+#                 | Q(colaborator_to__customer__id=get_customer(self.request.user).id)
+#             )
+#             .order_by("-id")
+#         )
+
+#     def get_serializer_class(self):
+#         if self.request.method == "POST":
+#             return ShippimentFligthCreateSerializer
+#         elif self.request.method == "PUT":
+#             return ShippimentFligthUpdateSerializer
+#         return ShippimentFligthSerializer
+
+#     def get_serializer_context(self):
+#         return {"colaborator_from_id": get_customer(self.request.user).id}
+
+
+class CustomerViewSet(
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.UpdateModelMixin,
+    GenericViewSet,
+):
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Customer.objects.filter(user_id=self.request.user)
+
+    # serializer_class = CustomerSerializer
+
+    def get_serializer_class(self):
+        if self.request.method == "PUT":
+            return CustomerUpdateSerializer
+        return CustomerSerializer
+
+
+# class CustomerAddressViewSet(ModelViewSet):
+#     permission_classes = [IsAuthenticated]
+
+#     def get_queryset(self):
+#         return (
+#             CustomerAddress.objects.prefetch_related("customer")
+#             .filter(customer__id=get_customer(self.request.user).id)
+#             .all()
+#             .order_by("street")
+#         )
+
+#     def get_serializer_class(self):
+#         if self.request.method == "POST":
+#             return CustomerAddressCreateSerializer
+#         return CustomerAddressSerializer
+
+#     def get_serializer_context(self):
+#         return {"customer_id": get_customer(self.request.user).id}
+
+
+# class MessagesViewSet(ModelViewSet):
+#     serializer_class = MessagesSerializer
+
+#     def get_queryset(self):
+#         return Messages.objects.all()
+    
+
+
+
+
+
+
+
+
+
+
+
+
+class CovalSetUpViewSet(ModelViewSet):
+    
+    # permission_classes = [IsAuthenticated]
+
+    queryset = Coval.objects.all()
+        
+
+    def get_serializer_class(self):
+        return CovalSetUpSerializer
+
+    
+
+class CertificateTitleViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, GenericViewSet):
+    
+    # permission_classes = [IsAuthenticated]
+
+    queryset = CertificateTitle.objects.order_by("id").all()
+        
+
+    def get_serializer_class(self):
+        return CertificateTitleSerializer
+
+    def get_serializer_context(self):
+        return {"customer_id": 1}
+
+
+class CertificateModelViewSet(ModelViewSet):
+    # permission_classes = [IsAuthenticated]
+
+
+    def get_queryset(self):
+        return Certificate.objects.filter(type_id=self.kwargs.get('title_pk')).all() 
+
+    # @action(detail=True, methods=["POST"])
+    # def secret(self, request, *args, **kwargs):
+    #     if request.method == "POST":
+    #         serializer = ParcelCreateSerializer(data=request.data)
+    #         if not serializer.is_valid():
+    #             raise serializers.ValidationError({"cart": "This cart is not valid"})
+    #         elif not Cart.objects.filter(id=request.data["cart_id"]).exists():
+    #             raise serializers.ValidationError({"cart": "This cart does not exists"})
+
+    #         stripe.api_key = settings.STRIPE_SK
+    #         cart_id = request.data["cart_id"]
+    #         # cart_item = CartItem.objects.get(cart_id= request.kwargs.get('cart_pk'))
+    #         # cart = request.data.get('cart')
+
+    #         cart = Cart.objects.get(id=cart_id)
+
+    #         # pprint(cart)
+
+    #         sub_total = settings.PRICE_PARCEL_BY_KG * cart.weigth.quantity
+
+    #         total = round(Decimal((sub_total + Decimal(0.2))) / Decimal(0.975), 2)
+
+    #         tax_list = [0.115 if 1 == "PR" else 0]
+
+    #         fee = (Decimal(total) * Decimal(0.025)) + Decimal(0.2)
+    #         # pprint(f"Sub total: {sub_total} Fee: {fee} Total: {total}")
+
+    #         tax = round(sub_total * Decimal(tax_list[0]), 2)
+
+    #         # pprint(f"total: {total}")
+
+    #         # pprint(total)
+
+    #         stripe_total = int(total * 100)
+    #         # return 0
+    #         intent = stripe.PaymentIntent.create(
+    #             amount=stripe_total,
+    #             currency="gbp" if cart.country_from.id == 3 else "eur",
+    #             automatic_payment_methods={"enabled": True},
+    #         )
+    #         return Response(
+    #             data={"tax": tax, "client_secret": intent.client_secret},
+    #             status=status.HTTP_201_CREATED,
+    #         )
+    #     return Response(status=status.HTTP_400_BAD_REQUEST)
+       
+        
+
+    def get_serializer_class(self):
+        # pprint(self.kwargs)
+        # return CertificateModelOneSerializer
+        type_id = int(self.kwargs.get('title_pk'))
+        if self.request.method == "POST":
+            # pprint(type_id)
+            if type_id == 1 or type_id == 5 or type_id == 6  or type_id == 7 or type_id == 9 or type_id == 10 or type_id == 11 or type_id == 15 or type_id == 16 or type_id == 17 or type_id == 19 or type_id == 20 or type_id == 21 or type_id == 22 or type_id == 33:
+            
+                return CertificateModelOneCreateSerializer
+                
+            elif type_id == 2 or type_id == 4 or type_id == 8:
+                # pprint(self.request.method)
+                # pprint(type_id)
+                return CertificateModelThreeCreateSerializer
+            elif type_id == 3 or  type_id == 13:
+                # pprint(self.request.method)
+                # pprint(type_id)
+                return CertificateModelTwoCreateSerializer
+            elif type_id == 12:
+                # pprint(self.request.method)
+                # pprint(type_id)
+                return CertificateModelFifthCreateSerializer
+            elif type_id == 18:
+                # pprint(self.request.method)
+                # pprint(type_id)
+                return CertificateModelSeventhCreateSerializer
+            elif type_id == 23 or type_id == 28:
+                return CertificateModelAutoConstrucaoCreateSerializer
+            elif type_id == 29 or type_id == 31:
+                return CertificateModelLicencaBuffetCreateSerializer
+            elif type_id == 24 or type_id == 30:
+                return CertificateModelCertCompraCovalCreateSerializer
+            elif type_id == 25:
+                return CertificateModelAutoModCovalCreateSerializer
+            elif type_id == 27:
+                return CertificateModelLicBarracaCreateSerializer
+            elif type_id == 32:
+                # pprint(self.request.method)
+                # pprint(type_id)
+                return CertificateModelEnterroCreateSerializer
+            
+           
+            
+        
+        if type_id == 2:
+            return CertificateModelThreeSerializer
+        elif type_id == 3 or type_id == 13:
+            return CertificateModelTwoSerializer
+        elif type_id == 12:
+            return CertificateModelFifthSerializer
+        elif type_id == 18:
+            return CertificateModelSeventhSerializer
+        elif type_id == 23 or type_id == 28:
+            return CertificateModelAutoConstrucaoSerializer
+        elif type_id == 24 or type_id == 30:
+            return CertificateModelCertCompraCovalSerializer
+        elif type_id == 25:
+            return CertificateModelAutoModCovalSerializer
+        elif type_id == 27:
+            return CertificateModelLicBarracaSerializer
+        elif type_id == 29 or type_id == 31:
+                return CertificateModelLicencaBuffetSerializer
+        elif type_id == 32:
+                # pprint(self.request.method)
+                # pprint(type_id)
+            return CertificateModelEnterroSerializer
+        # pprint(type_id)
+        return  CertificateModelOneSerializer
+    
+    def get_serializer_context(self):
+        return {
+            "type_id": self.kwargs.get('title_pk'),
+            # "user_id": self.request.user.id
+            }
+
+
+
+
+class CertificatePersonsViewSet(ModelViewSet):
+    # permission_classes = [IsAuthenticated]
+
+
+    def get_queryset(self):
+        type_id = int(self.kwargs.get('title_pk'))
+        if type_id == 12:
+            return CertificateSimplePerson.objects.filter(type_id=type_id)         
+            return CertificateSimplePerson.objects.filter(type_id=type_id, user_id=self.request.user.id)        
+        
+
+    def get_serializer_class(self):
+        # pprint(self.kwargs)
+        # return CertificateModelOneSerializer
+        type_id = int(self.kwargs.get('title_pk'))
+        
+        if type_id == 12:
+            return CertificateSimplePersonSerializer
+            
+        
+        # pprint(type_id)
+        return  CertificateSimplePersonSerializer
+    
+    def get_serializer_context(self):
+        return {
+            "type_id": self.kwargs.get('title_pk'),
+            # "user_id": self.request.user.id
+            }
+    
+class CertificateSimpleParentsViewSet(ModelViewSet):
+    # permission_classes = [IsAuthenticated]
+
+
+    def get_queryset(self):
+        type_id = int(self.kwargs.get('title_pk'))
+        return CertificateSimpleParent.objects.filter(type_id=type_id)         
+        return CertificateSimpleParent.objects.filter(type_id=type_id, user_id=self.request.user.id)        
+        
+
+    def get_serializer_class(self):
+        
+        return  CertificateSimpleParentSerializer
+    
+    def get_serializer_context(self):
+        return {
+            "type_id": self.kwargs.get('title_pk'),
+            # "user_id": self.request.user.id
+            }
+    
+
+class CertificateSinglePersonsViewSet(ModelViewSet):
+    # permission_classes = [IsAuthenticated]
+
+
+    def get_queryset(self):
+        type_id = int(self.kwargs.get('title_pk'))
+        if type_id == 12:
+            return CertificateSinglePerson.objects.filter(type_id=type_id).all()         
+            return CertificateSinglePerson.objects.filter(type_id=type_id, user_id=self.request.user.id)        
+        
+    def get_serializer_class(self):
+        # pprint(self.kwargs)
+        # return CertificateModelOneSerializer
+        type_id = int(self.kwargs.get('title_pk'))
+        
+        if type_id == 12:
+            return CertificateSinglePersonSerializer
+            
+        
+        # pprint(type_id)
+        return  CertificateSinglePersonSerializer
+
+
+       
+    
+
+    def get_serializer_context(self):
+        return {
+            "type_id": self.kwargs.get('title_pk'),
+            # "user_id": self.request.user.id
+            }
+
+class CertificateDatesViewSet(ModelViewSet):
+    # permission_classes = [IsAuthenticated]
+
+
+    def get_queryset(self):
+        type_id = int(self.kwargs.get('title_pk'))
+        return CertificateDate.objects.filter(type_id=type_id).all()         
+        
+    def get_serializer_class(self):
+                
+        return CertificateDateSerializer
+            
+
+    def get_serializer_context(self):
+        return {
+            "type_id": self.kwargs.get('title_pk'),
+            # "user_id": self.request.user.id
+            }
+    
+
+class CertificateModelTwoViewSet(ModelViewSet):
+    # permission_classes = [IsAuthenticated]
+
+    queryset = Certificate.objects.all()
+
+
+    def get_queryset(self):
+        return (
+            Certificate.objects
+            .filter(type_id=self.kwargs.get('title_pk'))
+            .all()          
+        )
+ 
+
+    def get_serializer_class(self):
+        if self.kwargs.get('title_pk') == 1:
+            if self.request.method == "POST":
+                return CertificateModelOneCreateSerializer
+            return CertificateModelOneSerializer
+        elif self.kwargs.get('title_pk') == 2:
+            if self.request.method == "POST":
+                return CertificateModelTwoCreateSerializer
+            return CertificateModelTwoSerializer
+    
+
+    def get_serializer_context(self):
+        return {"type_id": self.kwargs.get('title_pk')}
+    
+class PersonBirthAddressViewSet(ModelViewSet):
+    # permission_classes = [IsAuthenticated]
+
+    queryset = PersonBirthAddress.objects.all()
+
+    def get_queryset(self):
+        return (PersonBirthAddress.objects.all())
+
+        
+    def get_serializer_class(self):
+        if self.request.method == "POST":
+            return PersonBirthAddressCreateSerializer
+        return PersonBirthAddressSerializer
+    
+class PersonBirthAddressViewSet(ModelViewSet):
+    # permission_classes = [IsAuthenticated]
+
+    queryset = PersonBirthAddress.objects.all()
+
+    def get_queryset(self):
+        return (PersonBirthAddress.objects.all())
+
+        
+    def get_serializer_class(self):
+        if self.request.method == "POST":
+            return PersonBirthAddressCreateSerializer
+        return PersonBirthAddressSerializer
+    
+class CountysViewSet(ModelViewSet):
+    # permission_classes = [IsAuthenticated]
+
+    queryset = County.objects.all()
+
+
+    def get_queryset(self):
+        return (County.objects.all())
+
+        
+    def get_serializer_class(self):
+        return CountySerializer
+    
+class TownViewSet(ModelViewSet):
+    # permission_classes = [IsAuthenticated]
+
+    queryset = Town.objects.all()
+
+
+    def get_queryset(self):
+        return (Town.objects.all())
+
+        
+    def get_serializer_class(self):
+        return TownSerializer
+    
+class HouseViewSet(ModelViewSet):
+    # permission_classes = [IsAuthenticated]
+
+    queryset = House.objects.all()
+
+
+    def get_queryset(self):
+        return (House.objects.all())
+
+        
+    def get_serializer_class(self):
+        if self.request.method == "POST":
+            return HouseCreateSerializer
+        return HouseSerializer
+
+class PersonViewSet(ModelViewSet):
+    # permission_classes = [IsAuthenticated]
+
+    queryset = Person.objects.all()
+
+
+    def get_queryset(self):
+        return (Person.objects.all())
+
+        
+    def get_serializer_class(self):
+        if self.request.method == "POST" or self.request.method == "PUT":
+            return PersonCreateOrUpdateSerializer
+        return PersonSerializer
+
+    # def get_serializer_context(self):
+    #     return {"type_id": self.kwargs.get('title_pk')}
+        # return {"customer_id": get_customer(self.request.user).id}
+
+    # @action(detail=False, methods=["POST"])
+    # def secret(self, request, *args, **kwargs):
+    #     if request.method == "POST":
+    #         serializer = ParcelCreateSerializer(data=request.data)
+    #         if not serializer.is_valid():
+    #             raise serializers.ValidationError({"cart": "This cart is not valid"})
+    #         elif not Cart.objects.filter(id=request.data["cart_id"]).exists():
+    #             raise serializers.ValidationError({"cart": "This cart does not exists"})
+
+    #         stripe.api_key = settings.STRIPE_SK
+    #         cart_id = request.data["cart_id"]
+    #         # cart_item = CartItem.objects.get(cart_id= request.kwargs.get('cart_pk'))
+    #         # cart = request.data.get('cart')
+
+    #         cart = Cart.objects.get(id=cart_id)
+
+    #         # pprint(cart)
+
+    #         sub_total = settings.PRICE_PARCEL_BY_KG * cart.weigth.quantity
+
+    #         total = round(Decimal((sub_total + Decimal(0.2))) / Decimal(0.975), 2)
+
+    #         tax_list = [0.115 if 1 == "PR" else 0]
+
+    #         fee = (Decimal(total) * Decimal(0.025)) + Decimal(0.2)
+    #         # pprint(f"Sub total: {sub_total} Fee: {fee} Total: {total}")
+
+    #         tax = round(sub_total * Decimal(tax_list[0]), 2)
+
+    #         # pprint(f"total: {total}")
+
+    #         # pprint(total)
+
+    #         stripe_total = int(total * 100)
+    #         # return 0
+    #         intent = stripe.PaymentIntent.create(
+    #             amount=stripe_total,
+    #             currency="gbp" if cart.country_from.id == 3 else "eur",
+    #             automatic_payment_methods={"enabled": True},
+    #         )
+    #         return Response(
+    #             data={"tax": tax, "client_secret": intent.client_secret},
+    #             status=status.HTTP_201_CREATED,
+    #         )
+    #     return Response(status=status.HTTP_400_BAD_REQUEST)
+
