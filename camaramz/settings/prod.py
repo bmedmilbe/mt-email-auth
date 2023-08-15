@@ -2,7 +2,6 @@ import os
 import dj_database_url
 from .common import *
 
-SECRET_KEY = os.environ["SECRET_KEY"]
 # DEFAULT_FROM_EMAIL = os.environ["DEFAULT_FROM_EMAIL"]
 
 # EMAIL_HOST = os.environ["EMAIL_HOST"]
@@ -52,7 +51,7 @@ SECRET_KEY = os.environ["SECRET_KEY"]
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["camaramz.herokuapp.com"]
+# ALLOWED_HOSTS = ["camaramz.herokuapp.com"]
 
 
 AWS_ACCESS_KEY_ID=os.environ['AWS_ACCESS_KEY_ID']
