@@ -11,7 +11,7 @@ from django.db.models.aggregates import Count
 from django.db.models import Q
 from django.shortcuts import render
 import certificates
-from certificates.serializers import CertificateDateSerializer, CertificateModelAutoConstrucaoCreateSerializer, CertificateModelAutoConstrucaoSerializer, CertificateModelAutoModCovalCreateSerializer, CertificateModelAutoModCovalSerializer, CertificateModelCertCompraCovalCreateSerializer, CertificateModelCertCompraCovalSerializer, CertificateModelEnterroCreateSerializer, CertificateModelEnterroSerializer, CertificateModelFifthCreateSerializer, CertificateModelFifthSerializer, CertificateModelLicBarracaCreateSerializer, CertificateModelLicBarracaSerializer, CertificateModelLicencaBuffetCreateSerializer, CertificateModelLicencaBuffetSerializer, CertificateModelOneCreateSerializer, CertificateModelOneSerializer, CertificateModelSeventhCreateSerializer, CertificateModelSeventhSerializer, CertificateModelThreeCreateSerializer, CertificateModelThreeSerializer, CertificateModelTwoCreateSerializer, CertificateModelTwoSerializer, CertificateSimpleParentSerializer, CertificateSimplePersonSerializer, CertificateSinglePersonSerializer, CertificateTitleSerializer, CountrySerializer, CountySerializer, CovalSetUpSerializer, HouseCreateSerializer, HouseSerializer, IDTypeSerializer, InstituitionSerializer, PersonBirthAddressCreateSerializer, PersonBirthAddressSerializer, PersonCreateOrUpdateSerializer, PersonSerializer, StreetSerializer, TownSerializer
+from certificates.serializers import BiuldingTypeSerializer, CemiterioSerializer, CertificateDateSerializer, CertificateModelAutoConstrucaoCreateSerializer, CertificateModelAutoConstrucaoSerializer, CertificateModelAutoModCovalCreateSerializer, CertificateModelAutoModCovalSerializer, CertificateModelCertCompraCovalCreateSerializer, CertificateModelCertCompraCovalSerializer, CertificateModelEnterroCreateSerializer, CertificateModelEnterroSerializer, CertificateModelFifthCreateSerializer, CertificateModelFifthSerializer, CertificateModelLicBarracaCreateSerializer, CertificateModelLicBarracaSerializer, CertificateModelLicencaBuffetCreateSerializer, CertificateModelLicencaBuffetSerializer, CertificateModelOneCreateSerializer, CertificateModelOneSerializer, CertificateModelSeventhCreateSerializer, CertificateModelSeventhSerializer, CertificateModelThreeCreateSerializer, CertificateModelThreeSerializer, CertificateModelTwoCreateSerializer, CertificateModelTwoSerializer, CertificateSerializer, CertificateSimpleParentSerializer, CertificateSimplePersonReadOnlySerializer, CertificateSimplePersonSerializer, CertificateSinglePersonSerializer, CertificateTitleSerializer, ChangeSerializer, CountrySerializer, CountySerializer, CovalSerializer, CovalSetUpSerializer, HouseCreateSerializer, HouseSerializer, IDTypeSerializer, InstituitionSerializer, ParentSerializer, PersonBirthAddressCreateSerializer, PersonBirthAddressSerializer, PersonCreateOrUpdateSerializer, PersonSerializer, StreetSerializer, TownSerializer, UniversitySerializer
 
 
 from rest_framework.views import APIView, Response
@@ -61,13 +61,16 @@ from decimal import Decimal
 # )
 
 from .models import (
-  
+
+    BiuldingType,
+    Cemiterio,
     CertificateDate,
     CertificateSimpleParent,
     CertificateSimplePerson,
     CertificateSinglePerson,
     CertificateTitle,
     CertificateTypes,
+    Change,
     Country,
     County,
     Coval,
@@ -75,16 +78,18 @@ from .models import (
     House,
     IDType,
     Instituition,
-   
+
     Messages,
-   
+
 
 
     Certificate,
+    Parent,
     Person,
     PersonBirthAddress,
     Street,
-    Town
+    Town,
+    University
 )
 
 from .helpers import get_customer
@@ -100,18 +105,55 @@ class CountrysViewSet(
     serializer_class = CountrySerializer
 
 
-class IdTypeViewSet( mixins.ListModelMixin,
+class CemiteriosViewSet(
+    mixins.ListModelMixin,
     mixins.RetrieveModelMixin,
-    GenericViewSet):
+    GenericViewSet,
+):
+    queryset = Cemiterio.objects.all()
+
+    serializer_class = CemiterioSerializer
+
+
+class ChangesViewSet(
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    GenericViewSet,
+):
+    queryset = Change.objects.all()
+
+    serializer_class = ChangeSerializer
+
+
+class UniversitysViewSet(
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    GenericViewSet,
+):
+    queryset = University.objects.all()
+
+    serializer_class = UniversitySerializer
+
+
+class IdTypeViewSet(mixins.ListModelMixin,
+                    mixins.RetrieveModelMixin,
+                    GenericViewSet):
     queryset = IDType.objects.all().order_by("name")
     serializer_class = IDTypeSerializer
+
+
+class BiuldingTypeViewSet(mixins.ListModelMixin,
+                          mixins.RetrieveModelMixin,
+                          GenericViewSet):
+    queryset = BiuldingType.objects.all().order_by("name")
+    serializer_class = BiuldingTypeSerializer
+
 
 class StreetsViewSet(ModelViewSet):
     serializer_class = StreetSerializer
 
     def get_queryset(self):
         return Street.objects.all()
-    
 
 
 class InstituitionsViewSet(ModelViewSet):
@@ -119,7 +161,7 @@ class InstituitionsViewSet(ModelViewSet):
 
     def get_queryset(self):
         return Instituition.objects.all()
-    
+
 # class CartsViewSet(
 #     mixins.UpdateModelMixin,
 #     mixins.CreateModelMixin,
@@ -434,37 +476,36 @@ class CustomerViewSet(
 
 #     def get_queryset(self):
 #         return Messages.objects.all()
-    
-
-
-
-
-
-
-
-
-
-
 
 
 class CovalSetUpViewSet(ModelViewSet):
-    
+
     # permission_classes = [IsAuthenticated]
 
-    queryset = Coval.objects.all()
-        
+    queryset = Coval.objects.all().order_by("square", "-number")
 
     def get_serializer_class(self):
+        if self.request.method == "GET":
+            return CovalSerializer
         return CovalSetUpSerializer
 
-    
+
+class CertificateViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, GenericViewSet):
+
+    # permission_classes = [IsAuthenticated]
+
+    queryset = Certificate.objects.order_by("-id").all()
+
+    def get_serializer_class(self):
+
+        return CertificateSerializer
+
 
 class CertificateTitleViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, GenericViewSet):
-    
+
     # permission_classes = [IsAuthenticated]
 
     queryset = CertificateTitle.objects.order_by("id").all()
-        
 
     def get_serializer_class(self):
         return CertificateTitleSerializer
@@ -476,9 +517,8 @@ class CertificateTitleViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, 
 class CertificateModelViewSet(ModelViewSet):
     # permission_classes = [IsAuthenticated]
 
-
     def get_queryset(self):
-        return Certificate.objects.filter(type_id=self.kwargs.get('title_pk')).all() 
+        return Certificate.objects.filter(type_id=self.kwargs.get('title_pk')).all()
 
     # @action(detail=True, methods=["POST"])
     # def secret(self, request, *args, **kwargs):
@@ -525,24 +565,23 @@ class CertificateModelViewSet(ModelViewSet):
     #             status=status.HTTP_201_CREATED,
     #         )
     #     return Response(status=status.HTTP_400_BAD_REQUEST)
-       
-        
 
     def get_serializer_class(self):
         # pprint(self.kwargs)
         # return CertificateModelOneSerializer
         type_id = int(self.kwargs.get('title_pk'))
-        if self.request.method == "POST":
-            # pprint(type_id)
-            if type_id == 1 or type_id == 5 or type_id == 6  or type_id == 7 or type_id == 9 or type_id == 10 or type_id == 11 or type_id == 15 or type_id == 16 or type_id == 17 or type_id == 19 or type_id == 20 or type_id == 21 or type_id == 22 or type_id == 33:
-            
+        # pprint(self.request.method)
+        if self.request.method in ["POST", "PUT",  "PATCH"]:
+            if type_id == 1 or type_id == 5 or type_id == 6 or type_id == 7 or type_id == 9 or type_id == 10 or type_id == 11 or type_id == 15 or type_id == 16 or type_id == 17 or type_id == 19 or type_id == 20 or type_id == 21 or type_id == 22 or type_id == 33:
+                # pprint(type_id)
+
                 return CertificateModelOneCreateSerializer
-                
+
             elif type_id == 2 or type_id == 4 or type_id == 8:
                 # pprint(self.request.method)
                 # pprint(type_id)
                 return CertificateModelThreeCreateSerializer
-            elif type_id == 3 or  type_id == 13:
+            elif type_id == 3 or type_id == 13:
                 # pprint(self.request.method)
                 # pprint(type_id)
                 return CertificateModelTwoCreateSerializer
@@ -568,10 +607,7 @@ class CertificateModelViewSet(ModelViewSet):
                 # pprint(self.request.method)
                 # pprint(type_id)
                 return CertificateModelEnterroCreateSerializer
-            
-           
-            
-        
+
         if type_id == 2:
             return CertificateModelThreeSerializer
         elif type_id == 3 or type_id == 13:
@@ -589,138 +625,136 @@ class CertificateModelViewSet(ModelViewSet):
         elif type_id == 27:
             return CertificateModelLicBarracaSerializer
         elif type_id == 29 or type_id == 31:
-                return CertificateModelLicencaBuffetSerializer
+            return CertificateModelLicencaBuffetSerializer
         elif type_id == 32:
-                # pprint(self.request.method)
-                # pprint(type_id)
+            # pprint(self.request.method)
+            # pprint(type_id)
             return CertificateModelEnterroSerializer
         # pprint(type_id)
-        return  CertificateModelOneSerializer
-    
+        return CertificateModelOneSerializer
+
     def get_serializer_context(self):
         return {
             "type_id": self.kwargs.get('title_pk'),
             # "user_id": self.request.user.id
-            }
-
-
+        }
 
 
 class CertificatePersonsViewSet(ModelViewSet):
     # permission_classes = [IsAuthenticated]
 
-
     def get_queryset(self):
         type_id = int(self.kwargs.get('title_pk'))
         if type_id == 12:
-            return CertificateSimplePerson.objects.filter(type_id=type_id)         
-            return CertificateSimplePerson.objects.filter(type_id=type_id, user_id=self.request.user.id)        
-        
+            return CertificateSimplePerson.objects.filter(type_id=type_id)
+            return CertificateSimplePerson.objects.filter(type_id=type_id, user_id=self.request.user.id)
 
     def get_serializer_class(self):
         # pprint(self.kwargs)
         # return CertificateModelOneSerializer
+        if self.request.method == "GET":
+            return CertificateSimplePersonReadOnlySerializer
         type_id = int(self.kwargs.get('title_pk'))
-        
+
         if type_id == 12:
             return CertificateSimplePersonSerializer
-            
-        
+
         # pprint(type_id)
-        return  CertificateSimplePersonSerializer
-    
+        return CertificateSimplePersonSerializer
+
     def get_serializer_context(self):
         return {
             "type_id": self.kwargs.get('title_pk'),
             # "user_id": self.request.user.id
-            }
-    
+        }
+
+
 class CertificateSimpleParentsViewSet(ModelViewSet):
     # permission_classes = [IsAuthenticated]
 
-
     def get_queryset(self):
         type_id = int(self.kwargs.get('title_pk'))
-        return CertificateSimpleParent.objects.filter(type_id=type_id)         
-        return CertificateSimpleParent.objects.filter(type_id=type_id, user_id=self.request.user.id)        
-        
+        return CertificateSimpleParent.objects.filter(type_id=type_id)
+        return CertificateSimpleParent.objects.filter(type_id=type_id, user_id=self.request.user.id)
 
     def get_serializer_class(self):
-        
-        return  CertificateSimpleParentSerializer
-    
+
+        return CertificateSimpleParentSerializer
+
     def get_serializer_context(self):
         return {
             "type_id": self.kwargs.get('title_pk'),
             # "user_id": self.request.user.id
-            }
-    
+        }
+
+
+class ParentViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, GenericViewSet):
+    # permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Parent.objects.all().order_by("id")
+
+    def get_serializer_class(self):
+
+        return ParentSerializer
+
 
 class CertificateSinglePersonsViewSet(ModelViewSet):
     # permission_classes = [IsAuthenticated]
 
-
     def get_queryset(self):
         type_id = int(self.kwargs.get('title_pk'))
         if type_id == 12:
-            return CertificateSinglePerson.objects.filter(type_id=type_id).all()         
-            return CertificateSinglePerson.objects.filter(type_id=type_id, user_id=self.request.user.id)        
-        
+            return CertificateSinglePerson.objects.filter(type_id=type_id).all()
+            return CertificateSinglePerson.objects.filter(type_id=type_id, user_id=self.request.user.id)
+
     def get_serializer_class(self):
         # pprint(self.kwargs)
         # return CertificateModelOneSerializer
         type_id = int(self.kwargs.get('title_pk'))
-        
+
         if type_id == 12:
             return CertificateSinglePersonSerializer
-            
-        
+
         # pprint(type_id)
-        return  CertificateSinglePersonSerializer
-
-
-       
-    
+        return CertificateSinglePersonSerializer
 
     def get_serializer_context(self):
         return {
             "type_id": self.kwargs.get('title_pk'),
             # "user_id": self.request.user.id
-            }
+        }
+
 
 class CertificateDatesViewSet(ModelViewSet):
     # permission_classes = [IsAuthenticated]
 
-
     def get_queryset(self):
         type_id = int(self.kwargs.get('title_pk'))
-        return CertificateDate.objects.filter(type_id=type_id).all()         
-        
+        return CertificateDate.objects.filter(type_id=type_id).all()
+
     def get_serializer_class(self):
-                
+
         return CertificateDateSerializer
-            
 
     def get_serializer_context(self):
         return {
             "type_id": self.kwargs.get('title_pk'),
             # "user_id": self.request.user.id
-            }
-    
+        }
+
 
 class CertificateModelTwoViewSet(ModelViewSet):
     # permission_classes = [IsAuthenticated]
 
     queryset = Certificate.objects.all()
 
-
     def get_queryset(self):
         return (
             Certificate.objects
             .filter(type_id=self.kwargs.get('title_pk'))
-            .all()          
+            .all()
         )
- 
 
     def get_serializer_class(self):
         if self.kwargs.get('title_pk') == 1:
@@ -731,11 +765,11 @@ class CertificateModelTwoViewSet(ModelViewSet):
             if self.request.method == "POST":
                 return CertificateModelTwoCreateSerializer
             return CertificateModelTwoSerializer
-    
 
     def get_serializer_context(self):
         return {"type_id": self.kwargs.get('title_pk')}
-    
+
+
 class PersonBirthAddressViewSet(ModelViewSet):
     # permission_classes = [IsAuthenticated]
 
@@ -744,77 +778,80 @@ class PersonBirthAddressViewSet(ModelViewSet):
     def get_queryset(self):
         return (PersonBirthAddress.objects.all())
 
-        
     def get_serializer_class(self):
         if self.request.method == "POST":
             return PersonBirthAddressCreateSerializer
         return PersonBirthAddressSerializer
-    
-class PersonBirthAddressViewSet(ModelViewSet):
-    # permission_classes = [IsAuthenticated]
 
-    queryset = PersonBirthAddress.objects.all()
+# class PersonBirthAddressViewSet(ModelViewSet):
+#     # permission_classes = [IsAuthenticated]
 
-    def get_queryset(self):
-        return (PersonBirthAddress.objects.all())
+#     queryset = PersonBirthAddress.objects.all()
 
-        
-    def get_serializer_class(self):
-        if self.request.method == "POST":
-            return PersonBirthAddressCreateSerializer
-        return PersonBirthAddressSerializer
-    
+#     def get_queryset(self):
+#         return (PersonBirthAddress.objects.all())
+
+
+#     def get_serializer_class(self):
+#         if self.request.method == "POST":
+#             return PersonBirthAddressCreateSerializer
+#         return PersonBirthAddressSerializer
+
 class CountysViewSet(ModelViewSet):
     # permission_classes = [IsAuthenticated]
 
     queryset = County.objects.all()
 
-
     def get_queryset(self):
         return (County.objects.all())
 
-        
     def get_serializer_class(self):
         return CountySerializer
-    
+
+
+class UniversitysViewSet(ModelViewSet):
+    # permission_classes = [IsAuthenticated]
+
+    queryset = University.objects.all()
+
+    def get_queryset(self):
+        return (University.objects.all())
+
+    def get_serializer_class(self):
+        return UniversitySerializer
+
+
 class TownViewSet(ModelViewSet):
     # permission_classes = [IsAuthenticated]
 
     queryset = Town.objects.all()
 
-
     def get_queryset(self):
         return (Town.objects.all())
 
-        
     def get_serializer_class(self):
         return TownSerializer
-    
+
+
 class HouseViewSet(ModelViewSet):
     # permission_classes = [IsAuthenticated]
 
-    queryset = House.objects.all()
+    queryset = House.objects.all().order_by("street__name", "house_number")
 
-
-    def get_queryset(self):
-        return (House.objects.all())
-
-        
     def get_serializer_class(self):
         if self.request.method == "POST":
             return HouseCreateSerializer
         return HouseSerializer
+
 
 class PersonViewSet(ModelViewSet):
     # permission_classes = [IsAuthenticated]
 
     queryset = Person.objects.all()
 
-
     def get_queryset(self):
         return (Person.objects.all())
 
-        
     def get_serializer_class(self):
         if self.request.method == "POST" or self.request.method == "PUT":
             return PersonCreateOrUpdateSerializer
@@ -869,4 +906,3 @@ class PersonViewSet(ModelViewSet):
     #             status=status.HTTP_201_CREATED,
     #         )
     #     return Response(status=status.HTTP_400_BAD_REQUEST)
-

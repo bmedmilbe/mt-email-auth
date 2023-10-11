@@ -89,6 +89,14 @@
       .text-bold {
         font-weight: bold;
       }
+      .ctable__d--img {
+        width: 60px;
+        height: auto;
+      }
+      p {
+        line-height: 1.2;
+        overflow: hidden;
+      }
     </style>
     {% comment %}
     <style>
@@ -145,10 +153,6 @@
       .ctable__d--left {
         text-align: left;
       }
-      .ctable__d--img {
-        width: 40px;
-        height: auto;
-      }
 
       .contas {
         text-align: right;
@@ -201,9 +205,8 @@
           República Democrática
         </td>
         <td class="ctable__d ctable__d--20 ctable__d--center">
-          {% comment %}
-          <img class="ctable__d--img d-inline" src="img" alt="Brasao" />
-          {% endcomment %}
+          {% comment %} <img src="{{ logo }}" alt="Brasao" /> {% endcomment %}
+          <img class="ctable__d--img d-inline" src="{{ logo }}" alt="Image" />
         </td>
         <td class="ctable__d ctable__d--40 ctable__d--left">
           de S. Tomé e Príncipe
@@ -338,8 +341,8 @@
     {% endif %}
     <p class="text-center">{{type1.name}} Nº {{certificate.number}}</p>
 
-    <p class="text-justify">
-      ---{{presidente}}, PRESIDENTE DA CAMARÂ DISTRITAL DE {{distrito}}---
+    <p class="text-center">
+      --{{presidente}}, PRESIDENTE DA CAMARÂ DISTRITAL DE {{distrito}}--
     </p>
 
     <p class="text-justify">

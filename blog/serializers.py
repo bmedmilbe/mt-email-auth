@@ -1,3 +1,4 @@
+import html
 import mammoth
 from pprint import pprint
 from rest_framework import serializers
@@ -17,6 +18,7 @@ import timeago
 from datetime import datetime, timezone
 import re
 
+
 def text_to_html_paragraphs(text):
     # First, replace multiple newlines with a single newline,
     # so you don't get empty paragraphs
@@ -28,18 +30,19 @@ def text_to_html_paragraphs(text):
     # Wrap each line in a <p> tag and join them
     return ''.join(f'<p>{line.strip()}</p>\n' for line in lines)
 
+
 def addPicures(post: Post, html_paragraphs):
-     # pprint(len(html_paragraphs.split("@image")))
+    # pprint(len(html_paragraphs.split("@image")))
     text_with_images = ""
     count = 0
     images = post.post_images.all()
     for x in html_paragraphs.split("@image"):
         if len(html_paragraphs.split("@image")) > 1 and count < len(html_paragraphs.split("@image"))-1:
-                
+
             # pprint(f"<img src={post.post_images.all()[count].picture.url} alt={post.title} />")
-            
+
             if len(images) > count:
-                text_with_images = f"{text_with_images}{x}<img src={images[count].picture.url} alt={post.title} />" 
+                text_with_images = f"{text_with_images}{x}<img src={images[count].picture.url} alt={post.title} />"
                 count = count + 1
             else:
                 text_with_images = f"{text_with_images}{x}"
@@ -50,8 +53,9 @@ def addPicures(post: Post, html_paragraphs):
 
     return text_with_images
 
+
 def addVideo(post: Post, html_paragraphs):
-     # pprint(len(html_paragraphs.split("@image")))
+    # pprint(len(html_paragraphs.split("@image")))
     text_with_video = ""
     count = 0
     videos = post.post_videos.all()
@@ -70,10 +74,8 @@ def addVideo(post: Post, html_paragraphs):
 
     return text_with_video
 
+
 # import html
-import html
-
-
 
 
 def embed(link):
@@ -95,6 +97,7 @@ def embed(link):
 
     # return f'<div class="embed-responsive embed-responsive-4by3"><iframe class="embed-responsive-item" src={link} allowfullscreen></iframe></div>'
 
+
 class SectionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Section
@@ -110,8 +113,6 @@ class PostImagesSerializer(serializers.ModelSerializer):
         post_image = validated_data
         post_image['post_id'] = self.context["post_id"]
         return super().create(post_image)
-
-
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -148,13 +149,13 @@ class PostSerializer(serializers.ModelSerializer):
         return timeago.format(post.date, now)
 
     def get_beginnig(self, post: Post):
-        url = post.text_file.url
-        # url = "http://127.0.0.1:8000/media/camaramz/posts/documents/text_cecab_rubish_1.docx"
+        # url = post.text_file.url
+        url = "http://127.0.0.1:8000/media/camaramz/posts/documents/text_cecab_rubish_1.docx"
         docx = BytesIO(requests.get(url).content)
 
         # extract text
         text = docx2txt.process(docx)
-        
+
         return f"{text}"
         with open(path.data, "rb") as docx_file:
 
@@ -162,29 +163,21 @@ class PostSerializer(serializers.ModelSerializer):
             return result.value.replace('\n', '').strip()  # The raw text
 
     def get_text(self, post: Post):
-        
-        url = post.text_file.url
-        # url = "http://127.0.0.1:8000/media/camaramz/posts/documents/text_cecab_rubish_1.docx"
+
+        # url = post.text_file.url
+        url = "http://127.0.0.1:8000/media/camaramz/posts/documents/text_cecab_rubish_1.docx"
 
         docx = BytesIO(requests.get(url).content)
 
         # extract text
         text = docx2txt.process(docx)
 
-        
         html_paragraphs = text_to_html_paragraphs(text).replace("\n", "")
-        
 
-        text_with_media = f"{addPicures(post, html_paragraphs)}" 
-        text_with_media = f"{addVideo(post, text_with_media)}" 
+        text_with_media = f"{addPicures(post, html_paragraphs)}"
+        text_with_media = f"{addVideo(post, text_with_media)}"
 
-        
-            
         return text_with_media
-    
-
-
-
 
 
 class RoleSerializer(serializers.ModelSerializer):
@@ -194,7 +187,7 @@ class RoleSerializer(serializers.ModelSerializer):
 
 
 class TeamSerializer(serializers.ModelSerializer):
-    
+
     role = RoleSerializer()
 
     class Meta:
@@ -208,10 +201,10 @@ class MessagesSerializer(serializers.ModelSerializer):
         fields = ['name', 'whatsapp', 'subject', 'text']
 
     def create(self, validated_data):
-       
+
         pprint(validated_data['subject'])
         secretary_sections = SecreatarySection.objects.filter(
-            section__title =validated_data['subject'])
+            section__title=validated_data['subject'])
         try:
 
             # send_mail('subject', 'message', 'edmilbe@gmail.com', ['bob@moshbuy.com'])
@@ -225,7 +218,8 @@ class MessagesSerializer(serializers.ModelSerializer):
                 context={'text': validated_data['text'],
                          'section': validated_data['subject'],
                          'name': validated_data['name'], 'whatsapp': validated_data['whatsapp']})
-            message.send([secretary_section.secretary.user.email for secretary_section in secretary_sections])
+            message.send(
+                [secretary_section.secretary.user.email for secretary_section in secretary_sections])
             return super().create(validated_data)
 
         except BadHeaderError:
@@ -238,19 +232,21 @@ class ImagesTourSerializer(serializers.ModelSerializer):
         fields = ["id", "image"]
 
 
-
 class InformationSerializer(serializers.ModelSerializer):
     class Meta:
         model = Information
         fields = ["id", "service", "question", "information"]
 
+
 class ServiceSerializer(serializers.ModelSerializer):
     informations = InformationSerializer(many=True)
+
     class Meta:
         model = Service
-        fields = ["id", "name", "slug", "informations",  "picture", "description"]
+        fields = ["id", "name", "slug",
+                  "informations",  "picture", "description"]
 
-    
+
 class TourSerializer(serializers.ModelSerializer):
 
     images = ImagesTourSerializer(many=True)
@@ -265,6 +261,3 @@ class TourSerializer(serializers.ModelSerializer):
     def get_posted_at(self, post: Post):
         now = datetime.now(timezone.utc)
         return timeago.format(post.date, now)
-
-
-

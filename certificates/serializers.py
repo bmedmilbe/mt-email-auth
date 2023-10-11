@@ -30,7 +30,7 @@ from .classes.document_data import DocumentData
 from .classes.document_form import DocumentForm
 
 from .models import (
-   
+
     BiuldingType,
     Cemiterio,
     Certificate,
@@ -50,14 +50,15 @@ from .models import (
     IDType,
     Instituition,
     Messages,
+    Parent,
     Person,
-   
+
     Customer,
     PersonBirthAddress,
     Street,
     Town,
     University,
-    
+
 )
 from django.db.models import Sum
 from django.db.transaction import atomic
@@ -73,34 +74,56 @@ class CountrySerializer(ModelSerializer):
         ]
 
 
-
-
 class CountySerializer(ModelSerializer):
     country = CountrySerializer()
-    
+
     class Meta:
         model = County
         fields = [
             "id",
             "name",
-            "slug", 
+            "slug",
             "country",
-            ]
-   
+        ]
+
+
+class UniversitySerializer(ModelSerializer):
+
+    class Meta:
+        model = University
+        fields = [
+            "id",
+            "name",
+
+        ]
+
+
+class BiuldingTypeSerializer(ModelSerializer):
+
+    class Meta:
+        model = BiuldingType
+        fields = [
+            "id",
+            "name",
+            "prefix",
+
+        ]
+
 
 class TownSerializer(ModelSerializer):
     county = CountySerializer()
     country = serializers.SerializerMethodField(method_name="get_country")
-    
+
     class Meta:
         model = Town
         fields = [
             "id",
             "name",
-            "slug", 
+            "slug",
             "county",
             "country",
-            ]
+        ]
+
     def get_country(self, town):
         return f"{town.county.country.name}"
 
@@ -109,98 +132,121 @@ class StreetSerializer(ModelSerializer):
     town = serializers.SerializerMethodField(method_name="get_town")
     county = serializers.SerializerMethodField(method_name="get_county")
     country = serializers.SerializerMethodField(method_name="get_country")
-    
+
     class Meta:
         model = Street
         fields = [
             "id",
             "name",
-            "town", 
+            "town",
             "county",
             "country",
-            ]
-        
+        ]
+
     def get_town(self, street):
         return f"{street.town.name}"
+
     def get_county(self, street):
         return f"{street.town.county.name}"
+
     def get_country(self, street):
         return f"{street.town.county.country.name}"
-    
+
 
 class HouseSerializer(ModelSerializer):
     street = StreetSerializer()
-    
+
     class Meta:
         model = House
         fields = [
             "id",
             "house_number",
-            "street", 
-            ]
-        
+            "street",
+        ]
+
+
 class HouseCreateSerializer(ModelSerializer):
 
-    
     class Meta:
         model = House
         fields = [
             "id",
             "house_number",
-            "street", 
-            ]
-        
+            "street",
+        ]
+
     def create(self, validate_data):
-        # pprint(validate_data)
 
+        house_number = validate_data.get('house_number')
         house = House.objects.filter(
-            house_number=validate_data['house_number'],
+            house_number=house_number,
             street=validate_data['street']
-            )
-        
+        )
 
-        
         if not house:
+            validate_data["house_number"] = house_number
             return super().create(validate_data)
         return house.first()
-        
-    
-        
+
+
 class PersonBirthAddressSerializer(ModelSerializer):
     birth_street = StreetSerializer()
     birth_town = TownSerializer()
     birth_county = CountySerializer()
     birth_country = CountrySerializer()
+
     class Meta:
         model = PersonBirthAddress
         fields = [
             "id",
             "birth_street",
-            "birth_town", 
-            "birth_county", 
-            "birth_country", 
-            ]
+            "birth_town",
+            "birth_county",
+            "birth_country",
+        ]
+
+
 class PersonBirthAddressCreateSerializer(ModelSerializer):
+    birth_street_id = serializers.IntegerField()
+    birth_town_id = serializers.IntegerField()
+    birth_county_id = serializers.IntegerField()
+
     class Meta:
         model = PersonBirthAddress
         fields = [
             "id",
-            "birth_street",
-            "birth_town", 
-            "birth_county", 
-            "birth_country", 
-            ]
-        
+            "birth_street_id",
+            "birth_town_id",
+            "birth_county_id",
+            "birth_country",
+        ]
+
     def create(self, validate_data):
-        pprint(validate_data)
+        # pprint(validate_data)
+        street = Street.objects.filter(
+            id=validate_data['birth_street_id']).first()
+        town = Town.objects.filter(id=validate_data['birth_town_id']).first()
+        county = County.objects.filter(
+            id=validate_data['birth_county_id']).first()
+        # print(street)
+
+        del validate_data['birth_street_id']
+        del validate_data['birth_town_id']
+        del validate_data['birth_county_id']
+
+        validate_data['birth_street_id'] = None if street == None else street.id
+        validate_data['birth_town_id'] = None if town == None else town.id
+        validate_data['birth_county_id'] = None if county == None else county.id
+
+        # print(validate_data)
 
         address = PersonBirthAddress.objects.filter(
-            birth_street=validate_data['birth_street'],
-            birth_town=validate_data['birth_town'],
-            birth_county=validate_data['birth_county'],
+            birth_street_id=validate_data['birth_street_id'],
+            birth_town_id=validate_data['birth_town_id'],
+            birth_county_id=validate_data['birth_county_id'],
             birth_country=validate_data['birth_country'],
-            )
-        
+        )
+
         if not address:
             return super().create(validate_data)
         return address.first()
@@ -212,142 +258,202 @@ class PersonCreateOrUpdateSerializer(ModelSerializer):
         fields = [
             "id",
             "name",
-            "surname", 
-            "birth_date",  
-            # "birth_street",  
-            # "birth_town",  
-            # "birth_county",  
-            # "birth_country",  
+            "surname",
+            "birth_date",
+            # "birth_street",
+            # "birth_town",
+            # "birth_county",
+            # "birth_country",
             "birth_address",
-            "id_type",  
-            "id_number",  
-            "id_issue_local",  
-            "id_issue_country",  
-            "nationality",  
-            "id_issue_date",  
-            "id_expire_date",  
-            "father_name",  
-            "mother_name",  
-            "address",  
-            "status",  
-            "gender",  
-            ]
-        
+            "id_type",
+            "id_number",
+            "id_issue_local",
+            "id_issue_country",
+            "nationality",
+            "id_issue_date",
+            "id_expire_date",
+            "father_name",
+            "mother_name",
+            "address",
+            "status",
+            "gender",
+
+
+        ]
+
     def create(self, validate_data):
-        
+
         person = Person.objects.filter(
             nationality=validate_data['nationality'],
             id_type=validate_data['id_type'],
             id_number=validate_data['id_number']
-            )
-        
+        )
+
         if not validate_data['father_name'] and not validate_data['mother_name']:
-            raise serializers.ValidationError({"person": "The person must to have a father or mother"})
-        
+            raise serializers.ValidationError(
+                {"person": "The person must to have a father or mother"})
+
         if not person:
             return super().create(validate_data)
-        raise serializers.ValidationError({"person": "There is a person with same ID already registered"})
-    
+        raise serializers.ValidationError(
+            {"person": "There is a person with same ID already registered"})
+
     def update(self, instance, validate_data):
         person = Person.objects.filter(
-            
+
             nationality=validate_data['nationality'],
             id_type=validate_data['id_type'],
             id_number=validate_data['id_number']
-            )
-        
+        )
+
         if not validate_data['father_name'] and not validate_data['mother_name']:
-            raise serializers.ValidationError({"person": "The person must to have a father or mother"})
-        
+            raise serializers.ValidationError(
+                {"person": "The person must to have a father or mother"})
+
         if person.first().id == instance.id:
             return super().update(instance, validate_data)
-        raise serializers.ValidationError({"person": "There is a person with same ID already registered"})
-    
-        
-    
+        raise serializers.ValidationError(
+            {"person": "There is a person with same ID already registered"})
+
+
+class IDTypeSerializer(ModelSerializer):
+
+    class Meta:
+        model = IDType
+        fields = [
+            "id",
+            "name",
+        ]
+
+
+class InstituitionSerializer(ModelSerializer):
+
+    class Meta:
+        model = Instituition
+        fields = [
+            "id",
+            "name",
+        ]
+
 
 class PersonSerializer(ModelSerializer):
     # Residence certificate
     birth_address = PersonBirthAddressSerializer()
     address = HouseSerializer()
+    id_type = IDTypeSerializer()
+
     class Meta:
         model = Person
         fields = [
             "id",
             "name",
-            "surname", 
-            "birth_date",  
+            "surname",
+            "birth_date",
             "birth_address",
-            "id_type",  
-            "id_number",  
-            "id_issue_local",  
-            "id_issue_country",  
-            "nationality",  
-            "id_issue_date",  
-            "id_expire_date",  
-            "father_name",  
-            "mother_name",  
-            "address",  
-            "status",  
-            "gender",  
-            ]
-        
-   
-        
+            "id_type",
+            "id_number",
+            "id_issue_local",
+            "id_issue_country",
+            "nationality",
+            "id_issue_date",
+            "id_expire_date",
+            "father_name",
+            "mother_name",
+            "address",
+            "status",
+            "gender",
+        ]
 
 
 class CertificateModelOneCreateSerializer(ModelSerializer):
-    
+    file = serializers.FileField(read_only=True)
 
     class Meta:
         model = Certificate
         fields = [
             "id",
-            "main_person",  
+            "main_person",
             "secondary_person",
-            "house" 
+            "house",
+            "file",
+
         ]
 
+    @atomic()
+    def update(self, instance, validated_data):
+        # pprint(validated_data)
+
+        # set the number and type,
+        # set and save the text in text dev  mode
+
+        current_year = date.today().year
+        certificates = Certificate.objects.filter(
+            type_id=self.context['type_id'], date_issue__year=current_year)
+        # validated_data = dict()
+        validated_data["number"] = f"{certificates.count()+1}-{current_year}"
+        validated_data["type_id"] = int(self.context['type_id'])
+        text_helper = StringHelper()
+        pprint(validated_data)
+        certificate = super().update(instance, validated_data)
+
+        model = AtestadoOne(DocumentData(
+            validated_data["main_person"], validated_data, instance, validated_data["secondary_person"]))
+
+        text, file_name, status = StringHelper.renderText(model)
+
+        validated_data["text"] = text
+        validated_data["file_name"] = f"/media/certificates/{file_name}.pdf"
+        pprint(validated_data["file_name"])
+        # Certificate.objects.update(certificate,text=validated_data["text"])
+        Certificate.objects.filter(pk=certificate.id).update(
+            text=validated_data["text"])
+
+        CertificateData.objects.filter(pk=certificate.id).update(
+            house=validated_data["main_person"].address)
+
+        certificate = Certificate.objects.get(pk=certificate.id)
+
+        return {**validated_data, "id": certificate.id, "file": certificate.file}
 
     @atomic()
     def create(self, validate_data):
 
-        pprint(validate_data)
-        
-        #set the number and type, 
-        #set and save the text in text dev  mode
-        
+        # pprint(validate_data)
+
+        # set the number and type,
+        # set and save the text in text dev  mode
+
         current_year = date.today().year
-        certificates = Certificate.objects.filter(type_id=self.context['type_id'],date_issue__year=current_year)
+        certificates = Certificate.objects.filter(
+            type_id=self.context['type_id'], date_issue__year=current_year)
         # validate_data = dict()
         validate_data["number"] = f"{certificates.count()+1}-{current_year}"
         validate_data["type_id"] = int(self.context['type_id'])
         text_helper = StringHelper()
-        pprint(validate_data)
+        # pprint(validate_data)
+        certificate = super().create(validate_data)
 
-        certificate =  super().create(validate_data)
+        model = AtestadoOne(DocumentData(
+            validate_data["main_person"], validate_data, certificate, validate_data["secondary_person"]))
 
-
-        model = AtestadoOne(DocumentData(validate_data["main_person"],validate_data,certificate,validate_data["secondary_person"]))
-        
         text, file_name, status = StringHelper.renderText(model)
-        
+
         validate_data["text"] = text
         validate_data["file_name"] = f"/media/certificates/{file_name}.pdf"
         pprint(validate_data["file_name"])
         # Certificate.objects.update(certificate,text=validate_data["text"])
+        Certificate.objects.filter(pk=certificate.id).update(
+            text=validate_data["text"])
 
-        Certificate.objects.filter(pk=certificate.id).update(text=validate_data["text"])
+        CertificateData.objects.create(
+            certificate_id=certificate.id, house=validate_data["main_person"].address)
 
-        CertificateData.objects.create(certificate_id=certificate.id,house=validate_data["main_person"].address)
+        certificate = Certificate.objects.get(pk=certificate.id)
 
-        return certificate
+        return {**validate_data, "id": certificate.id, "file": certificate.file}
 
 
-
-    
 class CertificateModelOneSerializer(ModelSerializer):
-  
 
     class Meta:
         model = Certificate
@@ -355,57 +461,113 @@ class CertificateModelOneSerializer(ModelSerializer):
             "id",
             "main_person",  # Get the address from person object, update it every time you create new cv
             "secondary_person",
-            "house_id" #house that this person used in this especific certificare
+            "house_id",  # house that this person used in this especific certificare
+            "file",
         ]
 
 
-
-
 class CertificateModelTwoCreateSerializer(ModelSerializer):
-   
+
     instituition = serializers.IntegerField()
     university = serializers.IntegerField(allow_null=True)
+    file = serializers.FileField(read_only=True)
 
     class Meta:
         model = Certificate
         fields = [
             "id",
-            "main_person",  
+            "main_person",
             "secondary_person",
             "house",
             "instituition",
             "university",
+            "file"
         ]
-
 
     def validate_institution(self, institution):
         if not institution:
-            raise serializers.ValidationError({'institution': "Select instituition"})
+            raise serializers.ValidationError(
+                {'institution': "Select instituition"})
         elif not Instituition.objects.filter(id=institution).exists():
-            raise serializers.ValidationError({'institution': "This instituition is not valid"})
+            raise serializers.ValidationError(
+                {'institution': "This instituition is not valid"})
         return institution
-    
+
     def validate_university(self, university):
         if university:
             if not University.objects.filter(id=university).exists():
-                raise serializers.ValidationError({'university': "This university is not valid"})
-        
+                raise serializers.ValidationError(
+                    {'university': "This university is not valid"})
+
         return university
+
+    @atomic()
+    def update(self, instance, validated_data):
+        # pprint(validated_data)
+
+        # set the number and type,
+        # set and save the text in text dev  mode
+
+        current_year = date.today().year
+        certificates = Certificate.objects.filter(
+            type_id=self.context['type_id'], date_issue__year=current_year)
+        # validated_data = dict()
+        validated_data["number"] = f"{certificates.count()+1}-{current_year}"
+        validated_data["type_id"] = type_id = int(self.context['type_id'])
+        text_helper = StringHelper()
+        # pprint(validate_data)
+        new_validate_data = validated_data.copy()
+
+        del new_validate_data["instituition"]
+        del new_validate_data["university"]
+
+        pprint(validated_data)
+        certificate = super().update(instance, new_validate_data)
+
+        validated_data["instituition"] = instituition = Instituition.objects.filter(
+            id=validated_data["instituition"]).first()
+        if type_id == 3:
+            validated_data["university"] = university = University.objects.filter(
+                id=validated_data["university"]).first()
+
+        model = AtestadoSecond(DocumentData(
+            validated_data["main_person"], validated_data, instance, validated_data["secondary_person"]))
+
+        text, file_name, status = StringHelper.renderText(model)
+
+        validated_data["text"] = text
+        validated_data["file_name"] = f"/media/certificates/{file_name}.pdf"
+        pprint(validated_data["file_name"])
+        # Certificate.objects.update(certificate,text=validated_data["text"])
+        Certificate.objects.filter(pk=certificate.id).update(
+            text=validated_data["text"])
+
+        CertificateData.objects.filter(pk=certificate.id).update(
+            house=validated_data["main_person"].address)
+
+        validated_data["instituition"] = instituition.id
+        if type_id == 3:
+            validated_data["university"] = university.id
+
+        certificate = Certificate.objects.get(pk=certificate.id)
+
+        return {**validated_data, "id": certificate.id, "file": certificate.file}
 
     @atomic()
     def create(self, validate_data):
 
         # pprint(validate_data)
-        
-        #set the number and type, 
-        #set and save the text in text dev  mode
-        
+
+        # set the number and type,
+        # set and save the text in text dev  mode
+
         current_year = date.today().year
-        certificates = Certificate.objects.filter(type_id=self.context['type_id'],date_issue__year=current_year)
+        certificates = Certificate.objects.filter(
+            type_id=self.context['type_id'], date_issue__year=current_year)
         # validate_data = dict()
         validate_data["number"] = f"{certificates.count()+1}-{current_year}"
         type_id = validate_data["type_id"] = int(self.context['type_id'])
-        
+
         text_helper = StringHelper()
         # pprint(validate_data)
         new_validate_data = validate_data.copy()
@@ -413,32 +575,40 @@ class CertificateModelTwoCreateSerializer(ModelSerializer):
         del new_validate_data["instituition"]
         del new_validate_data["university"]
 
-        certificate =  super().create(new_validate_data)
+        certificate = super().create(new_validate_data)
         # pprint(validate_data)
         # pprint(validate_data["instituition"])
-        validate_data["instituition"] = instituition = Instituition.objects.filter(id=validate_data["instituition"]).first()
+        # pprint(certificate.id)
+        validate_data["instituition"] = instituition = Instituition.objects.filter(
+            id=validate_data["instituition"]).first()
         if type_id == 3:
-            validate_data["university"] = university = University.objects.filter(id=validate_data["university"]).first()
+            validate_data["university"] = university = University.objects.filter(
+                id=validate_data["university"]).first()
 
-
-        model = AtestadoSecond(DocumentData(validate_data["main_person"],validate_data,certificate,validate_data["secondary_person"]))
+        model = AtestadoSecond(DocumentData(
+            validate_data["main_person"], validate_data, certificate, validate_data["secondary_person"]))
         # pprint( StringHelper.renderText(model))
         text, file_name, status = StringHelper.renderText(model)
-        
+
         validate_data["text"] = text
-        validate_data["file_name"] = f"/media/certificates/{file_name}.pdf"
-        pprint(validate_data["file_name"])
+        # validate_data["file_name"] = f"/media/certificates/{file_name}.pdf"
+        # pprint(validate_data["file_name"])
 
-        Certificate.objects.filter(pk=certificate.id).update(text=validate_data["text"])
+        Certificate.objects.filter(pk=certificate.id).update(
+            text=validate_data["text"])
 
-        
-        CertificateData.objects.create(certificate_id=certificate.id,house=validate_data["main_person"].address)
+        CertificateData.objects.create(
+            certificate_id=certificate.id, house=validate_data["main_person"].address)
         validate_data["instituition"] = instituition.id
         if type_id == 3:
             validate_data["university"] = university.id
 
-        return {"id":f"{certificate.id}", **validate_data}
-    
+        certificate = Certificate.objects.get(pk=certificate.id)
+        pprint(file_name)
+
+        return {**validate_data, "id": certificate.id, "file": certificate.file}
+
+
 class CertificateModelTwoSerializer(ModelSerializer):
     # instituition = serializers.IntegerField()
     # university = serializers.IntegerField()
@@ -449,71 +619,117 @@ class CertificateModelTwoSerializer(ModelSerializer):
             "id",
             "main_person",  # Get the address from person object, update it every time you create new cv
             "secondary_person",
-            "house", #house that this person used in this especific certificare
+            "house",  # house that this person used in this especific certificare
             # "instituition",
             # "university",
         ]
 
 
-
-
 class CertificateModelThreeCreateSerializer(ModelSerializer):
-   
+
     date = serializers.DateField(allow_null=True)
+    file = serializers.FileField(read_only=True)
 
     class Meta:
         model = Certificate
         fields = [
             "id",
-            "main_person",  
+            "main_person",
             "secondary_person",
             "house",
             "date",
+            "file"
         ]
+
+    @atomic()
+    def update(self, instance, validated_data):
+        # pprint(validated_data)
+
+        # set the number and type,
+        # set and save the text in text dev  mode
+
+        current_year = date.today().year
+        certificates = Certificate.objects.filter(
+            type_id=self.context['type_id'], date_issue__year=current_year)
+        # validated_data = dict()
+        validated_data["number"] = f"{certificates.count()+1}-{current_year}"
+        validated_data["type_id"] = int(self.context['type_id'])
+        text_helper = StringHelper()
+        # pprint(validate_data)
+        new_validate_data = validated_data.copy()
+
+        del new_validate_data["date"]
+
+        certificate = super().update(instance, new_validate_data)
+
+        model = AtestadoThird(DocumentData(
+            validated_data["main_person"], validated_data, instance, validated_data["secondary_person"]))
+
+        text, file_name, status = StringHelper.renderText(model)
+
+        validated_data["text"] = text
+        validated_data["file_name"] = f"/media/certificates/{file_name}.pdf"
+        pprint(validated_data["file_name"])
+        # Certificate.objects.update(certificate,text=validated_data["text"])
+        Certificate.objects.filter(pk=certificate.id).update(
+            text=validated_data["text"])
+
+        CertificateData.objects.filter(pk=certificate.id).update(
+            house=validated_data["main_person"].address)
+
+        certificate = Certificate.objects.get(pk=certificate.id)
+
+        # return {"id": certificate.id, "file": certificate.file.url, **validated_data}
+        return {**validated_data, "id": certificate.id, "file": certificate.file}
 
     @atomic()
     def create(self, validate_data):
 
         # pprint(validate_data)
-        
-        #set the number and type, 
-        #set and save the text in text dev  mode
-        
+
+        # set the number and type,
+        # set and save the text in text dev  mode
+
         current_year = date.today().year
-        certificates = Certificate.objects.filter(type_id=self.context['type_id'],date_issue__year=current_year)
+        certificates = Certificate.objects.filter(
+            type_id=self.context['type_id'], date_issue__year=current_year)
         # validate_data = dict()
         validate_data["number"] = f"{certificates.count()+1}-{current_year}"
         validate_data["type_id"] = int(self.context['type_id'])
-        
+
         text_helper = StringHelper()
         # pprint(validate_data)
         new_validate_data = validate_data.copy()
 
         del new_validate_data["date"]
 
-        certificate =  super().create(new_validate_data)
+        certificate = super().create(new_validate_data)
         # pprint(validate_data)
         # pprint(validate_data["instituition"])
 
-
-        model = AtestadoThird(DocumentData(validate_data["main_person"],validate_data,certificate,validate_data["secondary_person"]))
+        model = AtestadoThird(DocumentData(
+            validate_data["main_person"], validate_data, certificate, validate_data["secondary_person"]))
         # pprint( StringHelper.renderText(model))
         text, file_name, status = StringHelper.renderText(model)
-        
+
         validate_data["text"] = text
         validate_data["file_name"] = f"/media/certificates/{file_name}.pdf"
-        pprint(validate_data["file_name"])
+        # pprint(validate_data["file_name"])
 
-        Certificate.objects.filter(pk=certificate.id).update(text=validate_data["text"])
+        Certificate.objects.filter(pk=certificate.id).update(
+            text=validate_data["text"])
 
-        
-        CertificateData.objects.create(certificate_id=certificate.id,house=validate_data["main_person"].address)
+        CertificateData.objects.create(
+            certificate_id=certificate.id, house=validate_data["main_person"].address)
 
-        return {"id":f"{certificate.id}", **validate_data}
-    
+        certificate = Certificate.objects.get(pk=certificate.id)
+
+        # print("file", certificate.file.url)
+        return {**validate_data, "id": certificate.id, "file": certificate.file}
+
+
 class CertificateModelThreeSerializer(ModelSerializer):
     date = serializers.DateField(read_only=True)
-
 
     class Meta:
         model = Certificate
@@ -521,17 +737,17 @@ class CertificateModelThreeSerializer(ModelSerializer):
             "id",
             "main_person",  # Get the address from person object, update it every time you create new cv
             "secondary_person",
-            "house", #house that this person used in this especific certificare
+            "house",  # house that this person used in this especific certificare
             "date",
         ]
 # class CertificateModelFifthCreateSerializer(ModelSerializer):
-   
+
 
 #     class Meta:
 #         model = Certificate
 #         fields = [
 #             "id",
-#             "main_person",  
+#             "main_person",
 #             "secondary_person",
 #             "house",
 #         ]
@@ -540,16 +756,16 @@ class CertificateModelThreeSerializer(ModelSerializer):
 #     def create(self, validate_data):
 
 #         # pprint(validate_data)
-        
-#         #set the number and type, 
+
+#         #set the number and type,
 #         #set and save the text in text dev  mode
-        
+
 #         current_year = date.today().year
 #         certificates = Certificate.objects.filter(type_id=self.context['type_id'],date_issue__year=current_year)
 #         # validate_data = dict()
 #         validate_data["number"] = f"{certificates.count()+1}-{current_year}"
 #         validate_data["type_id"] = int(self.context['type_id'])
-        
+
 #         text_helper = StringHelper()
 #         # pprint(validate_data)
 #         new_validate_data = validate_data.copy()
@@ -564,22 +780,22 @@ class CertificateModelThreeSerializer(ModelSerializer):
 #         model = AtestadoFifth(DocumentData(validate_data["main_person"],validate_data,certificate,validate_data["secondary_person"]))
 #         # pprint( StringHelper.renderText(model))
 #         text, file_name, status = StringHelper.renderText(model)
-        
+
         # validate_data["text"] = text
         # validate_data["file_name"] = f"/media/certificates/{file_name}.pdf"
         # pprint(validate_data["file_name"])
 
 #         Certificate.objects.filter(pk=certificate.id).update(text=validate_data["text"])
 
-        
+
 #         CertificateData.objects.create(certificate_id=certificate.id,house=validate_data["main_person"].address)
 
 
 #         CertificateSimplePerson.objects.filter(type_id=self.context['type_id']).delete() # removel all saved by current user and add next
 #         # CertificateSimplePerson.objects.filter(type_id=self.context['type_id'], user_id=self.context['user_id']).delete() # removel all saved by current user and add next
-        
+
 #         return {"id":f"{certificate.id}", **validate_data}
-    
+
 # class CertificateModelFifthSerializer(ModelSerializer):
 
 
@@ -590,76 +806,131 @@ class CertificateModelThreeSerializer(ModelSerializer):
 #             "main_person",  # Get the address from person object, update it every time you create new cv
 #             "secondary_person",
 #             "house", #house that this person used in this especific certificare
-            
+
 #         ]
 
 
-
 class CertificateModelFifthCreateSerializer(ModelSerializer):
-   
+
     instituition = serializers.IntegerField()
+    file = serializers.FileField(read_only=True)
 
     class Meta:
         model = Certificate
         fields = [
             "id",
-            "main_person",  
+            "main_person",
             "secondary_person",
             "house",
             "instituition",
-        ]
+            "file",
 
+        ]
 
     def validate_institution(self, institution):
         if not institution:
-            raise serializers.ValidationError({'institution': "Select instituition"})
+            raise serializers.ValidationError(
+                {'institution': "Select instituition"})
         elif not Instituition.objects.filter(id=institution).exists():
-            raise serializers.ValidationError({'institution': "This instituition is not valid"})
+            raise serializers.ValidationError(
+                {'institution': "This instituition is not valid"})
+
         return institution
-    
+
+    @atomic()
+    def update(self, instance, validated_data):
+        # pprint(validated_data)
+
+        # set the number and type,
+        # set and save the text in text dev  mode
+
+        current_year = date.today().year
+        certificates = Certificate.objects.filter(
+            type_id=self.context['type_id'], date_issue__year=current_year)
+        # validated_data = dict()
+        validated_data["number"] = f"{certificates.count()+1}-{current_year}"
+        validated_data["type_id"] = type_id = int(self.context['type_id'])
+        text_helper = StringHelper()
+        # pprint(validate_data)
+        new_validate_data = validated_data.copy()
+
+        del new_validate_data["instituition"]
+
+        pprint(validated_data)
+        certificate = super().update(instance, new_validate_data)
+
+        validated_data["instituition"] = instituition = Instituition.objects.filter(
+            id=validated_data["instituition"]).first()
+
+        model = AtestadoFifth(DocumentData(
+            validated_data["main_person"], validated_data, instance, validated_data["secondary_person"]))
+
+        text, file_name, status = StringHelper.renderText(model)
+
+        validated_data["text"] = text
+        validated_data["file_name"] = f"/media/certificates/{file_name}.pdf"
+        pprint(validated_data["file_name"])
+        # Certificate.objects.update(certificate,text=validated_data["text"])
+        Certificate.objects.filter(pk=certificate.id).update(
+            text=validated_data["text"])
+
+        CertificateData.objects.filter(pk=certificate.id).update(
+            house=validated_data["main_person"].address)
+
+        validated_data["instituition"] = instituition.id
+
+        certificate = Certificate.objects.get(pk=certificate.id)
+
+        return {**validated_data, "id": certificate.id, "file": certificate.file}
 
     @atomic()
     def create(self, validate_data):
 
         # pprint(validate_data)
-        
-        #set the number and type, 
-        #set and save the text in text dev  mode
-        
+
+        # set the number and type,
+        # set and save the text in text dev  mode
+
         current_year = date.today().year
-        certificates = Certificate.objects.filter(type_id=self.context['type_id'],date_issue__year=current_year)
+        certificates = Certificate.objects.filter(
+            type_id=self.context['type_id'], date_issue__year=current_year)
         # validate_data = dict()
         validate_data["number"] = f"{certificates.count()+1}-{current_year}"
         validate_data["type_id"] = int(self.context['type_id'])
-        
+
         text_helper = StringHelper()
         # pprint(validate_data)
         new_validate_data = validate_data.copy()
 
         del new_validate_data["instituition"]
 
-        certificate =  super().create(new_validate_data)
+        certificate = super().create(new_validate_data)
         # pprint(validate_data)
         # pprint(validate_data["instituition"])
-        validate_data["instituition"] = instituition = Instituition.objects.filter(id=validate_data["instituition"]).first()
+        validate_data["instituition"] = instituition = Instituition.objects.filter(
+            id=validate_data["instituition"]).first()
 
-
-        model = AtestadoFifth(DocumentData(validate_data["main_person"],validate_data,certificate,validate_data["secondary_person"]))
+        model = AtestadoFifth(DocumentData(
+            validate_data["main_person"], validate_data, certificate, validate_data["secondary_person"]))
         # pprint( StringHelper.renderText(model))
         text, file_name, status = StringHelper.renderText(model)
-        
+
         validate_data["text"] = text
         validate_data["file_name"] = f"/media/certificates/{file_name}.pdf"
         pprint(validate_data["file_name"])
 
-        Certificate.objects.filter(pk=certificate.id).update(text=validate_data["text"])
+        Certificate.objects.filter(pk=certificate.id).update(
+            text=validate_data["text"])
 
-        
-        CertificateData.objects.create(certificate_id=certificate.id,house=validate_data["main_person"].address)
+        CertificateData.objects.create(
+            certificate_id=certificate.id, house=validate_data["main_person"].address)
         validate_data["instituition"] = instituition.id
 
-        return {"id":f"{certificate.id}", **validate_data}
-    
+        certificate = Certificate.objects.get(pk=certificate.id)
+
+        return {**validate_data, "id": certificate.id, "file": certificate.file}
+
+
 class CertificateModelFifthSerializer(ModelSerializer):
     # instituition = serializers.IntegerField()
 
@@ -669,70 +940,163 @@ class CertificateModelFifthSerializer(ModelSerializer):
             "id",
             "main_person",  # Get the address from person object, update it every time you create new cv
             "secondary_person",
-            "house", #house that this person used in this especific certificare
+            "house",  # house that this person used in this especific certificare
             # "instituition",
         ]
 
+
 class CovalSerializer(ModelSerializer):
     # instituition = serializers.IntegerField()
-   
+
     class Meta:
         model = Coval
         fields = [
-           "nick_number","number", "name","date_used"
+            "id", "nick_number", "number", "name", "date_used", "closed", "selled"
         ]
+
 
 class CemiterioSerializer(ModelSerializer):
     # instituition = serializers.IntegerField()
-   
+
     class Meta:
         model = Cemiterio
         fields = [
-           "name","county"
+            "id", "name", "county"
+        ]
+
+
+class ChangeSerializer(ModelSerializer):
+    # instituition = serializers.IntegerField()
+
+    class Meta:
+        model = Change
+        fields = [
+            "id", "name",
         ]
 
 
 class CertificateModelEnterroCreateSerializer(ModelSerializer):
-   
-    
+
     cemiterio = serializers.IntegerField()
     died_date = serializers.DateField()
     entero_date = serializers.DateField()
+    file = serializers.FileField(read_only=True)
+
     class Meta:
         model = Certificate
         fields = [
             "id",
-            "main_person",  
+            "main_person",
             "secondary_person",
             "house",
             "cemiterio",
             "died_date",
             "entero_date",
+            "file"
         ]
-
 
     def validate_cemiterio(self, cemiterio):
         if not cemiterio:
-            raise serializers.ValidationError({'cemiterio': "Select cemiterio"})
+            raise serializers.ValidationError(
+                {'cemiterio': "Select cemiterio"})
         elif not Cemiterio.objects.filter(id=cemiterio).exists():
-            raise serializers.ValidationError({'cemiterio': "This cemiterio is not valid"})
+            raise serializers.ValidationError(
+                {'cemiterio': "This cemiterio is not valid"})
         return cemiterio
-    
+
+    @atomic()
+    def update(self, instance, validated_data):
+        # pprint(validated_data)
+
+        # set the number and type,
+        # set and save the text in text dev  mode
+
+        current_year = date.today().year
+        certificates = Certificate.objects.filter(
+            type_id=self.context['type_id'], date_issue__year=current_year)
+        # validated_data = dict()
+        validated_data["number"] = f"{certificates.count()+1}-{current_year}"
+        validated_data["type_id"] = type_id = int(self.context['type_id'])
+        text_helper = StringHelper()
+        # pprint(validate_data)
+        new_validate_data = validated_data.copy()
+
+        del new_validate_data["cemiterio"]
+        del new_validate_data["died_date"]
+        del new_validate_data["entero_date"]
+
+        certificate = super().update(instance, new_validate_data)
+
+        validated_data["cemiterio"] = cemiterio = Cemiterio.objects.filter(
+            id=validated_data["cemiterio"]).first()
+
+        # 5 years ago
+        startdate = date.today()
+        enddate = startdate - timedelta(days=365)  # five years ago
+        covals = Coval.objects.filter(date_used__year__lt=enddate.year, closed=False,
+                                      cemiterio=validated_data["cemiterio"]).order_by("square", "date_used")
+
+        # add user when have session
+        if not covals:
+            raise serializers.ValidationError({'coval': 'There is no space'})
+        elif not CertificateSinglePerson.objects.filter(type_id=type_id).exists():
+            raise serializers.ValidationError(
+                {'coval': 'You must add a single the died person details'})
+
+        if covals:
+            current_year = startdate.year
+            validated_data['last_coval'] = coval = covals.first()
+            coval.closed = True
+            coval.save()
+            person = CertificateSinglePerson.objects.get(type_id=type_id)
+            new_coval = dict()
+            new_coval['number'] = f"{covals.filter(square=coval.square).count()+1}-{current_year} {coval.square}"
+            new_coval['nick_number'] = f"{coval.nick_number}"
+            new_coval['name'] = f"{person.name}"
+            new_coval['date_used'] = f"{validated_data['entero_date']}"
+            new_coval['date_of_deth'] = f"{validated_data['died_date']}"
+            new_coval['gender'] = f"{person.gender}"
+            new_coval['square'] = f"{coval.square}"
+            validated_data['coval'] = Coval.objects.create(**new_coval)
+
+        model = AutoEnterro(DocumentData(
+            validated_data["main_person"], validated_data, instance, validated_data["secondary_person"]))
+        # pprint( StringHelper.renderText(model))
+        text, file_name, status = StringHelper.renderText(model)
+
+        validated_data["text"] = text
+        validated_data["file_name"] = f"/media/certificates/{file_name}.pdf"
+        pprint(validated_data["file_name"])
+
+        Certificate.objects.filter(pk=instance.id).update(
+            text=validated_data["text"])
+
+        CertificateData.objects.filter(pk=instance.id).update(
+            house=validated_data["main_person"].address)
+
+        validated_data["cemiterio"] = cemiterio.id
+        del validated_data['coval']
+        del validated_data['last_coval']
+
+        certificate = Certificate.objects.get(pk=certificate.id)
+
+        return {**validated_data, "id": certificate.id, "file": certificate.file}
 
     @atomic()
     def create(self, validate_data):
 
         # pprint(validate_data)
-        
-        #set the number and type, 
-        #set and save the text in text dev  mode
-        
+
+        # set the number and type,
+        # set and save the text in text dev  mode
+
         current_year = date.today().year
-        certificates = Certificate.objects.filter(type_id=self.context['type_id'],date_issue__year=current_year)
+        certificates = Certificate.objects.filter(
+            type_id=self.context['type_id'], date_issue__year=current_year)
         # validate_data = dict()
         validate_data["number"] = f"{certificates.count()+1}-{current_year}"
         validate_data["type_id"] = type_id = int(self.context['type_id'])
-        
+
         text_helper = StringHelper()
         # pprint(validate_data)
         new_validate_data = validate_data.copy()
@@ -741,26 +1105,28 @@ class CertificateModelEnterroCreateSerializer(ModelSerializer):
         del new_validate_data["died_date"]
         del new_validate_data["entero_date"]
 
-
-        certificate =  super().create(new_validate_data)
+        certificate = super().create(new_validate_data)
         # pprint(validate_data)
         # pprint(validate_data["instituition"])
-        validate_data["cemiterio"] = cemiterio = Cemiterio.objects.filter(id=validate_data["cemiterio"]).first()
+        validate_data["cemiterio"] = cemiterio = Cemiterio.objects.filter(
+            id=validate_data["cemiterio"]).first()
 
         # 5 years ago
         startdate = date.today()
-        enddate = startdate - timedelta(days=365) # five years ago
-        covals = Coval.objects.filter(date_used__year__lt=enddate.year, closed=False, cemiterio=validate_data["cemiterio"]).order_by("square", "date_used")
+        enddate = startdate - timedelta(days=365)  # five years ago
+        covals = Coval.objects.filter(date_used__year__lt=enddate.year, closed=False,
+                                      cemiterio=validate_data["cemiterio"]).order_by("square", "date_used")
 
         # add user when have session
         if not covals:
             raise serializers.ValidationError({'coval': 'There is no space'})
         elif not CertificateSinglePerson.objects.filter(type_id=type_id).exists():
-            raise serializers.ValidationError({'coval': 'You must add a single the died person details'})
-        
+            raise serializers.ValidationError(
+                {'coval': 'You must add a single the died person details'})
+
         if covals:
             current_year = startdate.year
-            validate_data['last_coval'] = coval= covals.first()
+            validate_data['last_coval'] = coval = covals.first()
             coval.closed = True
             coval.save()
             person = CertificateSinglePerson.objects.get(type_id=type_id)
@@ -774,26 +1140,29 @@ class CertificateModelEnterroCreateSerializer(ModelSerializer):
             new_coval['square'] = f"{coval.square}"
             validate_data['coval'] = Coval.objects.create(**new_coval)
 
-        model = AutoEnterro(DocumentData(validate_data["main_person"],validate_data,certificate,validate_data["secondary_person"]))
+        model = AutoEnterro(DocumentData(
+            validate_data["main_person"], validate_data, certificate, validate_data["secondary_person"]))
         # pprint( StringHelper.renderText(model))
         text, file_name, status = StringHelper.renderText(model)
-        
+
         validate_data["text"] = text
         validate_data["file_name"] = f"/media/certificates/{file_name}.pdf"
         pprint(validate_data["file_name"])
 
-        Certificate.objects.filter(pk=certificate.id).update(text=validate_data["text"])
+        Certificate.objects.filter(pk=certificate.id).update(
+            text=validate_data["text"])
 
-        
-        CertificateData.objects.create(certificate_id=certificate.id,house=validate_data["main_person"].address)
+        CertificateData.objects.create(
+            certificate_id=certificate.id, house=validate_data["main_person"].address)
         validate_data["cemiterio"] = cemiterio.id
         del validate_data['coval']
         del validate_data['last_coval']
 
+        certificate = Certificate.objects.get(pk=certificate.id)
+
+        return {**validate_data, "id": certificate.id, "file": certificate.file}
 
 
-        return {"id":f"{certificate.id}", **validate_data}
-    
 class CertificateModelEnterroSerializer(ModelSerializer):
     # instituition = serializers.IntegerField()
 
@@ -803,89 +1172,155 @@ class CertificateModelEnterroSerializer(ModelSerializer):
             "id",
             "main_person",  # Get the address from person object, update it every time you create new cv
             "secondary_person",
-            "house", #house that this person used in this especific certificare
+            "house",  # house that this person used in this especific certificare
             # "instituition",
         ]
 
 
 class CertificateModelCertCompraCovalCreateSerializer(ModelSerializer):
-   
-    
+
     coval = serializers.IntegerField()
-    
-    
+    file = serializers.FileField(read_only=True)
+
     class Meta:
         model = Certificate
         fields = [
             "id",
-            "main_person",  
+            "main_person",
             "secondary_person",
             "coval",
+            "file"
         ]
-
 
     def validate_coval(self, coval):
         if not coval:
             raise serializers.ValidationError({'coval': "Select coval"})
         elif not Coval.objects.filter(id=coval).exists():
-            raise serializers.ValidationError({'coval': "This coval is not valid"})
+            raise serializers.ValidationError(
+                {'coval': "This coval is not valid"})
+
+        elif not Coval.objects.filter(id=coval).first().date_of_deth == None:
+            raise serializers.ValidationError(
+                {'coval': "Empty coval"})
         return coval
-    
 
     @atomic()
-    def create(self, validate_data):
+    def update(self, instance, validated_data):
+        # pprint(validated_data)
 
-        # pprint(validate_data)
-        
-        #set the number and type, 
-        #set and save the text in text dev  mode
-        
+        # set the number and type,
+        # set and save the text in text dev  mode
+
         current_year = date.today().year
-        certificates = Certificate.objects.filter(type_id=self.context['type_id'],date_issue__year=current_year)
-        # validate_data = dict()
-        validate_data["number"] = f"{certificates.count()+1}-{current_year}"
-        validate_data["type_id"] = type_id = int(self.context['type_id'])
-        
+        certificates = Certificate.objects.filter(
+            type_id=self.context['type_id'], date_issue__year=current_year)
+        # validated_data = dict()
+        validated_data["number"] = f"{certificates.count()+1}-{current_year}"
+        validated_data["type_id"] = type_id = int(self.context['type_id'])
         text_helper = StringHelper()
         # pprint(validate_data)
-        new_validate_data = validate_data.copy()
+        new_validate_data = validated_data.copy()
 
         del new_validate_data["coval"]
-       
 
-        certificate =  super().create(new_validate_data)
-        # pprint(validate_data)
-        # pprint(validate_data["instituition"])
-        validate_data["coval"] = coval = Coval.objects.filter(id=validate_data["coval"]).first()
+        certificate = super().update(instance, new_validate_data)
+
+        validated_data["coval"] = coval = Coval.objects.filter(
+            id=validated_data["coval"]).first()
         model = None
         pprint(type_id)
         if type_id == 24:
             coval.selled = True
             coval.save()
 
-            CovalSalles.objects.create(coval_id=coval.id, person_id=validate_data["main_person"].id)
-            model = CertCompraCoval(DocumentData(validate_data["main_person"],validate_data,certificate,validate_data["secondary_person"]))
+            CovalSalles.objects.create(
+                coval_id=coval.id, person_id=validated_data["main_person"].id)
+            model = CertCompraCoval(DocumentData(
+                validated_data["main_person"], validated_data, instance, validated_data["secondary_person"]))
 
-        
         if type_id == 30:
-            model = LicencaTransladacao(DocumentData(validate_data["main_person"],validate_data,certificate,validate_data["secondary_person"]))
-
+            model = LicencaTransladacao(DocumentData(
+                validated_data["main_person"], validated_data, instance, validated_data["secondary_person"]))
 
         # pprint( StringHelper.renderText(model))
         text, file_name, status = StringHelper.renderText(model)
-        
+
+        validated_data["text"] = text
+        validated_data["file_name"] = f"/media/certificates/{file_name}.pdf"
+        pprint(validated_data["file_name"])
+
+        Certificate.objects.filter(pk=certificate.id).update(
+            text=validated_data["text"])
+
+        CertificateData.objects.filter(pk=certificate.id).update(
+            house=validated_data["main_person"].address)
+
+        validated_data["coval"] = coval.id
+
+        certificate = Certificate.objects.get(pk=certificate.id)
+
+        return {**validated_data, "id": certificate.id, "file": certificate.file}
+
+    @atomic()
+    def create(self, validate_data):
+
+        # pprint(validate_data)
+
+        # set the number and type,
+        # set and save the text in text dev  mode
+
+        current_year = date.today().year
+        certificates = Certificate.objects.filter(
+            type_id=self.context['type_id'], date_issue__year=current_year)
+        # validate_data = dict()
+        validate_data["number"] = f"{certificates.count()+1}-{current_year}"
+        validate_data["type_id"] = type_id = int(self.context['type_id'])
+
+        text_helper = StringHelper()
+        # pprint(validate_data)
+        new_validate_data = validate_data.copy()
+
+        del new_validate_data["coval"]
+
+        certificate = super().create(new_validate_data)
+        # pprint(validate_data)
+        # pprint(validate_data["instituition"])
+        validate_data["coval"] = coval = Coval.objects.filter(
+            id=validate_data["coval"]).first()
+        model = None
+        pprint(type_id)
+        if type_id == 24:
+            coval.selled = True
+            coval.save()
+
+            CovalSalles.objects.create(
+                coval_id=coval.id, person_id=validate_data["main_person"].id)
+            model = CertCompraCoval(DocumentData(
+                validate_data["main_person"], validate_data, certificate, validate_data["secondary_person"]))
+
+        if type_id == 30:
+            model = LicencaTransladacao(DocumentData(
+                validate_data["main_person"], validate_data, certificate, validate_data["secondary_person"]))
+
+        # pprint( StringHelper.renderText(model))
+        text, file_name, status = StringHelper.renderText(model)
+
         validate_data["text"] = text
         validate_data["file_name"] = f"/media/certificates/{file_name}.pdf"
         pprint(validate_data["file_name"])
 
-        Certificate.objects.filter(pk=certificate.id).update(text=validate_data["text"])
+        Certificate.objects.filter(pk=certificate.id).update(
+            text=validate_data["text"])
 
-        
-        CertificateData.objects.create(certificate_id=certificate.id,house=validate_data["main_person"].address)
+        CertificateData.objects.create(
+            certificate_id=certificate.id, house=validate_data["main_person"].address)
         validate_data["coval"] = coval.id
-        
-        return {"id":f"{certificate.id}", **validate_data}
-    
+
+        certificate = Certificate.objects.get(pk=certificate.id)
+
+        return {**validate_data, "id": certificate.id, "file": certificate.file}
+
+
 class CertificateModelCertCompraCovalSerializer(ModelSerializer):
     # instituition = serializers.IntegerField()
 
@@ -898,87 +1333,144 @@ class CertificateModelCertCompraCovalSerializer(ModelSerializer):
             # "instituition",
         ]
 
+
 class CertificateModelAutoModCovalCreateSerializer(ModelSerializer):
-   
-    
+
     coval = serializers.IntegerField()
     change = serializers.IntegerField()
-    
-    
+    file = serializers.FileField(read_only=True)
+
     class Meta:
         model = Certificate
         fields = [
             "id",
-            "main_person",  
+            "main_person",
             "secondary_person",
             "coval",
             "change",
+            "file"
         ]
-
 
     def validate_coval(self, coval):
         if not coval:
             raise serializers.ValidationError({'coval': "Select coval"})
         elif not Coval.objects.filter(id=coval).exists():
-            raise serializers.ValidationError({'coval': "This coval is not valid"})
+            raise serializers.ValidationError(
+                {'coval': "This coval is not valid"})
         return coval
 
     def validate_change(self, change):
         if not change:
             raise serializers.ValidationError({'change': "Select change"})
         elif not Change.objects.filter(id=change).exists():
-            raise serializers.ValidationError({'change': "This change is not valid"})
+            raise serializers.ValidationError(
+                {'change': "This change is not valid"})
         return change
-    
+
+    @atomic()
+    def update(self, instance, validated_data):
+        # pprint(validated_data)
+
+        # set the number and type,
+        # set and save the text in text dev  mode
+
+        current_year = date.today().year
+        certificates = Certificate.objects.filter(
+            type_id=self.context['type_id'], date_issue__year=current_year)
+        # validated_data = dict()
+        validated_data["number"] = f"{certificates.count()+1}-{current_year}"
+        validated_data["type_id"] = type_id = int(self.context['type_id'])
+        text_helper = StringHelper()
+        # pprint(validate_data)
+        new_validate_data = validated_data.copy()
+
+        del new_validate_data["coval"]
+        del new_validate_data["change"]
+
+        pprint(validated_data)
+        certificate = super().update(instance, new_validate_data)
+
+        validated_data["coval"] = coval = Coval.objects.filter(
+            id=validated_data["coval"]).first()
+        validated_data["change"] = change = Change.objects.filter(
+            id=validated_data["change"]).first()
+
+        model = AutoModCovalAndLicBarraca(DocumentData(
+            validated_data["main_person"], validated_data, instance, validated_data["secondary_person"]))
+        # pprint( StringHelper.renderText(model))
+        text, file_name, status = StringHelper.renderText(model)
+
+        validated_data["text"] = text
+        validated_data["file_name"] = f"/media/certificates/{file_name}.pdf"
+        pprint(validated_data["file_name"])
+
+        # Certificate.objects.update(certificate,text=validated_data["text"])
+        Certificate.objects.filter(pk=certificate.id).update(
+            text=validated_data["text"])
+
+        CertificateData.objects.filter(pk=certificate.id).update(
+            house=validated_data["main_person"].address)
+
+        validated_data["coval"] = coval.id
+        validated_data["change"] = change.id
+
+        certificate = Certificate.objects.get(pk=certificate.id)
+
+        return {**validated_data, "id": certificate.id, "file": certificate.file}
 
     @atomic()
     def create(self, validate_data):
 
         # pprint(validate_data)
-        
-        #set the number and type, 
-        #set and save the text in text dev  mode
-        
+
+        # set the number and type,
+        # set and save the text in text dev  mode
+
         current_year = date.today().year
-        certificates = Certificate.objects.filter(type_id=self.context['type_id'],date_issue__year=current_year)
+        certificates = Certificate.objects.filter(
+            type_id=self.context['type_id'], date_issue__year=current_year)
         # validate_data = dict()
         validate_data["number"] = f"{certificates.count()+1}-{current_year}"
         validate_data["type_id"] = type_id = int(self.context['type_id'])
-        
+
         text_helper = StringHelper()
         # pprint(validate_data)
         new_validate_data = validate_data.copy()
 
         del new_validate_data["coval"]
         del new_validate_data["change"]
-       
 
-
-        certificate =  super().create(new_validate_data)
+        certificate = super().create(new_validate_data)
         # pprint(validate_data)
         # pprint(validate_data["instituition"])
 
-        validate_data["coval"] = coval = Coval.objects.filter(id=validate_data["coval"]).first()
-        validate_data["change"] = change = Change.objects.filter(id=validate_data["change"]).first()
+        validate_data["coval"] = coval = Coval.objects.filter(
+            id=validate_data["coval"]).first()
+        validate_data["change"] = change = Change.objects.filter(
+            id=validate_data["change"]).first()
 
-
-        model = AutoModCovalAndLicBarraca(DocumentData(validate_data["main_person"],validate_data,certificate,validate_data["secondary_person"]))
+        model = AutoModCovalAndLicBarraca(DocumentData(
+            validate_data["main_person"], validate_data, certificate, validate_data["secondary_person"]))
         # pprint( StringHelper.renderText(model))
         text, file_name, status = StringHelper.renderText(model)
-        
+
         validate_data["text"] = text
         validate_data["file_name"] = f"/media/certificates/{file_name}.pdf"
         pprint(validate_data["file_name"])
 
-        Certificate.objects.filter(pk=certificate.id).update(text=validate_data["text"])
+        Certificate.objects.filter(pk=certificate.id).update(
+            text=validate_data["text"])
 
-        
-        CertificateData.objects.create(certificate_id=certificate.id,house=validate_data["main_person"].address)
+        CertificateData.objects.create(
+            certificate_id=certificate.id, house=validate_data["main_person"].address)
         validate_data["coval"] = coval.id
         validate_data["change"] = change.id
-        
-        return {"id":f"{certificate.id}", **validate_data}
-    
+
+        certificate = Certificate.objects.get(pk=certificate.id)
+
+        return {**validate_data, "id": certificate.id, "file": certificate.file}
+
+
 class CertificateModelAutoModCovalSerializer(ModelSerializer):
     # instituition = serializers.IntegerField()
 
@@ -991,23 +1483,23 @@ class CertificateModelAutoModCovalSerializer(ModelSerializer):
             # "instituition",
         ]
 
+
 class CertificateModelLicBarracaCreateSerializer(ModelSerializer):
-   
-    
+
     object = serializers.CharField()
     street = serializers.IntegerField()
-    
-    
+    file = serializers.FileField(read_only=True)
+
     class Meta:
         model = Certificate
         fields = [
             "id",
-            "main_person",  
+            "main_person",
             "secondary_person",
             "object",
             "street",
+            "file"
         ]
-
 
     def validate_object(self, object):
         if not object:
@@ -1018,58 +1510,110 @@ class CertificateModelLicBarracaCreateSerializer(ModelSerializer):
         if not street:
             raise serializers.ValidationError({'street': "Select street"})
         elif not Street.objects.filter(id=street).exists():
-            raise serializers.ValidationError({'street': "This street is not valid"})
+            raise serializers.ValidationError(
+                {'street': "This street is not valid"})
         return street
-    
+
+    @atomic()
+    def update(self, instance, validated_data):
+        # pprint(validated_data)
+
+        # set the number and type,
+        # set and save the text in text dev  mode
+
+        current_year = date.today().year
+        certificates = Certificate.objects.filter(
+            type_id=self.context['type_id'], date_issue__year=current_year)
+        # validated_data = dict()
+        validated_data["number"] = f"{certificates.count()+1}-{current_year}"
+        validated_data["type_id"] = type_id = int(self.context['type_id'])
+        text_helper = StringHelper()
+        # pprint(validate_data)
+        new_validate_data = validated_data.copy()
+
+        del new_validate_data["object"]
+        del new_validate_data["street"]
+
+        pprint(validated_data)
+        certificate = super().update(instance, new_validate_data)
+        object = validated_data["object"]
+        validated_data["street"] = street = Street.objects.filter(
+            id=validated_data["street"]).first()
+
+        model = AutoModCovalAndLicBarraca(DocumentData(
+            validated_data["main_person"], validated_data, certificate, validated_data["secondary_person"]))
+        # pprint( StringHelper.renderText(model))
+        text, file_name, status = StringHelper.renderText(model)
+
+        validated_data["text"] = text
+        validated_data["file_name"] = f"/media/certificates/{file_name}.pdf"
+        pprint(validated_data["file_name"])
+
+        # Certificate.objects.update(certificate,text=validated_data["text"])
+        Certificate.objects.filter(pk=certificate.id).update(
+            text=validated_data["text"])
+
+        CertificateData.objects.filter(pk=certificate.id).update(
+            house=validated_data["main_person"].address)
+
+        validated_data["street"] = street.id
+
+        certificate = Certificate.objects.get(pk=certificate.id)
+
+        return {**validated_data, "id": certificate.id, "file": certificate.file}
 
     @atomic()
     def create(self, validate_data):
 
         # pprint(validate_data)
-        
-        #set the number and type, 
-        #set and save the text in text dev  mode
-        
+
+        # set the number and type,
+        # set and save the text in text dev  mode
+
         current_year = date.today().year
-        certificates = Certificate.objects.filter(type_id=self.context['type_id'],date_issue__year=current_year)
+        certificates = Certificate.objects.filter(
+            type_id=self.context['type_id'], date_issue__year=current_year)
         # validate_data = dict()
         validate_data["number"] = f"{certificates.count()+1}-{current_year}"
         validate_data["type_id"] = type_id = int(self.context['type_id'])
-        
+
         text_helper = StringHelper()
         # pprint(validate_data)
         new_validate_data = validate_data.copy()
 
         del new_validate_data["object"]
         del new_validate_data["street"]
-       
 
-
-        certificate =  super().create(new_validate_data)
+        certificate = super().create(new_validate_data)
         # pprint(validate_data)
         # pprint(validate_data["instituition"])
 
         object = validate_data["object"]
-        validate_data["street"] = street = Street.objects.filter(id=validate_data["street"]).first()
+        validate_data["street"] = street = Street.objects.filter(
+            id=validate_data["street"]).first()
 
-
-        model = AutoModCovalAndLicBarraca(DocumentData(validate_data["main_person"],validate_data,certificate,validate_data["secondary_person"]))
+        model = AutoModCovalAndLicBarraca(DocumentData(
+            validate_data["main_person"], validate_data, certificate, validate_data["secondary_person"]))
         # pprint( StringHelper.renderText(model))
         text, file_name, status = StringHelper.renderText(model)
-        
+
         validate_data["text"] = text
         validate_data["file_name"] = f"/media/certificates/{file_name}.pdf"
         pprint(validate_data["file_name"])
 
-        Certificate.objects.filter(pk=certificate.id).update(text=validate_data["text"])
+        Certificate.objects.filter(pk=certificate.id).update(
+            text=validate_data["text"])
 
-        
-        CertificateData.objects.create(certificate_id=certificate.id,house=validate_data["main_person"].address)
-        
+        CertificateData.objects.create(
+            certificate_id=certificate.id, house=validate_data["main_person"].address)
+
         validate_data["street"] = street.id
-        
-        return {"id":f"{certificate.id}", **validate_data}
-    
+
+        certificate = Certificate.objects.get(pk=certificate.id)
+
+        return {**validate_data, "id": certificate.id, "file": certificate.file}
+
+
 class CertificateModelLicBarracaSerializer(ModelSerializer):
     # instituition = serializers.IntegerField()
 
@@ -1083,113 +1627,173 @@ class CertificateModelLicBarracaSerializer(ModelSerializer):
         ]
 
 
-
 class CertificateModelAutoConstrucaoCreateSerializer(ModelSerializer):
-   
-    
+
     building_type = serializers.IntegerField()
     street = serializers.IntegerField()
+    file = serializers.FileField(read_only=True)
 
     class Meta:
         model = Certificate
         fields = [
             "id",
-            "main_person",  
+            "main_person",
             "secondary_person",
             # "house",
             "building_type",
             "street",
+            "file"
         ]
 
     def validate_building_type(self, building_type):
         if not building_type:
-            raise serializers.ValidationError({'building_type': "Select building_type"})
+            raise serializers.ValidationError(
+                {'building_type': "Select building_type"})
         elif not BiuldingType.objects.filter(id=building_type).exists():
-            raise serializers.ValidationError({'building_type': "This building_type is not valid"})
+            raise serializers.ValidationError(
+                {'building_type': "This building_type is not valid"})
         return building_type
+
     def validate_street(self, street):
         if not street:
             raise serializers.ValidationError({'street': "Select street"})
         elif not Street.objects.filter(id=street).exists():
-            raise serializers.ValidationError({'street': "This street is not valid"})
+            raise serializers.ValidationError(
+                {'street': "This street is not valid"})
         return street
-    
+
+    @atomic()
+    def update(self, instance, validated_data):
+        # pprint(validated_data)
+
+        # set the number and type,
+        # set and save the text in text dev  mode
+
+        current_year = date.today().year
+        certificates = Certificate.objects.filter(
+            type_id=self.context['type_id'], date_issue__year=current_year)
+        # validated_data = dict()
+        validated_data["number"] = f"{certificates.count()+1}-{current_year}"
+        validated_data["type_id"] = type_id = int(self.context['type_id'])
+        text_helper = StringHelper()
+        # pprint(validate_data)
+        new_validate_data = validated_data.copy()
+
+        del new_validate_data["building_type"]
+        del new_validate_data["street"]
+
+        pprint(validated_data)
+        certificate = super().update(instance, new_validate_data)
+
+        validated_data["building_type"] = building_type = BiuldingType.objects.filter(
+            id=validated_data["building_type"]).first()
+        validated_data["street"] = street = Street.objects.filter(
+            id=validated_data["street"]).first()
+
+        model = AutoConstrucao(DocumentData(
+            validated_data["main_person"], validated_data, instance, validated_data["secondary_person"]))
+        # pprint( StringHelper.renderText(model))
+        text, file_name, status = StringHelper.renderText(model)
+
+        validated_data["text"] = text
+        validated_data["file_name"] = f"/media/certificates/{file_name}.pdf"
+        pprint(validated_data["file_name"])
+
+        # Certificate.objects.update(certificate,text=validated_data["text"])
+        Certificate.objects.filter(pk=instance.id).update(
+            text=validated_data["text"])
+
+        CertificateData.objects.filter(pk=instance.id).update(
+            house=validated_data["main_person"].address)
+
+        validated_data["building_type"] = building_type.id
+        validated_data["street"] = street.id
+
+        certificate = Certificate.objects.get(pk=certificate.id)
+
+        return {**validated_data, "id": certificate.id, "file": certificate.file}
 
     @atomic()
     def create(self, validate_data):
 
         # pprint(validate_data)
-        
-        #set the number and type, 
-        #set and save the text in text dev  mode
-        
+
+        # set the number and type,
+        # set and save the text in text dev  mode
+
         current_year = date.today().year
-        certificates = Certificate.objects.filter(type_id=self.context['type_id'],date_issue__year=current_year)
+        certificates = Certificate.objects.filter(
+            type_id=self.context['type_id'], date_issue__year=current_year)
         # validate_data = dict()
         validate_data["number"] = f"{certificates.count()+1}-{current_year}"
         validate_data["type_id"] = type_id = int(self.context['type_id'])
-        
+
         text_helper = StringHelper()
         # pprint(validate_data)
         new_validate_data = validate_data.copy()
         del new_validate_data["building_type"]
         del new_validate_data["street"]
 
-
-        certificate =  super().create(new_validate_data)
+        certificate = super().create(new_validate_data)
         # pprint(validate_data)
         # pprint(validate_data["instituition"])
-        validate_data["building_type"] = building_type = BiuldingType.objects.filter(id=validate_data["building_type"]).first()
-        validate_data["street"] = street = Street.objects.filter(id=validate_data["street"]).first()
+        validate_data["building_type"] = building_type = BiuldingType.objects.filter(
+            id=validate_data["building_type"]).first()
+        validate_data["street"] = street = Street.objects.filter(
+            id=validate_data["street"]).first()
 
-        
-
-        model = AutoConstrucao(DocumentData(validate_data["main_person"],validate_data,certificate,validate_data["secondary_person"]))
+        model = AutoConstrucao(DocumentData(
+            validate_data["main_person"], validate_data, certificate, validate_data["secondary_person"]))
         # pprint( StringHelper.renderText(model))
         text, file_name, status = StringHelper.renderText(model)
-        
+
         validate_data["text"] = text
         validate_data["file_name"] = f"/media/certificates/{file_name}.pdf"
         pprint(validate_data["file_name"])
 
-        Certificate.objects.filter(pk=certificate.id).update(text=validate_data["text"])
+        Certificate.objects.filter(pk=certificate.id).update(
+            text=validate_data["text"])
 
-        
-        CertificateData.objects.create(certificate_id=certificate.id,house=validate_data["main_person"].address)
+        CertificateData.objects.create(
+            certificate_id=certificate.id, house=validate_data["main_person"].address)
         validate_data["building_type"] = building_type.id
         validate_data["street"] = street.id
-        
 
-        return {"id":f"{certificate.id}", **validate_data}
-    
+        certificate = Certificate.objects.get(pk=certificate.id)
+
+        return {**validate_data, "id": certificate.id, "file": certificate.file}
+
+
 class CertificateModelAutoConstrucaoSerializer(ModelSerializer):
 
     class Meta:
         model = Certificate
         fields = [
             "id",
-            "main_person",  
+            "main_person",
             "secondary_person",
-            "house", 
+            "house",
         ]
 
-class CertificateModelSeventhCreateSerializer(ModelSerializer):
-   
-    years= serializers.IntegerField()
-    country= serializers.IntegerField(allow_null=True)
 
+class CertificateModelSeventhCreateSerializer(ModelSerializer):
+
+    years = serializers.IntegerField()
+    country = serializers.IntegerField(allow_null=True)
+
+    file = serializers.FileField(read_only=True)
 
     class Meta:
         model = Certificate
         fields = [
             "id",
-            "main_person",  
+            "main_person",
             "secondary_person",
             "house",
             "years",
             "country",
+            "file"
         ]
-
 
     # def validate_institution(self, institution):
     #     if not institution:
@@ -1197,22 +1801,71 @@ class CertificateModelSeventhCreateSerializer(ModelSerializer):
     #     elif not Instituition.objects.filter(id=institution).exists():
     #         raise serializers.ValidationError({'institution': "This instituition is not valid"})
     #     return institution
-    
+
+    @atomic()
+    def update(self, instance, validated_data):
+        # pprint(validated_data)
+
+        # set the number and type,
+        # set and save the text in text dev  mode
+
+        current_year = date.today().year
+        certificates = Certificate.objects.filter(
+            type_id=self.context['type_id'], date_issue__year=current_year)
+        # validated_data = dict()
+        validated_data["number"] = f"{certificates.count()+1}-{current_year}"
+        validated_data["type_id"] = type_id = int(self.context['type_id'])
+        text_helper = StringHelper()
+        # pprint(validate_data)
+        new_validate_data = validated_data.copy()
+
+        del new_validate_data["years"]
+        del new_validate_data["country"]
+
+        pprint(validated_data)
+        certificate = super().update(instance, new_validate_data)
+
+        validated_data["country"] = country = Country.objects.filter(
+            id=validated_data["country"]).first()
+        # validated_data["instituition"] = instituition = Instituition.objects.filter(id=validated_data["instituition"]).first()
+
+        model = AtestadoSeventh(DocumentData(
+            validated_data["main_person"], validated_data, instance, validated_data["secondary_person"]))
+        # pprint( StringHelper.renderText(model))
+        text, file_name, status = StringHelper.renderText(model)
+
+        validated_data["text"] = text
+        validated_data["file_name"] = f"/media/certificates/{file_name}.pdf"
+        pprint(validated_data["file_name"])
+
+        # Certificate.objects.update(certificate,text=validated_data["text"])
+        Certificate.objects.filter(pk=instance.id).update(
+            text=validated_data["text"])
+
+        CertificateData.objects.filter(pk=instance.id).update(
+            house=validated_data["main_person"].address)
+
+        validated_data["country"] = country.id if country else None
+
+        certificate = Certificate.objects.get(pk=certificate.id)
+
+        return {**validated_data, "id": certificate.id, "file": certificate.file}
 
     @atomic()
     def create(self, validate_data):
 
         # pprint(validate_data)
-        
-        #set the number and type, 
-        #set and save the text in text dev  mode
-        
+
+        # set the number and type,
+        # set and save the text in text dev  mode
+
         current_year = date.today().year
-        certificates = Certificate.objects.filter(type_id=self.context['type_id'],date_issue__year=current_year)
+        certificates = Certificate.objects.filter(
+            type_id=self.context['type_id'], date_issue__year=current_year)
         # validate_data = dict()
         validate_data["number"] = f"{certificates.count()+1}-{current_year}"
         validate_data["type_id"] = int(self.context['type_id'])
-        
+
         text_helper = StringHelper()
         # pprint(validate_data)
         new_validate_data = validate_data.copy()
@@ -1220,29 +1873,34 @@ class CertificateModelSeventhCreateSerializer(ModelSerializer):
         del new_validate_data["years"]
         del new_validate_data["country"]
 
-        certificate =  super().create(new_validate_data)
+        certificate = super().create(new_validate_data)
         # pprint(validate_data)
         # pprint(validate_data["instituition"])
-        validate_data["country"] = country = Country.objects.filter(id=validate_data["country"]).first()
+        validate_data["country"] = country = Country.objects.filter(
+            id=validate_data["country"]).first()
         # validate_data["instituition"] = instituition = Instituition.objects.filter(id=validate_data["instituition"]).first()
 
-
-        model = AtestadoSeventh(DocumentData(validate_data["main_person"],validate_data,certificate,validate_data["secondary_person"]))
+        model = AtestadoSeventh(DocumentData(
+            validate_data["main_person"], validate_data, certificate, validate_data["secondary_person"]))
         # pprint( StringHelper.renderText(model))
         text, file_name, status = StringHelper.renderText(model)
-        
+
         validate_data["text"] = text
         validate_data["file_name"] = f"/media/certificates/{file_name}.pdf"
         pprint(validate_data["file_name"])
 
-        Certificate.objects.filter(pk=certificate.id).update(text=validate_data["text"])
+        Certificate.objects.filter(pk=certificate.id).update(
+            text=validate_data["text"])
 
-        
-        CertificateData.objects.create(certificate_id=certificate.id,house=validate_data["main_person"].address)
+        CertificateData.objects.create(
+            certificate_id=certificate.id, house=validate_data["main_person"].address)
         validate_data["country"] = country.id if country else None
 
-        return {"id":f"{certificate.id}", **validate_data}
-    
+        certificate = Certificate.objects.get(pk=certificate.id)
+
+        return {**validate_data, "id": certificate.id, "file": certificate.file}
+
+
 class CertificateModelSeventhSerializer(ModelSerializer):
     # instituition = serializers.IntegerField()
 
@@ -1252,30 +1910,30 @@ class CertificateModelSeventhSerializer(ModelSerializer):
             "id",
             "main_person",  # Get the address from person object, update it every time you create new cv
             "secondary_person",
-            "house", #house that this person used in this especific certificare
+            "house",  # house that this person used in this especific certificare
             # "instituition",
         ]
 
 
 class CertificateModelLicencaBuffetCreateSerializer(ModelSerializer):
-   
-    infra= serializers.CharField()
-    street= serializers.IntegerField()
-    metros= serializers.IntegerField(allow_null=True)
 
+    infra = serializers.CharField()
+    street = serializers.IntegerField()
+    metros = serializers.IntegerField(allow_null=True)
+    file = serializers.FileField(read_only=True)
 
     class Meta:
         model = Certificate
         fields = [
             "id",
-            "main_person",  
+            "main_person",
             "secondary_person",
             "infra",
             "street",
             "metros",
+            "file",
 
         ]
-
 
     # def validate_institution(self, institution):
     #     if not institution:
@@ -1283,23 +1941,77 @@ class CertificateModelLicencaBuffetCreateSerializer(ModelSerializer):
     #     elif not Instituition.objects.filter(id=institution).exists():
     #         raise serializers.ValidationError({'institution': "This instituition is not valid"})
     #     return institution
-    
+
+    @atomic()
+    def update(self, instance, validated_data):
+        # pprint(validated_data)
+
+        # set the number and type,
+        # set and save the text in text dev  mode
+
+        current_year = date.today().year
+        certificates = Certificate.objects.filter(
+            type_id=self.context['type_id'], date_issue__year=current_year)
+        # validated_data = dict()
+        validated_data["number"] = f"{certificates.count()+1}-{current_year}"
+        validated_data["type_id"] = type_id = int(self.context['type_id'])
+        text_helper = StringHelper()
+        # pprint(validate_data)
+        new_validate_data = validated_data.copy()
+
+        del new_validate_data["infra"]
+        del new_validate_data["street"]
+        del new_validate_data["metros"]
+
+        pprint(validated_data)
+        certificate = super().update(instance, new_validate_data)
+
+        validated_data["street"] = street = Street.objects.filter(
+            id=validated_data["street"]).first()
+        # user
+        validated_data["last_date"] = CertificateDate.objects.filter(
+            type_id=type_id).order_by('-date').first().date
+        validated_data["dates"] = CertificateDate.objects.filter(
+            type_id=type_id).order_by('-date')
+
+        model = LicencaBufett(DocumentData(
+            validated_data["main_person"], validated_data, certificate, validated_data["secondary_person"]))
+        # pprint( StringHelper.renderText(model))
+        text, file_name, status = StringHelper.renderText(model)
+
+        validated_data["text"] = text
+        validated_data["file_name"] = f"/media/certificates/{file_name}.pdf"
+        pprint(validated_data["file_name"])
+
+        # Certificate.objects.update(certificate,text=validated_data["text"])
+        Certificate.objects.filter(pk=instance.id).update(
+            text=validated_data["text"])
+
+        CertificateData.objects.filter(pk=instance.id).update(
+            house=validated_data["main_person"].address)
+
+        validated_data["street"] = street.id if street else None
+
+        certificate = Certificate.objects.get(pk=certificate.id)
+
+        return {**validated_data, "id": certificate.id, "file": certificate.file}
 
     @atomic()
     def create(self, validate_data):
 
         # pprint(validate_data)
-        
-        #set the number and type, 
-        #set and save the text in text dev  mode
-        
+
+        # set the number and type,
+        # set and save the text in text dev  mode
+
         current_year = date.today().year
         type_id = int(self.context['type_id'])
-        certificates = Certificate.objects.filter(type_id=type_id,date_issue__year=current_year)
+        certificates = Certificate.objects.filter(
+            type_id=type_id, date_issue__year=current_year)
         # validate_data = dict()
         validate_data["number"] = f"{certificates.count()+1}-{current_year}"
         validate_data["type_id"] = int(type_id)
-        
+
         text_helper = StringHelper()
         # pprint(validate_data)
         new_validate_data = validate_data.copy()
@@ -1308,30 +2020,37 @@ class CertificateModelLicencaBuffetCreateSerializer(ModelSerializer):
         del new_validate_data["street"]
         del new_validate_data["metros"]
 
-        certificate =  super().create(new_validate_data)
-        
-        validate_data["street"] = street = Street.objects.filter(id=validate_data["street"]).first()
-        #user
-        validate_data["last_date"] = CertificateDate.objects.filter(type_id=type_id).order_by('-date').first().date
-        validate_data["dates"] = CertificateDate.objects.filter(type_id=type_id).order_by('-date')
+        certificate = super().create(new_validate_data)
 
+        validate_data["street"] = street = Street.objects.filter(
+            id=validate_data["street"]).first()
+        # user
+        validate_data["last_date"] = CertificateDate.objects.filter(
+            type_id=type_id).order_by('-date').first().date
+        validate_data["dates"] = CertificateDate.objects.filter(
+            type_id=type_id).order_by('-date')
 
-        model = LicencaBufett(DocumentData(validate_data["main_person"],validate_data,certificate,validate_data["secondary_person"]))
+        model = LicencaBufett(DocumentData(
+            validate_data["main_person"], validate_data, certificate, validate_data["secondary_person"]))
         # pprint( StringHelper.renderText(model))
         text, file_name, status = StringHelper.renderText(model)
-        
+
         validate_data["text"] = text
         validate_data["file_name"] = f"/media/certificates/{file_name}.pdf"
         pprint(validate_data["file_name"])
 
-        Certificate.objects.filter(pk=certificate.id).update(text=validate_data["text"])
+        Certificate.objects.filter(pk=certificate.id).update(
+            text=validate_data["text"])
 
-        
-        CertificateData.objects.create(certificate_id=certificate.id,house=validate_data["main_person"].address)
+        CertificateData.objects.create(
+            certificate_id=certificate.id, house=validate_data["main_person"].address)
         validate_data["street"] = street.id if street else None
 
-        return {"id":f"{certificate.id}", **validate_data}
-    
+        certificate = Certificate.objects.get(pk=certificate.id)
+
+        return {**validate_data, "id": certificate.id, "file": certificate.file}
+
+
 class CertificateModelLicencaBuffetSerializer(ModelSerializer):
     # instituition = serializers.IntegerField()
 
@@ -1344,50 +2063,69 @@ class CertificateModelLicencaBuffetSerializer(ModelSerializer):
         ]
 
 
+class CertificateTypesSerializer(ModelSerializer):
+    # Residence certificate
+    # all certificate
+
+    class Meta:
+        model = CertificateTypes
+        fields = [
+            "id",
+            "name",
+            "gender",
+            "slug",
+        ]
+
 
 class CertificateTitleSerializer(ModelSerializer):
     # Residence certificate
-    #all certificate
+    # all certificate
+
+    certificate_type = CertificateTypesSerializer()
 
     class Meta:
         model = CertificateTitle
         fields = [
             "id",
-            "certificate_type",  # Get the address from person object, update it every time you create new cv
+            "certificate_type",
             "type_price",
             "name",
-            "goal" #house that this person used in this especific certificare
+            "goal"  # house that this person used in this especific certificare
         ]
+
 
 class CovalSetUpSerializer(ModelSerializer):
     # Residence certificate
-    #all certificate
+    # all certificate
     done = serializers.BooleanField(read_only=True)
+
     class Meta:
         model = Coval
         fields = [
             "id",
-            "done",  
+            "done",
+
         ]
 
     def create(self, validate_data):
-        covals = Coval.objects.order_by("square","date_used")
+        covals = Coval.objects.order_by("square", "date_used")
         count = 1
         square = covals[0].square
         for coval in covals:
             if coval.square != square:
                 square = coval.square
                 count = 1
-            
+
             coval.number = f"{count}-{coval.date_used.year} {coval.square}"
             coval.save()
             count = count + 1
             # Coval.objects.update({"id":coval.id, "number": number})
-        
-        return {"done":True}
+
+        return {"done": True}
+
 
 class CertificateSimplePersonSerializer(ModelSerializer):
-    
+
     # user = serializers.IntegerField(read_only=True)
     type = CertificateTitleSerializer(read_only=True)
 
@@ -1395,45 +2133,71 @@ class CertificateSimplePersonSerializer(ModelSerializer):
         model = CertificateSimplePerson
         fields = [
             "id",
-            "name",  
+            "name",
             "birth_date",
             "gender",
             # "user",
-            "type" 
+            "type"
         ]
 
     def create(self, validate_data):
-        
+
         # validate_data["user_id"] = self.context['user_id']
         validate_data["type_id"] = int(self.context['type_id'])
 
         return super().create(validate_data)
-    
-class CertificateSimplePersonSerializer(ModelSerializer):
-    
+
+
+class CertificateSimplePersonReadOnlySerializer(ModelSerializer):
+
     # user = serializers.IntegerField(read_only=True)
-    type = CertificateTitleSerializer(read_only=True)
+    type = serializers.CharField(read_only=True)
 
     class Meta:
         model = CertificateSimplePerson
         fields = [
             "id",
-            "name",  
+            "name",
             "birth_date",
             "gender",
             # "user",
-            "type" 
+            "type"
         ]
 
     def create(self, validate_data):
-        
+
         # validate_data["user_id"] = self.context['user_id']
         validate_data["type_id"] = int(self.context['type_id'])
 
         return super().create(validate_data)
-    
+
+
+# class CertificateSimplePersonSerializer(ModelSerializer):
+
+#     # user = serializers.IntegerField(read_only=True)
+#     type = CertificateTitleSerializer(read_only=True)
+
+#     class Meta:
+#         model = CertificateSimplePerson
+#         fields = [
+#             "id",
+#             "name",
+#             "birth_date",
+#             "gender",
+#             # "user",
+#             "type"
+#         ]
+
+#     def create(self, validate_data):
+
+#         # validate_data["user_id"] = self.context['user_id']
+#         validate_data["type_id"] = int(self.context['type_id'])
+
+#         return super().create(validate_data)
+
+
 class CertificateSimpleParentSerializer(ModelSerializer):
-    
+
     # user = serializers.IntegerField(read_only=True)
     type = CertificateTitleSerializer(read_only=True)
 
@@ -1441,7 +2205,7 @@ class CertificateSimpleParentSerializer(ModelSerializer):
         model = CertificateSimpleParent
         fields = [
             "id",
-            "name",  
+            "name",
             "birth_date",
             # "gender",
             "parent",
@@ -1450,14 +2214,25 @@ class CertificateSimpleParentSerializer(ModelSerializer):
         ]
 
     def create(self, validate_data):
-        
+
         # validate_data["user_id"] = self.context['user_id']
         validate_data["type_id"] = int(self.context['type_id'])
 
         return super().create(validate_data)
-    
+
+
+class ParentSerializer(ModelSerializer):
+
+    class Meta:
+        model = Parent
+        fields = [
+            "id",
+            "title",
+        ]
+
+
 class CertificateDateSerializer(ModelSerializer):
-    
+
     # user = serializers.IntegerField(read_only=True)
     type = CertificateTitleSerializer(read_only=True)
 
@@ -1467,18 +2242,19 @@ class CertificateDateSerializer(ModelSerializer):
             "id",
             "date",
             "type"
-            
+
         ]
 
     def create(self, validate_data):
-        
+
         # validate_data["user_id"] = self.context['user_id']
         validate_data["type_id"] = int(self.context['type_id'])
 
         return super().create(validate_data)
-    
+
+
 class CertificateSinglePersonSerializer(ModelSerializer):
-    
+
     # user = serializers.IntegerField(read_only=True)
     type = CertificateTitleSerializer(read_only=True)
 
@@ -1486,15 +2262,17 @@ class CertificateSinglePersonSerializer(ModelSerializer):
         model = CertificateSinglePerson
         fields = [
             "id",
-            "name",  
+            "name",
             "gender",
             # "user",
-            "type" 
+            "type"
         ]
 
     def create(self, validate_data):
 
-        CertificateSinglePerson.objects.filter(type_id=self.context['type_id']).delete() # removel all saved by current user and add next
+        # removel all saved by current user and add next
+        CertificateSinglePerson.objects.filter(
+            type_id=self.context['type_id']).delete()
         # CertificateSinglePerson.objects.filter(type_id=self.context['type_id'], user_id=self.context['user_id']).delete() # removel all saved by current user and add next
         # validate_data["user_id"] = self.context['user_id']
         validate_data["type_id"] = int(self.context['type_id'])
@@ -1502,27 +2280,26 @@ class CertificateSinglePersonSerializer(ModelSerializer):
         return super().create(validate_data)
 
 
-    
+class CertificateSerializer(ModelSerializer):
 
-class IDTypeSerializer(ModelSerializer):
-
-    class Meta:
-        model = IDType
-        fields = [
-            "id",
-            "name",            
-        ]
-
-class InstituitionSerializer(ModelSerializer):
+    type = CertificateTitleSerializer()
+    main_person = PersonSerializer()
+    secondary_person = PersonSerializer()
+    house = HouseSerializer()
 
     class Meta:
-        model = Instituition
+        model = Certificate
         fields = [
             "id",
-            "name",            
+            "type",
+            "number",
+            "main_person",
+            "secondary_person",
+            "date_issue",
+            "file",
+            "text",
+            "house"
         ]
-
-
 
 
 # class CartSerializer(ModelSerializer):
