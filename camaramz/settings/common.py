@@ -138,13 +138,13 @@ REST_FRAMEWORK = {
 
 # uid = "MQ"
 # token = "afnd93-8d1799decda7137bbf57c047ed33ee86"
-DOMAIN = "localhost:5000"
-SITE_NAME = "Frontend"
+DOMAIN = "localhost:3000"
+SITE_NAME = "Camâra Mé-Zóchi"
 DJOSER = {
     "SET_PASSWORD_RETYPE": True,
     "SET_USERNAME_RETYPE": True,
     # the reset link
-    "PASSWORD_RESET_CONFIRM_URL": "user/forget-password/{uid}/{token}",
+    "PASSWORD_RESET_CONFIRM_URL": "auth/reset-password/{uid}/{token}",
     "PASSWORD_RESET_CONFIRM_RETYPE": True,
     "PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND": True,
     "SERIALIZERS": {
@@ -183,7 +183,8 @@ CORS_ALLOW_METHODS = [
 CORS_ALLOW_ALL_ORIGINS = True
 # If this is used, then not need to use `CORS_ALLOW_ALL_ORIGINS = True`
 CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "http://127.0.0.1:3000"]
-CORS_ALLOWED_ORIGIN_REGEXES = ["http://localhost:3000", "http://127.0.0.1:3000"]
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    "http://localhost:3000", "http://127.0.0.1:3000"]
 
 
 LOGGING = {
@@ -232,4 +233,4 @@ AWS_STORAGE_BUCKET_NAME = 'bm-edmilbe-bucket'
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 # storages.backends.s3boto3.S3Boto3Storage
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com'% AWS_STORAGE_BUCKET_NAME
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME

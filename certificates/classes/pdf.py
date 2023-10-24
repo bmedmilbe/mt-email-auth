@@ -55,7 +55,7 @@ class PDF():
         self.certificate = gerado
         self.data = form
         self.bi = bi
-        self.presidente = "ANAHORY DIAS ABÍLIO DO ESPIRITO"
+        self.presidente = "ANAHORY DIAS ABÍLIO DO ESPÍRITO"
         self.distrito = "MÉ-ZÓCHI"
         self.date = StringHelper.ext_data(StringHelper, gerado.date_issue)
 
@@ -98,21 +98,15 @@ class PDF():
             self.conta_details = self.conta(type1, type2, gerado.number, value)
 
     def render_pdf(self):
-        dash = 250 * " -"
+        dash = 123 * " -"
 
         self.date = f"- - - Câmara Distrital de {self.bi.address.street.town.county.name}, na Cidade da {self.bi.address.street.town.name}, aos {self.date}."
 
         # size = Ifen.objects.filter(name='DATA').first().size
 
         self.date = f"{self.date}{dash[len(self.date):]}"
-
-        self.text = f"- - - -{self.text}"
-        size = Ifen.objects.filter(name='CORPO').first().size
-        string_val = ''
-        if len(self.text) < size:
-            string_val = " -" * (size-len(self.text))
-
-        self.text = f"{self.text}{string_val}"
+        dash = 853 * " -"
+        self.text = f"- - - {self.text}{dash[len(self.text):]}"
 
         # self.footer = StringHelper.data(StringHelper,gerado.date_issue)
         # Col
@@ -246,9 +240,11 @@ class PDF():
         return newString
 
     def textoFinal(self, type1: CertificateTypes, expire_date=None):
-
+        text_ifen = 109 * " -"
         text = f"""
-        ------Por ser verdade e ter sido requerido, mandou passar {type1.gender} presente {type1.name}, que assina, sendo a sua assinatura autenticada com o carimbo em uso nesta Câmara.---------------------------------------------"""
+        - - - Por ser verdade e ter sido requerido, mandou passar {type1.gender} presente {type1.name}, que assina, sendo a sua assinatura autenticada com o carimbo em uso nesta Câmara."""
+        text = text + text_ifen[len(text):]
+
         if type1.id in [3, 4, 7]:
             text = ""
         elif type1.id == 6:
@@ -256,7 +252,7 @@ class PDF():
             enddate = startdate + timedelta(days=365)  # five years ago
             validade = StringHelper.ext_data(StringHelper, enddate)
             text = f"""{text}
-            ------Válida até {validade}"""
+            - - - Válida até {validade}"""
         elif type1.id == 8:
             # pprint("Aqui")
             # pprint(StringHelper.ext_data(StringHelper,expire_date))

@@ -8,8 +8,11 @@ router = routers.DefaultRouter()
 router.register("countries", views.CountrysViewSet, basename="countries")
 router.register("universities", views.UniversitysViewSet,
                 basename="universities")
+router.register("customers", views.CustomerViewSet,
+                basename="customers")
 router.register("buildings", views.BiuldingTypeViewSet,
                 basename="buildings")
+
 router.register("cemiterios", views.CemiteriosViewSet,
                 basename="cemiterios")
 router.register("streets", views.StreetsViewSet, basename="streets")
@@ -21,8 +24,7 @@ router.register("titles", views.CertificateTitleViewSet, basename="title")
 router.register("certificates",
                 views.CertificateViewSet, basename="certificates")
 
-router.register("customers", views.CustomerViewSet,
-                basename="customers")
+
 router.register("persons", views.PersonViewSet, basename="persons")
 router.register("birthadddress", views.PersonBirthAddressViewSet,
                 basename="birthadddress")
@@ -36,8 +38,6 @@ router.register("intituitions", views.InstituitionsViewSet,
                 basename="intituitions")
 
 
-customers_router = routers.NestedSimpleRouter(
-    router, r"customers", lookup="customer")
 titles_router = routers.NestedSimpleRouter(router, r"titles", lookup="title")
 titles_router.register(
     r"model", views.CertificateModelViewSet, basename="title-models")
@@ -55,7 +55,7 @@ titles_router.register(
 
 urlpatterns = (
     router.urls
-    + customers_router.urls
+
     + titles_router.urls
     # + sub_collection_router.urls
     # + shop_router.urls

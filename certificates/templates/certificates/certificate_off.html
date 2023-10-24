@@ -97,6 +97,9 @@
         line-height: 1.2;
         overflow: hidden;
       }
+      .m-10 {
+        height: 5px;
+      }
     </style>
     {% comment %}
     <style>
@@ -342,7 +345,7 @@
     <p class="text-center">{{type1.name}} Nº {{certificate.number}}</p>
 
     <p class="text-center">
-      --{{presidente}}, PRESIDENTE DA CAMARÂ DISTRITAL DE {{distrito}}--
+      - {{presidente}}, PRESIDENTE DA CAMARÂ DISTRITAL DE {{distrito}} -
     </p>
 
     <p class="text-justify">
@@ -352,7 +355,7 @@
 
       <br />
       <br />
-      <span class="text-justify">{{final_text}}</span>
+      <span class="text-justify m-10">{{final_text}}</span>
     </p>
     <p class="text-justify">{{date}}</p>
     <p class="text-center">

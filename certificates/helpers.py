@@ -6,6 +6,7 @@ from pprint import pprint
 
 
 def get_customer(user: settings.AUTH_USER_MODEL):
+    # pprint(list(Customer.objects.all()))
     return Customer.objects.filter(user_id=user.id).first()
 
 
@@ -49,7 +50,3 @@ def shipping_status(status):
             return shipping_status[1]
 
     return "Unknown"
-
-
-
-

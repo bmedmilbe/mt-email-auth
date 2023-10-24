@@ -13,6 +13,8 @@ class Customer(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
 
+    level = models.IntegerField(default=1)
+
     def __str__(self) -> str:
         return f"{self.user.first_name} {self.user.last_name}"
 
@@ -134,8 +136,9 @@ class Street(models.Model):
     name = models.CharField(max_length=255)
     town = models.ForeignKey(Town, on_delete=models.CASCADE, null=True)
     slug = models.SlugField(max_length=255)
-
+    county = models.ForeignKey(County, on_delete=models.CASCADE, null=True)
     # piedade
+
     def __str__(self) -> str:
         return f"{self.name} - {self.town.name}"
 
@@ -190,10 +193,14 @@ class Instituition(models.Model):
 
 class Person(models.Model):
     name = models.CharField(max_length=255)
-    surname = models.CharField(max_length=255)
-    birth_date = models.DateField()
+    surname = models.CharField(max_length=255, default="", null=True)
+    birth_date = models.DateField(null=True)
+    birth_day = models.IntegerField(null=True)
+    birth_month = models.IntegerField(null=True)
+    birth_year = models.IntegerField(null=True)
+    bi_nasc_loc = models.IntegerField(null=True)
     birth_address = models.ForeignKey(
-        PersonBirthAddress, on_delete=models.CASCADE, related_name="persons")
+        PersonBirthAddress, on_delete=models.CASCADE, related_name="persons", null=True)
 
     id_type = models.ForeignKey(IDType, on_delete=models.PROTECT)
 
@@ -201,17 +208,21 @@ class Person(models.Model):
     id_issue_local = models.ForeignKey(
         Instituition, on_delete=models.PROTECT, related_name="id_issue_person")
     id_issue_country = models.ForeignKey(
-        Country, on_delete=models.PROTECT, related_name="id_issue_person")
-    id_issue_date = models.DateField()
-    id_expire_date = models.DateField()
+        Country, on_delete=models.PROTECT, related_name="id_issue_person", null=True)
+    id_issue_date = models.DateField(null=True)
+    id_issue_day = models.IntegerField(null=True, default=1)
+    id_issue_month = models.IntegerField(null=True, default=1)
+    id_issue_year = models.IntegerField(null=True, default=1)
+
+    id_expire_date = models.DateField(null=True)
     nationality = models.ForeignKey(
-        Country, on_delete=models.PROTECT, related_name="person_nationality")
+        Country, on_delete=models.PROTECT, related_name="person_nationality", null=True)
 
     father_name = models.CharField(max_length=255, null=True)
     mother_name = models.CharField(max_length=255, null=True)
 
     address = models.ForeignKey(
-        House, on_delete=models.PROTECT, related_name='person')
+        House, on_delete=models.PROTECT, related_name='person', null=True)
 
     MARRITIAL_STATUS_MARRIED = "M"
     MARRITIAL_STATUS_SINGLE = "S"
@@ -226,8 +237,11 @@ class Person(models.Model):
         (MARRITIAL_STATUS_DIVOCIED, "Divorcied"),
     ]
 
+    bi_estado = models.IntegerField(null=True)
+    bi_sexo = models.IntegerField(null=True)
+
     status = models.CharField(
-        max_length=1, choices=MARRITIAL_STATUS_CHOICES
+        max_length=1, choices=MARRITIAL_STATUS_CHOICES, null=True
     )
 
     GENDER_MALE = "M"
@@ -237,11 +251,11 @@ class Person(models.Model):
         (GENDER_FEMALE, "Female"),
     ]
     gender = models.CharField(
-        max_length=1, choices=GENDER_CHOICES
+        max_length=1, choices=GENDER_CHOICES, null=True
     )
 
     def __str__(self) -> str:
-        return f"{self.name} {self.surname} with {self.id_type.name} {self.id_number} from {self.nationality.name}"
+        return f"{self.name} {self.surname} with {self.id_type.name} {self.id_number} from {self.nationality.name if self.nationality != None else '' }"
 
 
 class CertificateTypes(models.Model):
@@ -253,7 +267,7 @@ class CertificateTypes(models.Model):
         (GENDER_FEMALE, "a"),
     ]
     gender = models.CharField(
-        max_length=1, choices=GENDER_CHOICES, default=GENDER_MALE
+        max_length=1, choices=GENDER_CHOICES, default=GENDER_MALE, null=True
     )
     slug = models.SlugField(max_length=255, null=True)
     # atestado
@@ -287,8 +301,9 @@ class CertificateTitle(models.Model):
 
     name = models.CharField(max_length=255)  # residencia
     certificate_type = models.ForeignKey(
-        CertificateTypes, on_delete=models.CASCADE)
-    type_price = models.DecimalField(max_digits=12, decimal_places=2)
+        CertificateTypes, on_delete=models.CASCADE, null=True)
+    type_price = models.DecimalField(
+        max_digits=12, decimal_places=2, null=True)
     goal = models.CharField(max_length=255, null=True)  # de/para fins de/
     # atestado de residencia
     slug = models.SlugField(max_length=255, null=True)
@@ -299,18 +314,39 @@ class CertificateTitle(models.Model):
 
 class Certificate(models.Model):
 
-    type = models.ForeignKey(CertificateTitle, on_delete=models.PROTECT)
-    number = models.CharField(max_length=255)
-    date_issue = models.DateTimeField(auto_now=True)
-    text = models.TextField(default="")
+    type = models.ForeignKey(
+        CertificateTitle, on_delete=models.PROTECT, null=True)
+    number = models.CharField(max_length=255, null=True)
+    date_issue = models.DateTimeField(auto_now=True, null=True)
+    text = models.TextField(default="", null=True)
     main_person = models.ForeignKey(
-        Person, on_delete=models.PROTECT, related_name="main_person_certificates")
+        Person, on_delete=models.PROTECT, related_name="main_person_certificates", null=True)
     secondary_person = models.ForeignKey(
         Person, on_delete=models.PROTECT, null=True, related_name="second_person_certificates")
     house = models.ForeignKey(
         House, on_delete=models.PROTECT, related_name="certificates", null=True)
     file = models.FileField(
         upload_to='camaramz/certificates', null=True, blank=True)
+
+    STATUS_COMPLETED = "C"
+    STATUS_FAILD = "F"
+    STATUS_PENDENT = "P"
+
+    STATUS_CHOICES = [
+        (STATUS_COMPLETED, "Completo"),
+        (STATUS_FAILD, "Incorrecto"),
+        (STATUS_PENDENT, "Pendente"),
+    ]
+
+    status = models.CharField(
+        max_length=1, choices=STATUS_CHOICES, default=STATUS_PENDENT, null=True
+    )
+
+    obs = models.TextField(null=True)
+
+    atestado_state = models.IntegerField(null=True)
+    type_id1 = models.IntegerField(null=True)
+
     # file = models.FileField(upload_to='camaramz/blog/posts')
 
     def __str__(self) -> str:
@@ -352,7 +388,7 @@ class CertificateSimpleParent(models.Model):
     ]
 
     birth_date = models.DateField()
-    parent = models.ForeignKey(Parent, on_delete=models.PROTECT)
+    parent = models.ForeignKey(Parent, on_delete=models.CASCADE)
 
     def __str__(self) -> str:
         return f"{self.name}"
@@ -389,7 +425,7 @@ class CertificateData(models.Model):
 
     # save the certificate details
 
-    certificate = models.ForeignKey(Certificate, on_delete=models.PROTECT)
+    certificate = models.ForeignKey(Certificate, on_delete=models.CASCADE)
     house = models.ForeignKey(House, on_delete=models.PROTECT)
 
     def __str__(self) -> str:

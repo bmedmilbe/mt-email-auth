@@ -11,7 +11,7 @@ from django.db.models.aggregates import Count
 from django.db.models import Q
 from django.shortcuts import render
 import certificates
-from certificates.serializers import BiuldingTypeSerializer, CemiterioSerializer, CertificateDateSerializer, CertificateModelAutoConstrucaoCreateSerializer, CertificateModelAutoConstrucaoSerializer, CertificateModelAutoModCovalCreateSerializer, CertificateModelAutoModCovalSerializer, CertificateModelCertCompraCovalCreateSerializer, CertificateModelCertCompraCovalSerializer, CertificateModelEnterroCreateSerializer, CertificateModelEnterroSerializer, CertificateModelFifthCreateSerializer, CertificateModelFifthSerializer, CertificateModelLicBarracaCreateSerializer, CertificateModelLicBarracaSerializer, CertificateModelLicencaBuffetCreateSerializer, CertificateModelLicencaBuffetSerializer, CertificateModelOneCreateSerializer, CertificateModelOneSerializer, CertificateModelSeventhCreateSerializer, CertificateModelSeventhSerializer, CertificateModelThreeCreateSerializer, CertificateModelThreeSerializer, CertificateModelTwoCreateSerializer, CertificateModelTwoSerializer, CertificateSerializer, CertificateSimpleParentSerializer, CertificateSimplePersonReadOnlySerializer, CertificateSimplePersonSerializer, CertificateSinglePersonSerializer, CertificateTitleSerializer, ChangeSerializer, CountrySerializer, CountySerializer, CovalSerializer, CovalSetUpSerializer, HouseCreateSerializer, HouseSerializer, IDTypeSerializer, InstituitionSerializer, ParentSerializer, PersonBirthAddressCreateSerializer, PersonBirthAddressSerializer, PersonCreateOrUpdateSerializer, PersonSerializer, StreetSerializer, TownSerializer, UniversitySerializer
+from certificates.serializers import BiuldingTypeSerializer, CemiterioSerializer, CertificateDateSerializer, CertificateModelAutoConstrucaoCreateSerializer, CertificateModelAutoConstrucaoSerializer, CertificateModelAutoModCovalCreateSerializer, CertificateModelAutoModCovalSerializer, CertificateModelCertCompraCovalCreateSerializer, CertificateModelCertCompraCovalSerializer, CertificateModelEnterroCreateSerializer, CertificateModelEnterroSerializer, CertificateModelFifthCreateSerializer, CertificateModelFifthSerializer, CertificateModelLicBarracaCreateSerializer, CertificateModelLicBarracaSerializer, CertificateModelLicencaBuffetCreateSerializer, CertificateModelLicencaBuffetSerializer, CertificateModelOneCreateSerializer, CertificateModelOneSerializer, CertificateModelSeventhCreateSerializer, CertificateModelSeventhSerializer, CertificateModelThreeCreateSerializer, CertificateModelThreeSerializer, CertificateModelTwoCreateSerializer, CertificateModelTwoSerializer, CertificateSerializer, CertificateSimpleParentSerializer, CertificateSimplePersonReadOnlySerializer, CertificateSimplePersonSerializer, CertificateSinglePersonSerializer, CertificateTitleSerializer, CertificateUpdateSerializer, ChangeSerializer, CountrySerializer, CountySerializer, CovalSerializer, CovalSetUpSerializer, CustomerSerializer, HouseCreateSerializer, HouseSerializer, IDTypeSerializer, InstituitionSerializer, ParentSerializer, PersonBirthAddressCreateSerializer, PersonBirthAddressSerializer, PersonCreateOrUpdateSerializer, PersonSerializer, StreetSerializer, TownSerializer, UniversitySerializer
 
 
 from rest_framework.views import APIView, Response
@@ -435,7 +435,6 @@ class InstituitionsViewSet(ModelViewSet):
 class CustomerViewSet(
     mixins.ListModelMixin,
     mixins.RetrieveModelMixin,
-    mixins.UpdateModelMixin,
     GenericViewSet,
 ):
     permission_classes = [IsAuthenticated]
@@ -443,39 +442,14 @@ class CustomerViewSet(
     def get_queryset(self):
         return Customer.objects.filter(user_id=self.request.user)
 
-    # serializer_class = CustomerSerializer
-
     def get_serializer_class(self):
-        if self.request.method == "PUT":
-            return CustomerUpdateSerializer
         return CustomerSerializer
 
-
-# class CustomerAddressViewSet(ModelViewSet):
-#     permission_classes = [IsAuthenticated]
-
-#     def get_queryset(self):
-#         return (
-#             CustomerAddress.objects.prefetch_related("customer")
-#             .filter(customer__id=get_customer(self.request.user).id)
-#             .all()
-#             .order_by("street")
-#         )
-
-#     def get_serializer_class(self):
-#         if self.request.method == "POST":
-#             return CustomerAddressCreateSerializer
-#         return CustomerAddressSerializer
-
-#     def get_serializer_context(self):
-#         return {"customer_id": get_customer(self.request.user).id}
-
-
-# class MessagesViewSet(ModelViewSet):
-#     serializer_class = MessagesSerializer
-
-#     def get_queryset(self):
-#         return Messages.objects.all()
+    @action(detail=False, methods=['GET'], permission_classes=[IsAuthenticated])
+    def me(self, request):
+        customer = get_customer(request.user)
+        serializer = CustomerSerializer(customer)
+        return Response(serializer.data)
 
 
 class CovalSetUpViewSet(ModelViewSet):
@@ -490,14 +464,19 @@ class CovalSetUpViewSet(ModelViewSet):
         return CovalSetUpSerializer
 
 
-class CertificateViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, GenericViewSet):
+class CertificateViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin, GenericViewSet):
 
     # permission_classes = [IsAuthenticated]
 
     queryset = Certificate.objects.order_by("-id").all()
 
     def get_serializer_class(self):
+        if self.request.method == "PUT" or self.request.method == "PATCH":
 
+            return CertificateUpdateSerializer
+        elif self.request.method == "DELETE":
+
+            return CertificateUpdateSerializer
         return CertificateSerializer
 
 

@@ -64,6 +64,29 @@ from django.db.models import Sum
 from django.db.transaction import atomic
 
 
+class CustomerSerializer(ModelSerializer):
+    first_name = serializers.SerializerMethodField(
+        method_name="get_first_name")
+    last_name = serializers.SerializerMethodField(method_name="get_last_name")
+
+    class Meta:
+        model = Customer
+        fields = [
+            "id",
+            "user",
+            "first_name",
+            "last_name",
+            "level",
+
+        ]
+
+    def get_first_name(self, customer: Customer):
+        return customer.user.first_name
+
+    def get_last_name(self, customer: Customer):
+        return customer.user.last_name
+
+
 class CountrySerializer(ModelSerializer):
     class Meta:
         model = Country
@@ -204,6 +227,13 @@ class PersonBirthAddressSerializer(ModelSerializer):
             "birth_county",
             "birth_country",
         ]
+
+
+def get_number(current_year, certificates: Certificate):
+    last = certificates.last()
+    if last:
+        return f"{int(last.number.split('-')[0]) + 1}-{current_year}"
+    return f"{1}-{current_year}"
 
 
 class PersonBirthAddressCreateSerializer(ModelSerializer):
@@ -390,7 +420,7 @@ class CertificateModelOneCreateSerializer(ModelSerializer):
         certificates = Certificate.objects.filter(
             type_id=self.context['type_id'], date_issue__year=current_year)
         # validated_data = dict()
-        validated_data["number"] = f"{certificates.count()+1}-{current_year}"
+        validated_data["number"] = get_number(current_year, certificates)
         validated_data["type_id"] = int(self.context['type_id'])
         text_helper = StringHelper()
         pprint(validated_data)
@@ -406,7 +436,7 @@ class CertificateModelOneCreateSerializer(ModelSerializer):
         pprint(validated_data["file_name"])
         # Certificate.objects.update(certificate,text=validated_data["text"])
         Certificate.objects.filter(pk=certificate.id).update(
-            text=validated_data["text"])
+            text=validated_data["text"], status="P")
 
         CertificateData.objects.filter(pk=certificate.id).update(
             house=validated_data["main_person"].address)
@@ -427,7 +457,7 @@ class CertificateModelOneCreateSerializer(ModelSerializer):
         certificates = Certificate.objects.filter(
             type_id=self.context['type_id'], date_issue__year=current_year)
         # validate_data = dict()
-        validate_data["number"] = f"{certificates.count()+1}-{current_year}"
+        validate_data["number"] = get_number(current_year, certificates)
         validate_data["type_id"] = int(self.context['type_id'])
         text_helper = StringHelper()
         # pprint(validate_data)
@@ -443,7 +473,7 @@ class CertificateModelOneCreateSerializer(ModelSerializer):
         pprint(validate_data["file_name"])
         # Certificate.objects.update(certificate,text=validate_data["text"])
         Certificate.objects.filter(pk=certificate.id).update(
-            text=validate_data["text"])
+            text=validate_data["text"], status="P")
 
         CertificateData.objects.create(
             certificate_id=certificate.id, house=validate_data["main_person"].address)
@@ -512,8 +542,9 @@ class CertificateModelTwoCreateSerializer(ModelSerializer):
         certificates = Certificate.objects.filter(
             type_id=self.context['type_id'], date_issue__year=current_year)
         # validated_data = dict()
-        validated_data["number"] = f"{certificates.count()+1}-{current_year}"
+        validated_data["number"] = get_number(current_year, certificates)
         validated_data["type_id"] = type_id = int(self.context['type_id'])
+        validated_data["status"] = "P"
         text_helper = StringHelper()
         # pprint(validate_data)
         new_validate_data = validated_data.copy()
@@ -540,7 +571,7 @@ class CertificateModelTwoCreateSerializer(ModelSerializer):
         pprint(validated_data["file_name"])
         # Certificate.objects.update(certificate,text=validated_data["text"])
         Certificate.objects.filter(pk=certificate.id).update(
-            text=validated_data["text"])
+            text=validated_data["text"], status="P")
 
         CertificateData.objects.filter(pk=certificate.id).update(
             house=validated_data["main_person"].address)
@@ -565,7 +596,7 @@ class CertificateModelTwoCreateSerializer(ModelSerializer):
         certificates = Certificate.objects.filter(
             type_id=self.context['type_id'], date_issue__year=current_year)
         # validate_data = dict()
-        validate_data["number"] = f"{certificates.count()+1}-{current_year}"
+        validate_data["number"] = get_number(current_year, certificates)
         type_id = validate_data["type_id"] = int(self.context['type_id'])
 
         text_helper = StringHelper()
@@ -595,7 +626,7 @@ class CertificateModelTwoCreateSerializer(ModelSerializer):
         # pprint(validate_data["file_name"])
 
         Certificate.objects.filter(pk=certificate.id).update(
-            text=validate_data["text"])
+            text=validate_data["text"], status="P")
 
         CertificateData.objects.create(
             certificate_id=certificate.id, house=validate_data["main_person"].address)
@@ -652,7 +683,7 @@ class CertificateModelThreeCreateSerializer(ModelSerializer):
         certificates = Certificate.objects.filter(
             type_id=self.context['type_id'], date_issue__year=current_year)
         # validated_data = dict()
-        validated_data["number"] = f"{certificates.count()+1}-{current_year}"
+        validated_data["number"] = get_number(current_year, certificates)
         validated_data["type_id"] = int(self.context['type_id'])
         text_helper = StringHelper()
         # pprint(validate_data)
@@ -672,7 +703,7 @@ class CertificateModelThreeCreateSerializer(ModelSerializer):
         pprint(validated_data["file_name"])
         # Certificate.objects.update(certificate,text=validated_data["text"])
         Certificate.objects.filter(pk=certificate.id).update(
-            text=validated_data["text"])
+            text=validated_data["text"], status="P")
 
         CertificateData.objects.filter(pk=certificate.id).update(
             house=validated_data["main_person"].address)
@@ -694,7 +725,7 @@ class CertificateModelThreeCreateSerializer(ModelSerializer):
         certificates = Certificate.objects.filter(
             type_id=self.context['type_id'], date_issue__year=current_year)
         # validate_data = dict()
-        validate_data["number"] = f"{certificates.count()+1}-{current_year}"
+        validate_data["number"] = get_number(current_year, certificates)
         validate_data["type_id"] = int(self.context['type_id'])
 
         text_helper = StringHelper()
@@ -717,7 +748,7 @@ class CertificateModelThreeCreateSerializer(ModelSerializer):
         # pprint(validate_data["file_name"])
 
         Certificate.objects.filter(pk=certificate.id).update(
-            text=validate_data["text"])
+            text=validate_data["text"], status="P")
 
         CertificateData.objects.create(
             certificate_id=certificate.id, house=validate_data["main_person"].address)
@@ -763,7 +794,7 @@ class CertificateModelThreeSerializer(ModelSerializer):
 #         current_year = date.today().year
 #         certificates = Certificate.objects.filter(type_id=self.context['type_id'],date_issue__year=current_year)
 #         # validate_data = dict()
-#         validate_data["number"] = f"{certificates.count()+1}-{current_year}"
+#         validate_data["number"] = get_number(current_year, certificates)
 #         validate_data["type_id"] = int(self.context['type_id'])
 
 #         text_helper = StringHelper()
@@ -848,8 +879,9 @@ class CertificateModelFifthCreateSerializer(ModelSerializer):
         certificates = Certificate.objects.filter(
             type_id=self.context['type_id'], date_issue__year=current_year)
         # validated_data = dict()
-        validated_data["number"] = f"{certificates.count()+1}-{current_year}"
+        validated_data["number"] = get_number(current_year, certificates)
         validated_data["type_id"] = type_id = int(self.context['type_id'])
+        validated_data["status"] = "P"
         text_helper = StringHelper()
         # pprint(validate_data)
         new_validate_data = validated_data.copy()
@@ -872,7 +904,7 @@ class CertificateModelFifthCreateSerializer(ModelSerializer):
         pprint(validated_data["file_name"])
         # Certificate.objects.update(certificate,text=validated_data["text"])
         Certificate.objects.filter(pk=certificate.id).update(
-            text=validated_data["text"])
+            text=validated_data["text"], status="P")
 
         CertificateData.objects.filter(pk=certificate.id).update(
             house=validated_data["main_person"].address)
@@ -895,7 +927,7 @@ class CertificateModelFifthCreateSerializer(ModelSerializer):
         certificates = Certificate.objects.filter(
             type_id=self.context['type_id'], date_issue__year=current_year)
         # validate_data = dict()
-        validate_data["number"] = f"{certificates.count()+1}-{current_year}"
+        validate_data["number"] = get_number(current_year, certificates)
         validate_data["type_id"] = int(self.context['type_id'])
 
         text_helper = StringHelper()
@@ -920,7 +952,7 @@ class CertificateModelFifthCreateSerializer(ModelSerializer):
         pprint(validate_data["file_name"])
 
         Certificate.objects.filter(pk=certificate.id).update(
-            text=validate_data["text"])
+            text=validate_data["text"], status="P")
 
         CertificateData.objects.create(
             certificate_id=certificate.id, house=validate_data["main_person"].address)
@@ -1015,8 +1047,9 @@ class CertificateModelEnterroCreateSerializer(ModelSerializer):
         certificates = Certificate.objects.filter(
             type_id=self.context['type_id'], date_issue__year=current_year)
         # validated_data = dict()
-        validated_data["number"] = f"{certificates.count()+1}-{current_year}"
+        validated_data["number"] = get_number(current_year, certificates)
         validated_data["type_id"] = type_id = int(self.context['type_id'])
+        validated_data["status"] = "P"
         text_helper = StringHelper()
         # pprint(validate_data)
         new_validate_data = validated_data.copy()
@@ -1069,7 +1102,7 @@ class CertificateModelEnterroCreateSerializer(ModelSerializer):
         pprint(validated_data["file_name"])
 
         Certificate.objects.filter(pk=instance.id).update(
-            text=validated_data["text"])
+            text=validated_data["text"], status="P")
 
         CertificateData.objects.filter(pk=instance.id).update(
             house=validated_data["main_person"].address)
@@ -1094,7 +1127,7 @@ class CertificateModelEnterroCreateSerializer(ModelSerializer):
         certificates = Certificate.objects.filter(
             type_id=self.context['type_id'], date_issue__year=current_year)
         # validate_data = dict()
-        validate_data["number"] = f"{certificates.count()+1}-{current_year}"
+        validate_data["number"] = get_number(current_year, certificates)
         validate_data["type_id"] = type_id = int(self.context['type_id'])
 
         text_helper = StringHelper()
@@ -1150,7 +1183,7 @@ class CertificateModelEnterroCreateSerializer(ModelSerializer):
         pprint(validate_data["file_name"])
 
         Certificate.objects.filter(pk=certificate.id).update(
-            text=validate_data["text"])
+            text=validate_data["text"], status="P")
 
         CertificateData.objects.create(
             certificate_id=certificate.id, house=validate_data["main_person"].address)
@@ -1215,8 +1248,9 @@ class CertificateModelCertCompraCovalCreateSerializer(ModelSerializer):
         certificates = Certificate.objects.filter(
             type_id=self.context['type_id'], date_issue__year=current_year)
         # validated_data = dict()
-        validated_data["number"] = f"{certificates.count()+1}-{current_year}"
+        validated_data["number"] = get_number(current_year, certificates)
         validated_data["type_id"] = type_id = int(self.context['type_id'])
+        validated_data["status"] = "P"
         text_helper = StringHelper()
         # pprint(validate_data)
         new_validate_data = validated_data.copy()
@@ -1250,7 +1284,7 @@ class CertificateModelCertCompraCovalCreateSerializer(ModelSerializer):
         pprint(validated_data["file_name"])
 
         Certificate.objects.filter(pk=certificate.id).update(
-            text=validated_data["text"])
+            text=validated_data["text"], status="P")
 
         CertificateData.objects.filter(pk=certificate.id).update(
             house=validated_data["main_person"].address)
@@ -1273,7 +1307,7 @@ class CertificateModelCertCompraCovalCreateSerializer(ModelSerializer):
         certificates = Certificate.objects.filter(
             type_id=self.context['type_id'], date_issue__year=current_year)
         # validate_data = dict()
-        validate_data["number"] = f"{certificates.count()+1}-{current_year}"
+        validate_data["number"] = get_number(current_year, certificates)
         validate_data["type_id"] = type_id = int(self.context['type_id'])
 
         text_helper = StringHelper()
@@ -1310,7 +1344,7 @@ class CertificateModelCertCompraCovalCreateSerializer(ModelSerializer):
         pprint(validate_data["file_name"])
 
         Certificate.objects.filter(pk=certificate.id).update(
-            text=validate_data["text"])
+            text=validate_data["text"], status="P")
 
         CertificateData.objects.create(
             certificate_id=certificate.id, house=validate_data["main_person"].address)
@@ -1378,8 +1412,9 @@ class CertificateModelAutoModCovalCreateSerializer(ModelSerializer):
         certificates = Certificate.objects.filter(
             type_id=self.context['type_id'], date_issue__year=current_year)
         # validated_data = dict()
-        validated_data["number"] = f"{certificates.count()+1}-{current_year}"
+        validated_data["number"] = get_number(current_year, certificates)
         validated_data["type_id"] = type_id = int(self.context['type_id'])
+        validated_data["status"] = "P"
         text_helper = StringHelper()
         # pprint(validate_data)
         new_validate_data = validated_data.copy()
@@ -1406,7 +1441,7 @@ class CertificateModelAutoModCovalCreateSerializer(ModelSerializer):
 
         # Certificate.objects.update(certificate,text=validated_data["text"])
         Certificate.objects.filter(pk=certificate.id).update(
-            text=validated_data["text"])
+            text=validated_data["text"], status="P")
 
         CertificateData.objects.filter(pk=certificate.id).update(
             house=validated_data["main_person"].address)
@@ -1430,7 +1465,7 @@ class CertificateModelAutoModCovalCreateSerializer(ModelSerializer):
         certificates = Certificate.objects.filter(
             type_id=self.context['type_id'], date_issue__year=current_year)
         # validate_data = dict()
-        validate_data["number"] = f"{certificates.count()+1}-{current_year}"
+        validate_data["number"] = get_number(current_year, certificates)
         validate_data["type_id"] = type_id = int(self.context['type_id'])
 
         text_helper = StringHelper()
@@ -1459,7 +1494,7 @@ class CertificateModelAutoModCovalCreateSerializer(ModelSerializer):
         pprint(validate_data["file_name"])
 
         Certificate.objects.filter(pk=certificate.id).update(
-            text=validate_data["text"])
+            text=validate_data["text"], status="P")
 
         CertificateData.objects.create(
             certificate_id=certificate.id, house=validate_data["main_person"].address)
@@ -1525,8 +1560,9 @@ class CertificateModelLicBarracaCreateSerializer(ModelSerializer):
         certificates = Certificate.objects.filter(
             type_id=self.context['type_id'], date_issue__year=current_year)
         # validated_data = dict()
-        validated_data["number"] = f"{certificates.count()+1}-{current_year}"
+        validated_data["number"] = get_number(current_year, certificates)
         validated_data["type_id"] = type_id = int(self.context['type_id'])
+        validated_data["status"] = "P"
         text_helper = StringHelper()
         # pprint(validate_data)
         new_validate_data = validated_data.copy()
@@ -1551,7 +1587,7 @@ class CertificateModelLicBarracaCreateSerializer(ModelSerializer):
 
         # Certificate.objects.update(certificate,text=validated_data["text"])
         Certificate.objects.filter(pk=certificate.id).update(
-            text=validated_data["text"])
+            text=validated_data["text"], status="P")
 
         CertificateData.objects.filter(pk=certificate.id).update(
             house=validated_data["main_person"].address)
@@ -1574,7 +1610,7 @@ class CertificateModelLicBarracaCreateSerializer(ModelSerializer):
         certificates = Certificate.objects.filter(
             type_id=self.context['type_id'], date_issue__year=current_year)
         # validate_data = dict()
-        validate_data["number"] = f"{certificates.count()+1}-{current_year}"
+        validate_data["number"] = get_number(current_year, certificates)
         validate_data["type_id"] = type_id = int(self.context['type_id'])
 
         text_helper = StringHelper()
@@ -1602,7 +1638,7 @@ class CertificateModelLicBarracaCreateSerializer(ModelSerializer):
         pprint(validate_data["file_name"])
 
         Certificate.objects.filter(pk=certificate.id).update(
-            text=validate_data["text"])
+            text=validate_data["text"], status="P")
 
         CertificateData.objects.create(
             certificate_id=certificate.id, house=validate_data["main_person"].address)
@@ -1673,8 +1709,9 @@ class CertificateModelAutoConstrucaoCreateSerializer(ModelSerializer):
         certificates = Certificate.objects.filter(
             type_id=self.context['type_id'], date_issue__year=current_year)
         # validated_data = dict()
-        validated_data["number"] = f"{certificates.count()+1}-{current_year}"
+        validated_data["number"] = get_number(current_year, certificates)
         validated_data["type_id"] = type_id = int(self.context['type_id'])
+        validated_data["status"] = "P"
         text_helper = StringHelper()
         # pprint(validate_data)
         new_validate_data = validated_data.copy()
@@ -1701,7 +1738,7 @@ class CertificateModelAutoConstrucaoCreateSerializer(ModelSerializer):
 
         # Certificate.objects.update(certificate,text=validated_data["text"])
         Certificate.objects.filter(pk=instance.id).update(
-            text=validated_data["text"])
+            text=validated_data["text"], status="P")
 
         CertificateData.objects.filter(pk=instance.id).update(
             house=validated_data["main_person"].address)
@@ -1725,7 +1762,7 @@ class CertificateModelAutoConstrucaoCreateSerializer(ModelSerializer):
         certificates = Certificate.objects.filter(
             type_id=self.context['type_id'], date_issue__year=current_year)
         # validate_data = dict()
-        validate_data["number"] = f"{certificates.count()+1}-{current_year}"
+        validate_data["number"] = get_number(current_year, certificates)
         validate_data["type_id"] = type_id = int(self.context['type_id'])
 
         text_helper = StringHelper()
@@ -1752,7 +1789,7 @@ class CertificateModelAutoConstrucaoCreateSerializer(ModelSerializer):
         pprint(validate_data["file_name"])
 
         Certificate.objects.filter(pk=certificate.id).update(
-            text=validate_data["text"])
+            text=validate_data["text"], status="P")
 
         CertificateData.objects.create(
             certificate_id=certificate.id, house=validate_data["main_person"].address)
@@ -1813,8 +1850,9 @@ class CertificateModelSeventhCreateSerializer(ModelSerializer):
         certificates = Certificate.objects.filter(
             type_id=self.context['type_id'], date_issue__year=current_year)
         # validated_data = dict()
-        validated_data["number"] = f"{certificates.count()+1}-{current_year}"
+        validated_data["number"] = get_number(current_year, certificates)
         validated_data["type_id"] = type_id = int(self.context['type_id'])
+        validated_data["status"] = "P"
         text_helper = StringHelper()
         # pprint(validate_data)
         new_validate_data = validated_data.copy()
@@ -1840,7 +1878,7 @@ class CertificateModelSeventhCreateSerializer(ModelSerializer):
 
         # Certificate.objects.update(certificate,text=validated_data["text"])
         Certificate.objects.filter(pk=instance.id).update(
-            text=validated_data["text"])
+            text=validated_data["text"], status="P")
 
         CertificateData.objects.filter(pk=instance.id).update(
             house=validated_data["main_person"].address)
@@ -1863,7 +1901,7 @@ class CertificateModelSeventhCreateSerializer(ModelSerializer):
         certificates = Certificate.objects.filter(
             type_id=self.context['type_id'], date_issue__year=current_year)
         # validate_data = dict()
-        validate_data["number"] = f"{certificates.count()+1}-{current_year}"
+        validate_data["number"] = get_number(current_year, certificates)
         validate_data["type_id"] = int(self.context['type_id'])
 
         text_helper = StringHelper()
@@ -1890,7 +1928,7 @@ class CertificateModelSeventhCreateSerializer(ModelSerializer):
         pprint(validate_data["file_name"])
 
         Certificate.objects.filter(pk=certificate.id).update(
-            text=validate_data["text"])
+            text=validate_data["text"], status="P")
 
         CertificateData.objects.create(
             certificate_id=certificate.id, house=validate_data["main_person"].address)
@@ -1953,8 +1991,9 @@ class CertificateModelLicencaBuffetCreateSerializer(ModelSerializer):
         certificates = Certificate.objects.filter(
             type_id=self.context['type_id'], date_issue__year=current_year)
         # validated_data = dict()
-        validated_data["number"] = f"{certificates.count()+1}-{current_year}"
+        validated_data["number"] = get_number(current_year, certificates)
         validated_data["type_id"] = type_id = int(self.context['type_id'])
+        validated_data["status"] = "P"
         text_helper = StringHelper()
         # pprint(validate_data)
         new_validate_data = validated_data.copy()
@@ -1985,7 +2024,7 @@ class CertificateModelLicencaBuffetCreateSerializer(ModelSerializer):
 
         # Certificate.objects.update(certificate,text=validated_data["text"])
         Certificate.objects.filter(pk=instance.id).update(
-            text=validated_data["text"])
+            text=validated_data["text"], status="P")
 
         CertificateData.objects.filter(pk=instance.id).update(
             house=validated_data["main_person"].address)
@@ -2009,7 +2048,7 @@ class CertificateModelLicencaBuffetCreateSerializer(ModelSerializer):
         certificates = Certificate.objects.filter(
             type_id=type_id, date_issue__year=current_year)
         # validate_data = dict()
-        validate_data["number"] = f"{certificates.count()+1}-{current_year}"
+        validate_data["number"] = get_number(current_year, certificates)
         validate_data["type_id"] = int(type_id)
 
         text_helper = StringHelper()
@@ -2040,7 +2079,7 @@ class CertificateModelLicencaBuffetCreateSerializer(ModelSerializer):
         pprint(validate_data["file_name"])
 
         Certificate.objects.filter(pk=certificate.id).update(
-            text=validate_data["text"])
+            text=validate_data["text"], status="P")
 
         CertificateData.objects.create(
             certificate_id=certificate.id, house=validate_data["main_person"].address)
@@ -2286,6 +2325,8 @@ class CertificateSerializer(ModelSerializer):
     main_person = PersonSerializer()
     secondary_person = PersonSerializer()
     house = HouseSerializer()
+    # SerializerMethodField(method_name="
+    status = serializers.SerializerMethodField(method_name="get_status")
 
     class Meta:
         model = Certificate
@@ -2298,7 +2339,21 @@ class CertificateSerializer(ModelSerializer):
             "date_issue",
             "file",
             "text",
-            "house"
+            "house",
+            "status"
+        ]
+
+    def get_status(self, certificate: Certificate):
+        return "Pendente" if certificate.status == "P" else ("Errado" if certificate.status == "F" else "Certo")
+
+
+class CertificateUpdateSerializer(ModelSerializer):
+
+    class Meta:
+        model = Certificate
+        fields = [
+            "id",
+            "status"
         ]
 
 
