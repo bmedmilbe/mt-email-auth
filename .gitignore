@@ -3,5 +3,6 @@
 /media/
 dev.py
 general.log
+*:Zone.Identifier
 
 
