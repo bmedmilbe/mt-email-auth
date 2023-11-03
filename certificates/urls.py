@@ -23,6 +23,8 @@ router.register("countys", views.CountysViewSet, basename="countys")
 router.register("titles", views.CertificateTitleViewSet, basename="title")
 router.register("certificates",
                 views.CertificateViewSet, basename="certificates")
+router.register("certificatescomment",
+                views.CertificateCommentViewSet, basename="certificatescomment")
 
 
 router.register("persons", views.PersonViewSet, basename="persons")

@@ -167,13 +167,13 @@ class StreetSerializer(ModelSerializer):
         ]
 
     def get_town(self, street):
-        return f"{street.town.name}"
+        return f"{street.town.name if street.town != None else '' }"
 
     def get_county(self, street):
-        return f"{street.town.county.name}"
+        return f"{street.town.county.name if street.town != None else ''}"
 
     def get_country(self, street):
-        return f"{street.town.county.country.name}"
+        return f"{street.town.county.country.name if street.town != None else ''}"
 
 
 class HouseSerializer(ModelSerializer):
@@ -2325,8 +2325,10 @@ class CertificateSerializer(ModelSerializer):
     main_person = PersonSerializer()
     secondary_person = PersonSerializer()
     house = HouseSerializer()
+
     # SerializerMethodField(method_name="
-    status = serializers.SerializerMethodField(method_name="get_status")
+    status_detail = serializers.SerializerMethodField(
+        method_name="get_status_detail")
 
     class Meta:
         model = Certificate
@@ -2340,11 +2342,34 @@ class CertificateSerializer(ModelSerializer):
             "file",
             "text",
             "house",
-            "status"
+            "status",
+            "status_detail",
+            "obs",
+            # "atestado_state",
         ]
 
-    def get_status(self, certificate: Certificate):
-        return "Pendente" if certificate.status == "P" else ("Errado" if certificate.status == "F" else "Certo")
+    def get_status_detail(self, certificate: Certificate):
+        if certificate.status == "R":
+            return "Revisto"
+        elif certificate.status == "C":
+            return "Concluído"
+        elif certificate.status == "F":
+            return "Incorrecto"
+        elif certificate.status == "A":
+            return "Arquivado"
+
+        return "Pendente"
+
+
+class CertificateCommentSerializer(ModelSerializer):
+
+    class Meta:
+        model = Certificate
+        fields = [
+            "id",
+            "obs",
+
+        ]
 
 
 class CertificateUpdateSerializer(ModelSerializer):

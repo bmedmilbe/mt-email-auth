@@ -391,16 +391,17 @@ class StringHelper():
 
     def toBold(full_name):
 
-        names = full_name.split(" ")
-        string = ''
-        count = 0
-        for name in names:
-            count = count + 1
-            space = " " if count < len(names) else ""
-            string = f"{string}@{name}#{space}"
+        if type(full_name) == "string":
+            names = full_name.split(" ")
+            string = ''
+            count = 0
+            for name in names:
+                count = count + 1
+                space = " " if count < len(names) else ""
+                string = f"{string}@{name}#{space}"
 
-        return f'{string}'
-        return f'<span class="name">{full_name}</span>'
+            return f'{string}'
+        return ""
 
     # def NumeroEmExtenso(numero):
     #     #uncomment and implremnt

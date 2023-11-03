@@ -5,13 +5,18 @@ from django.http.request import HttpRequest
 from . import models
 from datetime import date
 from pprint import pprint
+from django.conf import settings
+import os
+from django.utils.text import slugify
 # Register your models here.
-
+from django.core.files import File
 
 # @admin.register(models.Colaborator)
 # class ColaboratorAdmin(admin.ModelAdmin):
 #     list_display = ["customer"]
 #     search_fields = ["customer__user__first_name__istartswith"]
+
+
 @admin.register(models.Customer)
 class CustomerAdmin(admin.ModelAdmin):
     list_display = ["user"]
@@ -202,6 +207,14 @@ class CertificateTypesAdmin(admin.ModelAdmin):
         "gender"
     ]
 
+    # def get_queryset(self, request: HttpRequest) -> QuerySet[Any]:
+    #     types = models.CertificateTypes.objects.all()
+
+    #     for certificate in types:
+    #         certificate.slug = slugify(certificate.name)
+    #         print(certificate.slug)
+    #         certificate.save()
+
 
 @admin.register(models.Instituition)
 class InstitutionAdmin(admin.ModelAdmin):
@@ -241,38 +254,62 @@ class CertificateTitleAdmin(admin.ModelAdmin):
 
     list_editable = ["certificate_type", "type_price", "goal"]
 
-    list_per_page = 10
+    list_per_page = 100
     ordering = ["id", "certificate_type", "name"]
 
     prepopulated_fields = {"slug": ("name",)}  # new
+
+    # def get_queryset(self, request: HttpRequest) -> QuerySet[Any]:
+    #     title = models.CertificateTitle.objects.all()
+
+    #     # for certificate in title:
+    #     #     # certificate.slug = slugify(certificate.name)
+    #     #     certificate.save()
 
 
 @admin.register(models.Certificate)
 class CertificateAdmin(admin.ModelAdmin):
     def get_queryset(self, request: HttpRequest) -> QuerySet[Any]:
-        certificates = models.Certificate.objects.all()
+        certificates = models.Certificate.objects.order_by("id")
 
         for certificate in certificates:
 
-            if certificate.atestado_state == 1:
-                certificate.status = "P"
-            elif certificate.atestado_state == 2:
-                certificate.status = "P"
-            elif certificate.atestado_state == 4:
-                certificate.status = "F"
-            elif certificate.atestado_state == 3:
-                certificate.status = "C"
+            #     if certificate.atestado_state == 1:
+            #         certificate.status = "P"
+            #     elif certificate.atestado_state == 2:
+            #         certificate.status = "R"
+            #     elif certificate.atestado_state == 4:
+            #         certificate.status = "F"
+            #     elif certificate.atestado_state == 3:
+            #         certificate.status = "C"
+            #     elif certificate.atestado_state == 5:
+            #         certificate.status = "A"
 
-            certificate.save()
+            # certificate.save()
+            pass
+
+        # # # pprint(certificate)
+        # file_path = certificate.number
+            file_path = f"/certificates/{certificate.type.certificate_type.id}/{certificate.type.id}/{certificate.number}.pdf"
+            folder_online = f"{certificate.type.id}-{certificate.type.certificate_type.slug}-de-{certificate.type.slug}/{certificate.number}.pdf"
+
+            if os.path.exists(str(settings.MEDIA_ROOT) + f"{file_path}"):
+                with open(str(settings.MEDIA_ROOT) + f"{file_path}", 'rb') as existing_file:
+                    pprint(certificate.id)
+                    # pprint(certificate.type.certificate_type.slug)
+                    certificate.file.save(f'{folder_online}', existing_file)
+            else:
+                pprint(str(settings.MEDIA_ROOT) + f"{file_path}")
+
         return super().get_queryset(request)
 
     list_display = [
         "type", "number", "text", "main_person", "secondary_person", "date_issue"
     ]
 
-    list_per_page = 10
+    list_per_page = 800
     ordering = ["-number"]
-    list_filter = ["type"]
+    list_filter = ["type", "status"]
 
 
 @admin.register(models.CertificateData)
@@ -283,148 +320,3 @@ class CertificateDataAdmin(admin.ModelAdmin):
 
     list_per_page = 10
     ordering = ["-certificate__number"]
-    # list_filter =["type"]
-
-
-# @admin.register(models.Airport)
-# class AirportAdmin(admin.ModelAdmin):
-#     list_display = ["name", "initial", "country"]
-#     prepopulated_fields = {"slug": ("name",)}  # new
-
-#     list_per_page = 10
-#     ordering = ["name"]
-
-
-# @admin.register(models.FligthsCompany)
-# class FligthsCompanyAdmin(admin.ModelAdmin):
-#     list_display = ["name"]
-#     prepopulated_fields = {"slug": ("name",)}  # new
-
-#     list_per_page = 10
-#     ordering = ["name"]
-
-
-# @admin.register(models.Customer)
-# class CustomerAdmin(admin.ModelAdmin):
-#     list_display = [
-#         "name",
-#     ]
-
-#     search_fields = ["user__first_name__istartswith", "user__last_name__istartswith"]
-#     list_per_page = 10
-#     ordering = ["user__first_name"]
-
-#     def name(self, customer: models.Customer):
-#         return f"{customer.user.first_name} {customer.user.last_name}"
-
-
-# @admin.register(models.Parcel)
-# class ParcelAdmin(admin.ModelAdmin):
-#     list_display = [
-#         "customer",
-#         "weigth",
-#         "status",
-#         "price",
-#         "colaborator_get",
-#         "colaborator_deliver",
-#         "date_collection",
-#         "address_from",
-#     ]
-#     # search_fields = ['post_code__istartswith', "name__istartswith",
-#     #                  "customer__first_name__istartswith", "customer__last_name__istartswith"]
-
-#     list_editable = [
-#         "colaborator_get",
-#         "colaborator_deliver",
-#         "status",
-#         "date_collection",
-#     ]
-#     autocomplete_fields = [
-#         "customer",
-#         "colaborator_get",
-#         "colaborator_deliver",
-#     ]
-#     search_fields = [
-#         "customer__user.first__name__istartswith",
-#         "address_from__post_code__istartswith",
-#         "created_at__istartswith",
-#     ]
-
-#     list_per_page = 30
-#     ordering = ["-created_at", "customer"]
-#     list_filter = [
-#         "customer",
-#         "colaborator_get",
-#         "colaborator_deliver",
-#         "date_collection",
-#     ]
-
-#     # def get_queryset(self, request: HttpRequest):
-#     #     return super().get_queryset(request)
-
-
-# @admin.register(models.Fligth)
-# class FligthAdmin(admin.ModelAdmin):
-#     list_display = [
-#         "customer",
-#         "weigth",
-#         "status",
-#         "price",
-#         "payment_status",
-#         "departure_at",
-#         "arrive_at",
-#         "arrive_to",
-#         "price",
-#         "number",
-#         "company",
-#     ]
-#     search_fields = [
-#         "customer__user.first__name__istartswith",
-#         "departure_from.name__istartswith",
-#         "arrive_to__name__istartswith",
-#         "company__name__istartswith",
-#     ]
-
-#     list_editable = ["status"]
-#     autocomplete_fields = [
-#         "customer",
-#     ]
-
-#     list_per_page = 30
-#     ordering = ["-created_at", "customer"]
-#     list_filter = [
-#         "customer",
-#         "departure_from",
-#         "arrive_to",
-#         "company",
-#     ]
-
-#     search_fields = [
-#         "post_code__istartswith",
-#         "name__istartswith",
-#         "customer__first_name__istartswith",
-#         "customer__last_name__istartswith",
-#     ]
-
-#     # def get_queryset(self, request: HttpRequest):
-#     #     return super().get_queryset(request)
-
-
-# @admin.register(models.ShippimentFligth)
-# class ShippimentFligthAdmin(admin.ModelAdmin):
-#     list_display = [
-#         "parcel",
-#         "fligth",
-#         "colaborator_from",
-#         "colaborator_to",
-#     ]
-
-#     list_editable = ["colaborator_from", "colaborator_to"]
-
-#     list_per_page = 30
-#     ordering = ["-created_at"]
-#     list_filter = [
-#         "colaborator_from",
-#         "colaborator_to",
-#         "created_at",
-#     ]

@@ -29,7 +29,8 @@ django-storages = "*"
 boto3 = "*"
 urllib3 = "*"
 docx2txt = "*"
-
+django-filter = "*"
+python-slugify = "*"
 
 [dev-packages]
 

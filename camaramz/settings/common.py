@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     "rest_framework",
+    "django_filters",
     "corsheaders",
     "djoser",
     "certificates",
@@ -133,7 +134,11 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
+
     "COERCE_DECIMAL_TO_STRING": False,
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 25,
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
 
 # uid = "MQ"
@@ -144,6 +149,7 @@ DJOSER = {
     "SET_PASSWORD_RETYPE": True,
     "SET_USERNAME_RETYPE": True,
     # the reset link
+
     "PASSWORD_RESET_CONFIRM_URL": "auth/reset-password/{uid}/{token}",
     "PASSWORD_RESET_CONFIRM_RETYPE": True,
     "PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND": True,

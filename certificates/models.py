@@ -140,6 +140,7 @@ class Street(models.Model):
     # piedade
 
     def __str__(self) -> str:
+        return f""
         return f"{self.name} - {self.town.name}"
 
 
@@ -150,6 +151,7 @@ class House(models.Model):
     # 123, nao tem
 
     def __str__(self) -> str:
+        return f""
         return f"{self.house_number} {self.street.name}, {self.street.town.name}, {self.street.town.county.country.name}"
 
 
@@ -331,11 +333,14 @@ class Certificate(models.Model):
     STATUS_COMPLETED = "C"
     STATUS_FAILD = "F"
     STATUS_PENDENT = "P"
-
+    STATUS_REVIEWED = "R"
+    STATUS_ARCHIVED = "A"
     STATUS_CHOICES = [
-        (STATUS_COMPLETED, "Completo"),
+        (STATUS_COMPLETED, "Concluído"),
         (STATUS_FAILD, "Incorrecto"),
         (STATUS_PENDENT, "Pendente"),
+        (STATUS_REVIEWED, "Revisto"),
+        (STATUS_ARCHIVED, "Archived"),
     ]
 
     status = models.CharField(
