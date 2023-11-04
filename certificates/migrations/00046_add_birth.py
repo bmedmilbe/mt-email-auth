@@ -6,13 +6,13 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('certificates', '00044_add_birth'),
+        ('certificates', '00045_add_birth'),
     ]
 
     operations = [
         migrations.AddField(
             model_name='person',
-            name='bi_sexo',
+            name='bi_estado',
             field=models.IntegerField(null=True, default=1),
         ),
 
