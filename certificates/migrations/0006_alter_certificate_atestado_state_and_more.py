@@ -10,7 +10,7 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AlterField(
+        migrations.AddField(
             model_name='certificate',
             name='atestado_state',
             field=models.IntegerField(default=1, null=True),
@@ -18,6 +18,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='certificate',
             name='status',
-            field=models.CharField(choices=[('C', 'Concluído'), ('F', 'Incorrecto'), ('P', 'Pendente'), ('R', 'Revisto'), ('A', 'Archived')], default='P', max_length=1),
+            field=models.CharField(choices=[('C', 'Concluído'), ('F', 'Incorrecto'), (
+                'P', 'Pendente'), ('R', 'Revisto'), ('A', 'Archived')], default='P', max_length=1),
         ),
     ]
