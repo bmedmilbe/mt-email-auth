@@ -10,9 +10,14 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AlterField(
+        migrations.AddField(
             model_name='customer',
             name='level',
             field=models.IntegerField(default=1, null=True),
+        ),
+        migrations.AlterField(
+            model_name='customer',
+            name='level',
+            field=models.IntegerField(default=1),
         ),
     ]
