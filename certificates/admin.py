@@ -311,7 +311,9 @@ class CertificateAdmin(admin.ModelAdmin):
 
     list_per_page = 800
     ordering = ["-number"]
-    list_filter = ["type", "status"]
+    list_filter = ["type",
+                   # "status"
+                   ]
 
 
 @admin.register(models.CertificateData)

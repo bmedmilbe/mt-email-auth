@@ -344,9 +344,9 @@ class Certificate(models.Model):
         (STATUS_ARCHIVED, "Archived"),
     ]
 
-    status = models.CharField(
-        max_length=1, choices=STATUS_CHOICES, default=STATUS_PENDENT
-    )
+    # status = models.CharField(
+    #     max_length=1, choices=STATUS_CHOICES, default=STATUS_PENDENT
+    # )
 
     obs = models.TextField(null=True)
 
