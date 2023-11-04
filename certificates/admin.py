@@ -275,7 +275,7 @@ class CertificateAdmin(admin.ModelAdmin):
     def get_queryset(self, request: HttpRequest) -> QuerySet[Any]:
         certificates = models.Certificate.objects.order_by("id")
         count = int(settings.MOVED)
-        for certificate in certificates:
+        for certificate in certificates[count:]:
             count = count+1
 
     #         if certificate.atestado_state == 1:
