@@ -11,6 +11,12 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
+
+        migrations.AddField(
+            model_name='certificate',
+            name='type1',
+            field=models.IntegerField(default='', null=True),
+        ),
         migrations.RenameField(
             model_name='certificate',
             old_name='type1',
@@ -19,7 +25,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='street',
             name='county',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='certificates.county'),
+            field=models.ForeignKey(
+                null=True, on_delete=django.db.models.deletion.CASCADE, to='certificates.county'),
         ),
         migrations.AlterField(
             model_name='certificate',
@@ -29,7 +36,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='certificate',
             name='main_person',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT, related_name='main_person_certificates', to='certificates.person'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT,
+                                    related_name='main_person_certificates', to='certificates.person'),
         ),
         migrations.AlterField(
             model_name='certificate',
@@ -39,7 +47,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='certificate',
             name='status',
-            field=models.CharField(choices=[('C', 'Concluído'), ('F', 'Incorrecto'), ('P', 'Pendente'), ('R', 'Revisto'), ('A', 'Archived')], default='P', max_length=1, null=True),
+            field=models.CharField(choices=[('C', 'Concluído'), ('F', 'Incorrecto'), ('P', 'Pendente'), (
+                'R', 'Revisto'), ('A', 'Archived')], default='P', max_length=1, null=True),
         ),
         migrations.AlterField(
             model_name='certificate',
@@ -49,27 +58,32 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='certificate',
             name='type',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT, to='certificates.certificatetitle'),
+            field=models.ForeignKey(
+                null=True, on_delete=django.db.models.deletion.PROTECT, to='certificates.certificatetitle'),
         ),
         migrations.AlterField(
             model_name='certificatetitle',
             name='certificate_type',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='certificates.certificatetypes'),
+            field=models.ForeignKey(
+                null=True, on_delete=django.db.models.deletion.CASCADE, to='certificates.certificatetypes'),
         ),
         migrations.AlterField(
             model_name='certificatetitle',
             name='type_price',
-            field=models.DecimalField(decimal_places=2, max_digits=12, null=True),
+            field=models.DecimalField(
+                decimal_places=2, max_digits=12, null=True),
         ),
         migrations.AlterField(
             model_name='certificatetypes',
             name='gender',
-            field=models.CharField(choices=[('o', 'o'), ('a', 'a')], default='o', max_length=1, null=True),
+            field=models.CharField(
+                choices=[('o', 'o'), ('a', 'a')], default='o', max_length=1, null=True),
         ),
         migrations.AlterField(
             model_name='person',
             name='address',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT, related_name='person', to='certificates.house'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT,
+                                    related_name='person', to='certificates.house'),
         ),
         migrations.AlterField(
             model_name='person',
@@ -79,12 +93,14 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='person',
             name='id_issue_country',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT, related_name='id_issue_person', to='certificates.country'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT,
+                                    related_name='id_issue_person', to='certificates.country'),
         ),
         migrations.AlterField(
             model_name='person',
             name='nationality',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT, related_name='person_nationality', to='certificates.country'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT,
+                                    related_name='person_nationality', to='certificates.country'),
         ),
         migrations.AlterField(
             model_name='person',
