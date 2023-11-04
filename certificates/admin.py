@@ -131,42 +131,42 @@ class ChangesAdmin(admin.ModelAdmin):
 @admin.register(models.Person)
 class PersonAdmin(admin.ModelAdmin):
 
-    def get_queryset(self, request: HttpRequest) -> QuerySet[Any]:
-        persons = models.Person.objects.all()
+    # def get_queryset(self, request: HttpRequest) -> QuerySet[Any]:
+    #     persons = models.Person.objects.all()
 
-        for person in persons:
+    #     for person in persons:
 
-            if person.id != 521:
-                person.birth_date = date(
-                    person.birth_year, person.birth_month, person.birth_day)
-                person.id_issue_date = date(
-                    person.id_issue_year, person.id_issue_month, person.id_issue_day)
-                # person.id_expire_date = date(
-                #     person.id_expire_year, person.id_expire_month, person.id_expire_day)
+    #         if person.id != 521:
+    #             person.birth_date = date(
+    #                 person.birth_year, person.birth_month, person.birth_day)
+    #             person.id_issue_date = date(
+    #                 person.id_issue_year, person.id_issue_month, person.id_issue_day)
+    #             # person.id_expire_date = date(
+    #             #     person.id_expire_year, person.id_expire_month, person.id_expire_day)
 
-            if person.bi_sexo == 2:
-                person.gender = "F"
-            elif person.bi_sexo == 1:
-                person.gender = "M"
+    #         if person.bi_sexo == 2:
+    #             person.gender = "F"
+    #         elif person.bi_sexo == 1:
+    #             person.gender = "M"
 
-            if person.bi_estado == 1:
-                person.status = "S"
-            elif person.bi_estado == 2:
-                person.status = "M"
-            elif person.bi_estado == 3:
-                person.status = "L"
-            elif person.bi_estado == 4:
-                person.status = "V"
-            elif person.bi_estado == 5:
-                person.status = "D"
-            elif person.bi_estado == 6:
-                person.status = "D"
+    #         if person.bi_estado == 1:
+    #             person.status = "S"
+    #         elif person.bi_estado == 2:
+    #             person.status = "M"
+    #         elif person.bi_estado == 3:
+    #             person.status = "L"
+    #         elif person.bi_estado == 4:
+    #             person.status = "V"
+    #         elif person.bi_estado == 5:
+    #             person.status = "D"
+    #         elif person.bi_estado == 6:
+    #             person.status = "D"
 
-            if person.id_issue_local.id == 13:
-                person.nationality_id = 3
+    #         if person.id_issue_local.id == 13:
+    #             person.nationality_id = 3
 
-            person.save()
-        return super().get_queryset(request)
+    #         person.save()
+    #     return super().get_queryset(request)
     list_display = [
         "name",
         "surname",
