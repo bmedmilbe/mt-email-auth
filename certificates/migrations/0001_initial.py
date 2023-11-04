@@ -17,27 +17,33 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='BiuldingType',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=255)),
-                ('prefix', models.CharField(blank=True, default='', max_length=255, null=True)),
+                ('prefix', models.CharField(blank=True,
+                 default='', max_length=255, null=True)),
             ],
         ),
         migrations.CreateModel(
             name='Cemiterio',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=255)),
             ],
         ),
         migrations.CreateModel(
             name='Certificate',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('number', models.CharField(max_length=255)),
                 ('date_issue', models.DateTimeField(auto_now=True)),
                 ('text', models.TextField(default='')),
-                ('file', models.FileField(blank=True, null=True, upload_to='camaramz/certificates')),
-                ('status', models.CharField(choices=[('C', 'Completo'), ('F', 'Incorrecto'), ('P', 'Pendente')], default='P', max_length=1)),
+                ('file', models.FileField(blank=True,
+                 null=True, upload_to='camaramz/certificates')),
+                ('status', models.CharField(choices=[
+                 ('C', 'Completo'), ('F', 'Incorrecto'), ('P', 'Pendente')], default='P', max_length=1)),
                 ('obs', models.TextField(null=True)),
                 ('atestado_state', models.IntegerField(null=True)),
                 ('type1', models.IntegerField(null=True)),
@@ -46,16 +52,19 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='CertificateTypes',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=255)),
-                ('gender', models.CharField(choices=[('o', 'o'), ('a', 'a')], default='o', max_length=1)),
+                ('gender', models.CharField(choices=[
+                 ('o', 'o'), ('a', 'a')], default='o', max_length=1)),
                 ('slug', models.SlugField(max_length=255, null=True)),
             ],
         ),
         migrations.CreateModel(
             name='Change',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=255)),
                 ('price', models.DecimalField(decimal_places=2, max_digits=6)),
             ],
@@ -63,7 +72,8 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Country',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=255)),
                 ('slug', models.SlugField(max_length=255)),
                 ('code', models.IntegerField(null=True)),
@@ -72,46 +82,55 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='County',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=255)),
                 ('slug', models.SlugField(max_length=255)),
-                ('country', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='certificates.country')),
+                ('country', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to='certificates.country')),
             ],
         ),
         migrations.CreateModel(
             name='Coval',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('nick_number', models.CharField(max_length=255)),
                 ('number', models.CharField(blank=True, max_length=255, null=True)),
                 ('name', models.CharField(blank=True, max_length=255, null=True)),
                 ('date_used', models.DateField()),
                 ('date_of_deth', models.DateField(blank=True, null=True)),
-                ('gender', models.CharField(choices=[('M', 'Male'), ('F', 'Female')], default='M', max_length=1)),
-                ('square', models.CharField(choices=[('A', 'A'), ('B', 'B'), ('C', 'C'), ('D', 'D')], default='A', max_length=1)),
+                ('gender', models.CharField(choices=[
+                 ('M', 'Male'), ('F', 'Female')], default='M', max_length=1)),
+                ('square', models.CharField(choices=[
+                 ('A', 'A'), ('B', 'B'), ('C', 'C'), ('D', 'D')], default='A', max_length=1)),
                 ('closed', models.BooleanField(default=False)),
                 ('selled', models.BooleanField(default=False)),
-                ('cemiterio', models.ForeignKey(default=1, on_delete=django.db.models.deletion.PROTECT, to='certificates.cemiterio')),
+                ('cemiterio', models.ForeignKey(
+                    default=1, on_delete=django.db.models.deletion.PROTECT, to='certificates.cemiterio')),
             ],
         ),
         migrations.CreateModel(
             name='House',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('house_number', models.CharField(max_length=255, null=True)),
             ],
         ),
         migrations.CreateModel(
             name='IDType',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=255)),
             ],
         ),
         migrations.CreateModel(
             name='Ifen',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=255)),
                 ('size', models.IntegerField()),
             ],
@@ -119,14 +138,16 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Instituition',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=255)),
             ],
         ),
         migrations.CreateModel(
             name='Messages',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=255)),
                 ('email', models.EmailField(max_length=255)),
                 ('text', models.TextField()),
@@ -137,53 +158,66 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Parent',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(max_length=255)),
                 ('in_plural', models.CharField(max_length=255)),
                 ('in_plural_mix', models.CharField(max_length=255)),
                 ('degree', models.IntegerField(default=1)),
-                ('gender', models.CharField(choices=[('M', 'Male'), ('F', 'Female')], default='M', max_length=1)),
+                ('gender', models.CharField(choices=[
+                 ('M', 'Male'), ('F', 'Female')], default='M', max_length=1)),
             ],
         ),
         migrations.CreateModel(
             name='University',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=255)),
             ],
         ),
         migrations.CreateModel(
             name='Town',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=255)),
                 ('slug', models.SlugField(max_length=255)),
-                ('county', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='certificates.county')),
+                ('county', models.ForeignKey(
+                    null=True, on_delete=django.db.models.deletion.CASCADE, to='certificates.county')),
             ],
         ),
         migrations.CreateModel(
             name='Street',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=255)),
                 ('slug', models.SlugField(max_length=255)),
-                ('town', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, to='certificates.town')),
+                ('town', models.ForeignKey(
+                    null=True, on_delete=django.db.models.deletion.CASCADE, to='certificates.town')),
             ],
         ),
         migrations.CreateModel(
             name='PersonBirthAddress',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('birth_country', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='birth_person_address', to='certificates.country')),
-                ('birth_county', models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT, related_name='birth_person_address', to='certificates.county')),
-                ('birth_street', models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT, related_name='birth_person_address', to='certificates.street')),
-                ('birth_town', models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT, related_name='birth_person_address', to='certificates.town')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
+                ('birth_country', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT,
+                 related_name='birth_person_address', to='certificates.country')),
+                ('birth_county', models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT,
+                 related_name='birth_person_address', to='certificates.county')),
+                ('birth_street', models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT,
+                 related_name='birth_person_address', to='certificates.street')),
+                ('birth_town', models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT,
+                 related_name='birth_person_address', to='certificates.town')),
             ],
         ),
         migrations.CreateModel(
             name='Person',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=255)),
                 ('surname', models.CharField(default='', max_length=255)),
                 ('birth_date', models.DateField(null=True)),
@@ -201,116 +235,152 @@ class Migration(migrations.Migration):
                 ('mother_name', models.CharField(max_length=255, null=True)),
                 ('bi_estado', models.IntegerField(null=True)),
                 ('bi_sexo', models.IntegerField(null=True)),
-                ('status', models.CharField(choices=[('M', 'Married'), ('S', 'Single'), ('L', 'Living together'), ('V', 'Viuvo'), ('D', 'Divorcied')], max_length=1, null=True)),
-                ('gender', models.CharField(choices=[('M', 'Male'), ('F', 'Female')], max_length=1, null=True)),
-                ('address', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='person', to='certificates.house')),
-                ('birth_address', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='persons', to='certificates.personbirthaddress')),
-                ('id_issue_country', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='id_issue_person', to='certificates.country')),
-                ('id_issue_local', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='id_issue_person', to='certificates.instituition')),
-                ('id_type', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='certificates.idtype')),
-                ('nationality', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='person_nationality', to='certificates.country')),
+                ('status', models.CharField(choices=[('M', 'Married'), ('S', 'Single'), (
+                    'L', 'Living together'), ('V', 'Viuvo'), ('D', 'Divorcied')], max_length=1, null=True)),
+                ('gender', models.CharField(choices=[
+                 ('M', 'Male'), ('F', 'Female')], max_length=1, null=True)),
+                ('address', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT,
+                 related_name='person', to='certificates.house')),
+                ('birth_address', models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE,
+                 related_name='persons', to='certificates.personbirthaddress')),
+                ('id_issue_country', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT,
+                 related_name='id_issue_person', to='certificates.country')),
+                ('id_issue_local', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT,
+                 related_name='id_issue_person', to='certificates.instituition')),
+                ('id_type', models.ForeignKey(
+                    on_delete=django.db.models.deletion.PROTECT, to='certificates.idtype')),
+                ('nationality', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT,
+                 related_name='person_nationality', to='certificates.country')),
             ],
         ),
         migrations.AddField(
             model_name='house',
             name='street',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='certificates.street'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to='certificates.street'),
         ),
         migrations.CreateModel(
             name='Customer',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('level', models.IntegerField(default=1)),
-                ('user', models.OneToOneField(on_delete=django.db.models.deletion.PROTECT, to=settings.AUTH_USER_MODEL)),
+                ('user', models.OneToOneField(
+                    on_delete=django.db.models.deletion.PROTECT, to=settings.AUTH_USER_MODEL)),
             ],
         ),
         migrations.CreateModel(
             name='CovalSalles',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('coval', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='certificates.coval')),
-                ('person', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='certificates.person')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
+                ('coval', models.ForeignKey(
+                    on_delete=django.db.models.deletion.PROTECT, to='certificates.coval')),
+                ('person', models.ForeignKey(
+                    on_delete=django.db.models.deletion.PROTECT, to='certificates.person')),
             ],
         ),
         migrations.CreateModel(
             name='CertificateTitle',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=255)),
-                ('type_price', models.DecimalField(decimal_places=2, max_digits=12)),
+                ('type_price', models.DecimalField(
+                    decimal_places=2, max_digits=12)),
                 ('goal', models.CharField(max_length=255, null=True)),
                 ('slug', models.SlugField(max_length=255, null=True)),
-                ('certificate_type', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='certificates.certificatetypes')),
+                ('certificate_type', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to='certificates.certificatetypes')),
             ],
         ),
         migrations.CreateModel(
             name='CertificateSinglePerson',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=255)),
-                ('gender', models.CharField(choices=[('M', 'Male'), ('F', 'Female')], max_length=1)),
-                ('type', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='certificates.certificatetitle')),
+                ('gender', models.CharField(choices=[
+                 ('M', 'Male'), ('F', 'Female')], max_length=1)),
+                ('type', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to='certificates.certificatetitle')),
             ],
         ),
         migrations.CreateModel(
             name='CertificateSimplePerson',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=255)),
-                ('gender', models.CharField(choices=[('M', 'Male'), ('F', 'Female')], max_length=1)),
+                ('gender', models.CharField(choices=[
+                 ('M', 'Male'), ('F', 'Female')], max_length=1)),
                 ('birth_date', models.DateField()),
-                ('type', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='certificates.certificatetitle')),
+                ('type', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to='certificates.certificatetitle')),
             ],
         ),
         migrations.CreateModel(
             name='CertificateSimpleParent',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=255)),
                 ('birth_date', models.DateField()),
-                ('parent', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='certificates.parent')),
-                ('type', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='certificates.certificatetitle')),
+                ('parent', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to='certificates.parent')),
+                ('type', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to='certificates.certificatetitle')),
             ],
         ),
         migrations.CreateModel(
             name='CertificateDate',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('date', models.DateField()),
-                ('type', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='certificates.certificatetitle')),
+                ('type', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to='certificates.certificatetitle')),
             ],
         ),
         migrations.CreateModel(
             name='CertificateData',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('certificate', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='certificates.certificate')),
-                ('house', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='certificates.house')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
+                ('certificate', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to='certificates.certificate')),
+                ('house', models.ForeignKey(
+                    on_delete=django.db.models.deletion.PROTECT, to='certificates.house')),
             ],
         ),
         migrations.AddField(
             model_name='certificate',
             name='house',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT, related_name='certificates', to='certificates.house'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT,
+                                    related_name='certificates', to='certificates.house'),
         ),
         migrations.AddField(
             model_name='certificate',
             name='main_person',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, related_name='main_person_certificates', to='certificates.person'),
+            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT,
+                                    related_name='main_person_certificates', to='certificates.person'),
         ),
         migrations.AddField(
             model_name='certificate',
             name='secondary_person',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT, related_name='second_person_certificates', to='certificates.person'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT,
+                                    related_name='second_person_certificates', to='certificates.person'),
         ),
         migrations.AddField(
             model_name='certificate',
             name='type',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to='certificates.certificatetitle'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.PROTECT, to='certificates.certificatetitle'),
         ),
         migrations.AddField(
             model_name='cemiterio',
             name='county',
-            field=models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='certificates.county'),
+            field=models.ForeignKey(
+                on_delete=django.db.models.deletion.CASCADE, to='certificates.county'),
         ),
     ]
