@@ -195,7 +195,7 @@ class PersonAdmin(admin.ModelAdmin):
 
     list_per_page = 10
     ordering = ["name", "surname"]
-    list_filter = ["status"]
+    list_filter = ["status", "gender"]
 
 
 @admin.register(models.CertificateTypes)
