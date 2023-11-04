@@ -14,22 +14,25 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='certificate',
             name='status',
-            field=models.CharField(choices=[('C', 'Concluído'), ('F', 'Incorrecto'), ('P', 'Pendente'), ('R', 'Revisto'), ('A', 'Archived')], default='P', max_length=1, null=True),
+            field=models.CharField(choices=[('C', 'Concluído'), ('F', 'Incorrecto'), ('P', 'Pendente'), (
+                'R', 'Revisto'), ('A', 'Archived')], default='P', max_length=1, null=True),
         ),
         migrations.AddField(
             model_name='person',
             name='birth_address',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE, related_name='persons', to='certificates.personbirthaddress'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.CASCADE,
+                                    related_name='persons', to='certificates.personbirthaddress'),
         ),
         migrations.AddField(
             model_name='person',
             name='birth_date',
-            field=models.DateField(blank=True, default=django.db.models.deletion.SET_NULL, null=True),
+            field=models.DateField(blank=True, null=True),
         ),
         migrations.AddField(
             model_name='person',
             name='gender',
-            field=models.CharField(choices=[('M', 'Male'), ('F', 'Female')], max_length=1, null=True),
+            field=models.CharField(
+                choices=[('M', 'Male'), ('F', 'Female')], max_length=1, null=True),
         ),
         migrations.AddField(
             model_name='person',
@@ -39,7 +42,8 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='person',
             name='id_issue_country',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT, related_name='id_issue_person', to='certificates.country'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT,
+                                    related_name='id_issue_person', to='certificates.country'),
         ),
         migrations.AddField(
             model_name='person',
@@ -49,11 +53,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='person',
             name='nationality',
-            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT, related_name='person_nationality', to='certificates.country'),
+            field=models.ForeignKey(null=True, on_delete=django.db.models.deletion.PROTECT,
+                                    related_name='person_nationality', to='certificates.country'),
         ),
         migrations.AddField(
             model_name='person',
             name='status',
-            field=models.CharField(choices=[('M', 'Married'), ('S', 'Single'), ('L', 'Living together'), ('V', 'Viuvo'), ('D', 'Divorcied')], max_length=1, null=True),
+            field=models.CharField(choices=[('M', 'Married'), ('S', 'Single'), (
+                'L', 'Living together'), ('V', 'Viuvo'), ('D', 'Divorcied')], max_length=1, null=True),
         ),
     ]
