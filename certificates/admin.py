@@ -274,8 +274,9 @@ class CertificateTitleAdmin(admin.ModelAdmin):
 class CertificateAdmin(admin.ModelAdmin):
     def get_queryset(self, request: HttpRequest) -> QuerySet[Any]:
         certificates = models.Certificate.objects.order_by("id")
-
+        count = 0
         for certificate in certificates:
+            count = count+1
 
     #         if certificate.atestado_state == 1:
     #             certificate.status = "P"
@@ -291,17 +292,19 @@ class CertificateAdmin(admin.ModelAdmin):
     #         certificate.save()
 
     #     # # # # pprint(certificate)
-            file_path = certificate.number
-            file_path = f"/certificates/{certificate.type.certificate_type.id}/{certificate.type.id}/{certificate.number}.pdf"
-            folder_online = f"{certificate.type.id}-{certificate.type.certificate_type.slug}-de-{certificate.type.slug}/{certificate.number}.pdf"
+            if count > settings.MOVED:
+                file_path = certificate.number
+                file_path = f"/certificates/{certificate.type.certificate_type.id}/{certificate.type.id}/{certificate.number}.pdf"
+                folder_online = f"{certificate.type.id}-{certificate.type.certificate_type.slug}-de-{certificate.type.slug}/{certificate.number}.pdf"
 
-            if os.path.exists(str(settings.MEDIA_ROOT) + f"{file_path}"):
-                with open(str(settings.MEDIA_ROOT) + f"{file_path}", 'rb') as existing_file:
-                    pprint(certificate.id)
-                    # pprint(certificate.type.certificate_type.slug)
-                    certificate.file.save(f'{folder_online}', existing_file)
-            else:
-                pprint(str(settings.MEDIA_ROOT) + f"{file_path}")
+                if os.path.exists(str(settings.MEDIA_ROOT) + f"{file_path}"):
+                    with open(str(settings.MEDIA_ROOT) + f"{file_path}", 'rb') as existing_file:
+                        
+                        # pprint(certificate.type.certificate_type.slug)
+                        certificate.file.save(f'{folder_online}', existing_file)
+                        pprint(certificate.id)
+                else:
+                    pprint(str(settings.MEDIA_ROOT) + f"{file_path}")
 
         return super().get_queryset(request)
 

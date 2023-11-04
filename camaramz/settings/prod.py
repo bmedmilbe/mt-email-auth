@@ -47,6 +47,7 @@ DATABASES = {"default": dj_database_url.config()}
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.environ["SECRET_KEY"]
+MOVED = os.environ["MOVED"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
