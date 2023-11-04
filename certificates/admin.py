@@ -272,11 +272,11 @@ class CertificateTitleAdmin(admin.ModelAdmin):
 
 @admin.register(models.Certificate)
 class CertificateAdmin(admin.ModelAdmin):
-    def get_queryset(self, request: HttpRequest) -> QuerySet[Any]:
-        certificates = models.Certificate.objects.order_by("id")
-        count = int(settings.MOVED)
-        for certificate in certificates[count:]:
-            count = count+1
+    # def get_queryset(self, request: HttpRequest) -> QuerySet[Any]:
+    #     certificates = models.Certificate.objects.order_by("id")
+    #     count = int(settings.MOVED)
+    #     for certificate in certificates[count:]:
+    #         count = count+1
 
     #         if certificate.atestado_state == 1:
     #             certificate.status = "P"
@@ -292,21 +292,21 @@ class CertificateAdmin(admin.ModelAdmin):
     #         certificate.save()
 
     #     # # # # pprint(certificate)
-            if count > int(settings.MOVED):
-                file_path = certificate.number
-                file_path = f"/certificates/{certificate.type.certificate_type.id}/{certificate.type.id}/{certificate.number}.pdf"
-                folder_online = f"{certificate.type.id}-{certificate.type.certificate_type.slug}-de-{certificate.type.slug}/{certificate.number}.pdf"
+        #     if count > int(settings.MOVED):
+        #         file_path = certificate.number
+        #         file_path = f"/certificates/{certificate.type.certificate_type.id}/{certificate.type.id}/{certificate.number}.pdf"
+        #         folder_online = f"{certificate.type.id}-{certificate.type.certificate_type.slug}-de-{certificate.type.slug}/{certificate.number}.pdf"
 
-                if os.path.exists(str(settings.MEDIA_ROOT) + f"{file_path}"):
-                    with open(str(settings.MEDIA_ROOT) + f"{file_path}", 'rb') as existing_file:
+        #         if os.path.exists(str(settings.MEDIA_ROOT) + f"{file_path}"):
+        #             with open(str(settings.MEDIA_ROOT) + f"{file_path}", 'rb') as existing_file:
                         
-                        # pprint(certificate.type.certificate_type.slug)
-                        certificate.file.save(f'{folder_online}', existing_file)
-                        pprint(count)
-                else:
-                    pprint(str(settings.MEDIA_ROOT) + f"{file_path}")
+        #                 # pprint(certificate.type.certificate_type.slug)
+        #                 certificate.file.save(f'{folder_online}', existing_file)
+        #                 pprint(count)
+        #         else:
+        #             pprint(str(settings.MEDIA_ROOT) + f"{file_path}")
 
-        return super().get_queryset(request)
+        # return super().get_queryset(request)
 
     list_display = [
         "type", "number", "text", "main_person", "secondary_person", "date_issue"
