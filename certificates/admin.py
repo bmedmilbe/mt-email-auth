@@ -170,7 +170,7 @@ class PersonAdmin(admin.ModelAdmin):
     list_display = [
         "name",
         "surname",
-        "gender",
+        # "gender",
 
         # "birth_date",
         # "birth_street",
@@ -183,15 +183,16 @@ class PersonAdmin(admin.ModelAdmin):
         "id_number",
         "id_issue_local",
         "id_issue_country",
-        "id_issue_date",
-        "id_expire_date",
+        # "id_issue_date",
+        # "id_expire_date",
 
         "father_name",
         "mother_name",
 
         "address",
 
-        "status"]
+        # "status"
+    ]
 
     list_per_page = 10
     ordering = ["name", "surname"]
