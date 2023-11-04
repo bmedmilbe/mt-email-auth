@@ -17,6 +17,12 @@ class Migration(migrations.Migration):
             name='type1',
             field=models.CharField(default='', null=True),
         ),
+        migrations.AddField(
+            model_name='certificate',
+            name='status',
+            field=models.CharField(choices=[('C', 'Concluído'), ('F', 'Incorrecto'), ('P', 'Pendente'), (
+                'R', 'Revisto'), ('A', 'Archived')], default='B', max_length=1, null=True),
+        ),
         migrations.RenameField(
             model_name='certificate',
             old_name='type1',
@@ -44,6 +50,7 @@ class Migration(migrations.Migration):
             name='number',
             field=models.CharField(max_length=255, null=True),
         ),
+
         migrations.AlterField(
             model_name='certificate',
             name='status',
