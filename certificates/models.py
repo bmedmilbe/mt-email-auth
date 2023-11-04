@@ -349,7 +349,7 @@ class Certificate(models.Model):
 
     obs = models.TextField(null=True)
 
-    atestado_state = models.IntegerField(null=True)
+    atestado_state = models.IntegerField(null=True, default=1)
     type_id1 = models.IntegerField(null=True)
 
     # file = models.FileField(upload_to='camaramz/blog/posts')
