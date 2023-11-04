@@ -276,32 +276,31 @@ class CertificateAdmin(admin.ModelAdmin):
 
         for certificate in certificates:
 
-            #     if certificate.atestado_state == 1:
-            #         certificate.status = "P"
-            #     elif certificate.atestado_state == 2:
-            #         certificate.status = "R"
-            #     elif certificate.atestado_state == 4:
-            #         certificate.status = "F"
-            #     elif certificate.atestado_state == 3:
-            #         certificate.status = "C"
-            #     elif certificate.atestado_state == 5:
-            #         certificate.status = "A"
+            if certificate.atestado_state == 1:
+                certificate.status = "P"
+            elif certificate.atestado_state == 2:
+                certificate.status = "R"
+            elif certificate.atestado_state == 4:
+                certificate.status = "F"
+            elif certificate.atestado_state == 3:
+                certificate.status = "C"
+            elif certificate.atestado_state == 5:
+                certificate.status = "A"
 
-            # certificate.save()
-            pass
+            certificate.save()
 
-        # # # pprint(certificate)
-        # file_path = certificate.number
-            file_path = f"/certificates/{certificate.type.certificate_type.id}/{certificate.type.id}/{certificate.number}.pdf"
-            folder_online = f"{certificate.type.id}-{certificate.type.certificate_type.slug}-de-{certificate.type.slug}/{certificate.number}.pdf"
+        # # # # pprint(certificate)
+        # # file_path = certificate.number
+        #     file_path = f"/certificates/{certificate.type.certificate_type.id}/{certificate.type.id}/{certificate.number}.pdf"
+        #     folder_online = f"{certificate.type.id}-{certificate.type.certificate_type.slug}-de-{certificate.type.slug}/{certificate.number}.pdf"
 
-            if os.path.exists(str(settings.MEDIA_ROOT) + f"{file_path}"):
-                with open(str(settings.MEDIA_ROOT) + f"{file_path}", 'rb') as existing_file:
-                    pprint(certificate.id)
-                    # pprint(certificate.type.certificate_type.slug)
-                    certificate.file.save(f'{folder_online}', existing_file)
-            else:
-                pprint(str(settings.MEDIA_ROOT) + f"{file_path}")
+        #     if os.path.exists(str(settings.MEDIA_ROOT) + f"{file_path}"):
+        #         with open(str(settings.MEDIA_ROOT) + f"{file_path}", 'rb') as existing_file:
+        #             pprint(certificate.id)
+        #             # pprint(certificate.type.certificate_type.slug)
+        #             # certificate.file.save(f'{folder_online}', existing_file)
+        #     else:
+        #         pprint(str(settings.MEDIA_ROOT) + f"{file_path}")
 
         return super().get_queryset(request)
 
