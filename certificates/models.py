@@ -368,7 +368,7 @@ class CertificateSimplePerson(models.Model):
     GENDER_FEMALE = "F"
     GENDER_CHOICES = [
         (GENDER_MALE, "Male"),
-        (GENDER_FEMALE, "Female"),
+        (GENDER_FEMALE, "Femal"),
     ]
     gender = models.CharField(
         max_length=1, choices=GENDER_CHOICES

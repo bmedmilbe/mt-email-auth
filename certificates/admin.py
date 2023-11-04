@@ -10,6 +10,8 @@ import os
 from django.utils.text import slugify
 # Register your models here.
 from django.core.files import File
+from django.db.migrations.recorder import MigrationRecorder
+
 
 # @admin.register(models.Colaborator)
 # class ColaboratorAdmin(admin.ModelAdmin):
@@ -320,3 +322,6 @@ class CertificateDataAdmin(admin.ModelAdmin):
 
     list_per_page = 10
     ordering = ["-certificate__number"]
+
+
+admin.site.register(MigrationRecorder.Migration)
