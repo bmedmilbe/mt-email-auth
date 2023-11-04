@@ -196,30 +196,30 @@ class Instituition(models.Model):
 class Person(models.Model):
     name = models.CharField(max_length=255)
     surname = models.CharField(max_length=255, default="", null=True)
-    # birth_date = models.DateField(
-    #     null=True, blank=True, default=models.SET_NULL)
+    birth_date = models.DateField(
+        null=True, blank=True, default=models.SET_NULL)
     birth_day = models.IntegerField(null=True)
     birth_month = models.IntegerField(null=True)
     birth_year = models.IntegerField(null=True)
     bi_nasc_loc = models.IntegerField(null=True)
-    # birth_address = models.ForeignKey(
-    #     PersonBirthAddress, on_delete=models.CASCADE, related_name="persons", null=True)
+    birth_address = models.ForeignKey(
+        PersonBirthAddress, on_delete=models.CASCADE, related_name="persons", null=True)
 
     id_type = models.ForeignKey(IDType, on_delete=models.PROTECT)
 
     id_number = models.CharField(max_length=255)
     id_issue_local = models.ForeignKey(
         Instituition, on_delete=models.PROTECT, related_name="id_issue_person")
-    # id_issue_country = models.ForeignKey(
-    #     Country, on_delete=models.PROTECT, related_name="id_issue_person", null=True)
-    # id_issue_date = models.DateField(null=True)
+    id_issue_country = models.ForeignKey(
+        Country, on_delete=models.PROTECT, related_name="id_issue_person", null=True)
+    id_issue_date = models.DateField(null=True)
     id_issue_day = models.IntegerField(null=True, default=1)
     id_issue_month = models.IntegerField(null=True, default=1)
     id_issue_year = models.IntegerField(null=True, default=1)
 
-    # id_expire_date = models.DateField(null=True)
-    # nationality = models.ForeignKey(
-    #     Country, on_delete=models.PROTECT, related_name="person_nationality", null=True)
+    id_expire_date = models.DateField(null=True)
+    nationality = models.ForeignKey(
+        Country, on_delete=models.PROTECT, related_name="person_nationality", null=True)
 
     father_name = models.CharField(max_length=255, null=True)
     mother_name = models.CharField(max_length=255, null=True)
@@ -243,22 +243,22 @@ class Person(models.Model):
     bi_estado = models.IntegerField(null=True)
     bi_sexo = models.IntegerField(null=True)
 
-    # status = models.CharField(
-    #     max_length=1, choices=MARRITIAL_STATUS_CHOICES, null=True
-    # )
+    status = models.CharField(
+        max_length=1, choices=MARRITIAL_STATUS_CHOICES, null=True
+    )
 
-    # GENDER_MALE = "M"
-    # GENDER_FEMALE = "F"
-    # GENDER_CHOICES = [
-    #     (GENDER_MALE, "Male"),
-    #     (GENDER_FEMALE, "Female"),
-    # ]
-    # # gender = models.CharField(
-    # #     max_length=1, choices=GENDER_CHOICES, null=True
-    # # )
+    GENDER_MALE = "M"
+    GENDER_FEMALE = "F"
+    GENDER_CHOICES = [
+        (GENDER_MALE, "Male"),
+        (GENDER_FEMALE, "Female"),
+    ]
+    gender = models.CharField(
+        max_length=1, choices=GENDER_CHOICES, null=True
+    )
 
-    # def __str__(self) -> str:
-    #     return f"{self.name} {self.surname} with {self.id_type.name} {self.id_number} from {self.nationality.name if self.nationality != None else '' }"
+    def __str__(self) -> str:
+        return f"{self.name} {self.surname} with {self.id_type.name} {self.id_number} from {self.nationality.name if self.nationality != None else '' }"
 
 
 class CertificateTypes(models.Model):
@@ -344,16 +344,14 @@ class Certificate(models.Model):
         (STATUS_ARCHIVED, "Archived"),
     ]
 
-    # status = models.CharField(
-    #     max_length=1, choices=STATUS_CHOICES, default=STATUS_PENDENT
-    # )
+    status = models.CharField(
+        max_length=1, choices=STATUS_CHOICES, default=STATUS_PENDENT, null=True
+    )
 
     obs = models.TextField(null=True)
 
     atestado_state = models.IntegerField(null=True, default=1)
     type_id1 = models.IntegerField(null=True)
-
-    # file = models.FileField(upload_to='camaramz/blog/posts')
 
     def __str__(self) -> str:
         return f"{self.type.name} {self.number}"
