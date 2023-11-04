@@ -10,7 +10,7 @@ import os
 from django.utils.text import slugify
 # Register your models here.
 from django.core.files import File
-from django.db.migrations.recorder import MigrationRecorder
+# from django.db.migrations.recorder import MigrationRecorder
 
 
 # @admin.register(models.Colaborator)
@@ -324,4 +324,4 @@ class CertificateDataAdmin(admin.ModelAdmin):
     ordering = ["-certificate__number"]
 
 
-admin.site.register(MigrationRecorder.Migration)
+# admin.site.register(MigrationRecorder.Migration)
