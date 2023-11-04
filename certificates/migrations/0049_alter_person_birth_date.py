@@ -6,7 +6,7 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('certificates', '0048_alter_person_birth_date'),
+        ('certificates', '0047_remove_certificate_birth_day_and_more'),
     ]
 
     operations = [
