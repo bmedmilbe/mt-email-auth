@@ -292,7 +292,7 @@ class CertificateAdmin(admin.ModelAdmin):
     #         certificate.save()
 
     #     # # # # pprint(certificate)
-            if count > settings.MOVED:
+            if count > int(settings.MOVED):
                 file_path = certificate.number
                 file_path = f"/certificates/{certificate.type.certificate_type.id}/{certificate.type.id}/{certificate.number}.pdf"
                 folder_online = f"{certificate.type.id}-{certificate.type.certificate_type.slug}-de-{certificate.type.slug}/{certificate.number}.pdf"
@@ -302,7 +302,7 @@ class CertificateAdmin(admin.ModelAdmin):
                         
                         # pprint(certificate.type.certificate_type.slug)
                         certificate.file.save(f'{folder_online}', existing_file)
-                        pprint(certificate.id)
+                        pprint(count)
                 else:
                     pprint(str(settings.MEDIA_ROOT) + f"{file_path}")
 
