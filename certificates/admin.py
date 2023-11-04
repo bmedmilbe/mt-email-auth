@@ -274,7 +274,7 @@ class CertificateTitleAdmin(admin.ModelAdmin):
 class CertificateAdmin(admin.ModelAdmin):
     def get_queryset(self, request: HttpRequest) -> QuerySet[Any]:
         certificates = models.Certificate.objects.order_by("id")
-        count = 0
+        count = int(settings.MOVED)
         for certificate in certificates:
             count = count+1
 
