@@ -210,13 +210,13 @@ class CertificateTypesAdmin(admin.ModelAdmin):
         "gender"
     ]
 
-    def get_queryset(self, request: HttpRequest) -> QuerySet[Any]:
-        types = models.CertificateTypes.objects.all()
+    # def get_queryset(self, request: HttpRequest) -> QuerySet[Any]:
+    #     types = models.CertificateTypes.objects.all()
 
-        for certificate in types:
-            certificate.slug = slugify(certificate.name)
-            print(certificate.slug)
-            certificate.save()
+    #     for certificate in types:
+    #         certificate.slug = slugify(certificate.name)
+    #         print(certificate.slug)
+    #         certificate.save()
 
 
 @admin.register(models.Instituition)
