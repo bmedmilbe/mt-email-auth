@@ -262,12 +262,12 @@ class CertificateTitleAdmin(admin.ModelAdmin):
 
     prepopulated_fields = {"slug": ("name",)}  # new
 
-    # def get_queryset(self, request: HttpRequest) -> QuerySet[Any]:
-    #     title = models.CertificateTitle.objects.all()
+    def get_queryset(self, request: HttpRequest) -> QuerySet[Any]:
+        title = models.CertificateTitle.objects.all()
 
-    #     # for certificate in title:
-    #     #     # certificate.slug = slugify(certificate.name)
-    #     #     certificate.save()
+        for certificate in title:
+            certificate.slug = slugify(certificate.name)
+            certificate.save()
 
 
 @admin.register(models.Certificate)
