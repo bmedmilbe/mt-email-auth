@@ -136,12 +136,13 @@ class PersonAdmin(admin.ModelAdmin):
 
         for person in persons:
 
-            person.birth_date = date(
-                person.birth_year, person.birth_month, person.birth_day)
-            person.id_issue_date = date(
-                person.id_issue_year, person.id_issue_month, person.id_issue_day)
-            # person.id_expire_date = date(
-            #     person.id_expire_year, person.id_expire_month, person.id_expire_day)
+            if person.id != 521:
+                person.birth_date = date(
+                    person.birth_year, person.birth_month, person.birth_day)
+                person.id_issue_date = date(
+                    person.id_issue_year, person.id_issue_month, person.id_issue_day)
+                # person.id_expire_date = date(
+                #     person.id_expire_year, person.id_expire_month, person.id_expire_day)
 
             if person.bi_sexo == 2:
                 person.gender = "F"
@@ -169,21 +170,21 @@ class PersonAdmin(admin.ModelAdmin):
     list_display = [
         "name",
         "surname",
-        "gender",
+        # "gender",
 
-        "birth_date",
-        "birth_street",
-        "birth_town",
-        "birth_county",
-        "birth_country",
+        # "birth_date",
+        # "birth_street",
+        # "birth_town" ,
+        # "birth_county",
+        # "birth_country" ,
 
         "id_type",
 
         "id_number",
         "id_issue_local",
-        "id_issue_country",
-        "id_issue_date",
-        "id_expire_date",
+        # "id_issue_country",
+        # "id_issue_date",
+        # "id_expire_date",
 
         "father_name",
         "mother_name",
