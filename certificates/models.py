@@ -202,16 +202,16 @@ class Person(models.Model):
     birth_month = models.IntegerField(null=True)
     birth_year = models.IntegerField(null=True)
     bi_nasc_loc = models.IntegerField(null=True)
-    birth_address = models.ForeignKey(
-        PersonBirthAddress, on_delete=models.CASCADE, related_name="persons", null=True)
+    # birth_address = models.ForeignKey(
+    #     PersonBirthAddress, on_delete=models.CASCADE, related_name="persons", null=True)
 
     id_type = models.ForeignKey(IDType, on_delete=models.PROTECT)
 
     id_number = models.CharField(max_length=255)
     id_issue_local = models.ForeignKey(
         Instituition, on_delete=models.PROTECT, related_name="id_issue_person")
-    id_issue_country = models.ForeignKey(
-        Country, on_delete=models.PROTECT, related_name="id_issue_person", null=True)
+    # id_issue_country = models.ForeignKey(
+    #     Country, on_delete=models.PROTECT, related_name="id_issue_person", null=True)
     # id_issue_date = models.DateField(null=True)
     id_issue_day = models.IntegerField(null=True, default=1)
     id_issue_month = models.IntegerField(null=True, default=1)

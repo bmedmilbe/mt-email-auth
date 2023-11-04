@@ -182,7 +182,7 @@ class PersonAdmin(admin.ModelAdmin):
 
         "id_number",
         "id_issue_local",
-        "id_issue_country",
+        # "id_issue_country",
         # "id_issue_date",
         # "id_expire_date",
 
