@@ -10,12 +10,7 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.AddField(
-            model_name='certificate',
-            name='status',
-            field=models.CharField(choices=[('C', 'Concluído'), ('F', 'Incorrecto'), (
-                'P', 'Pendente'), ('R', 'Revisto'), ('A', 'Archived')], default='P', max_length=1),
-        ),
+
         migrations.AlterField(
             model_name='customer',
             name='level',
