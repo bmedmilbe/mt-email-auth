@@ -395,7 +395,7 @@ class Command(BaseCommand):
                     (20,'Avô','Avôs','Avôs','M',2),
                     (19,'Avó','Avós','Avôs','F',2),
                     (2,'Mãe','Mães','Pais','F',1),
-                    (1,'Pai','Pais','Pais'	'M',	1);
+                    (1,'Pai','Pais','Pais',	'M',	1);
         """
         certificate_instituition = """
                     INSERT INTO certificates_instituition (id, name) VALUES
@@ -5331,6 +5331,7 @@ INSERT INTO certificates_person (
             cursor.execute(id_types)
             cursor.execute(certificate_instituition)
             cursor.execute(certificates_biuldingtype)
+            cursor.execute(university)
             cursor.execute(certificates_parent)
             cursor.execute(perosn)
             cursor.execute(person2)
@@ -5338,6 +5339,5 @@ INSERT INTO certificates_person (
             cursor.execute(certificate_title)
             cursor.execute(certificates1)
             cursor.execute(certificates)
-            cursor.execute(university)
 
             print("All data populated!")
