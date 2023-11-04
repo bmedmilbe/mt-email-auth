@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
         ),
         migrations.AddField(
             model_name='certificate',
-            name='obs',
-            field=models.TextField(null=True),
+            name='atestado_state',
+            field=models.IntegerField(null=True),
         ),
     ]
