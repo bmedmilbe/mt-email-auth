@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='certificate',
             name='type1',
-            field=models.IntegerField(default='', null=True),
+            field=models.CharField(default='', null=True),
         ),
         migrations.RenameField(
             model_name='certificate',
