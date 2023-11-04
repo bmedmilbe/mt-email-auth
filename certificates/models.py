@@ -344,7 +344,7 @@ class Certificate(models.Model):
     ]
 
     status = models.CharField(
-        max_length=1, choices=STATUS_CHOICES, default=STATUS_PENDENT, null=True
+        max_length=1, choices=STATUS_CHOICES, default=STATUS_PENDENT
     )
 
     obs = models.TextField(null=True)
