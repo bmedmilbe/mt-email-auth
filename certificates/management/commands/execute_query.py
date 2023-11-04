@@ -475,24 +475,8 @@ class Command(BaseCommand):
         perosn = """
 
 
-INSERT INTO certificates_person (
-    id, 
-    id_number,
-      name, 
-      father_name,
-        mother_name, 
-        birth_day, 
-        birth_month,
-          birth_year, 
-          bi_nasc_loc,
-            id_issue_day, 
-            id_issue_month,
-              id_issue_year, 
-              bi_estado, 
-              bi_sexo, 
-              id_type_id, 
-              id_issue_local_id
-              ) VALUES
+          INSERT INTO certificates_person (id, id_number, name, father_name, mother_name, birth_day, birth_month, birth_year, bi_nasc_loc, id_issue_day, id_issue_month, id_issue_year, bi_estado, bi_sexo, id_type_id, id_issue_local_id) VALUES
+
           (15, '84171', 'CELCINACY PAIXÃO CRAVID', 'Joaquim João Cravid', 'Damiana Paixão', 1, 3, 1981, 79, 17, 1, 2020, 2, 1, 4, 13),
           (16, '88848', 'Cesaltina Cassandra', 'Celestino Cassandra', 'Fernanda Maria Morais', 24, 3, 1985, 79, 17, 3, 2014, 1, 2, 4, 5),
           (17, '97679', 'Marinela Mateus Ferreira Eusebio', 'Inácio António da Conceição Ferreira ', 'Fátima da Graça Mateus', 4, 6, 1987, 79, 16, 10, 2017, 2, 2, 4, 5),
