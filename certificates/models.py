@@ -13,7 +13,7 @@ class Customer(models.Model):
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
 
-    level = models.IntegerField(default=1)
+    level = models.IntegerField(default=1, null=True)
 
     def __str__(self) -> str:
         return f"{self.user.first_name} {self.user.last_name}"
