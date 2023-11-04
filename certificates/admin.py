@@ -172,7 +172,7 @@ class PersonAdmin(admin.ModelAdmin):
         "surname",
         "gender",
 
-        "birth_date",
+        # "birth_date",
         # "birth_street",
         # "birth_town" ,
         # "birth_county",
