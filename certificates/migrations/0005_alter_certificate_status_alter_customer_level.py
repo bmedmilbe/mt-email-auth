@@ -21,4 +21,9 @@ class Migration(migrations.Migration):
             name='level',
             field=models.IntegerField(default=1, null=True),
         ),
+        migrations.AddField(
+            model_name='certificate',
+            name='obs',
+            field=models.TextField(null=True),
+        ),
     ]
