@@ -196,7 +196,7 @@ class Instituition(models.Model):
 class Person(models.Model):
     name = models.CharField(max_length=255)
     surname = models.CharField(max_length=255, default="", null=True)
-    birth_date = models.DateField(null=True)
+    birth_date = models.DateField(null=True, blank=True)
     birth_day = models.IntegerField(null=True)
     birth_month = models.IntegerField(null=True)
     birth_year = models.IntegerField(null=True)
