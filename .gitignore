@@ -1,6 +1,5 @@
 *.pyc
 /static/
-/media/
 dev.py
 general.log
 *:Zone.Identifier
