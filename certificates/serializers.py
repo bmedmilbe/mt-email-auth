@@ -201,9 +201,10 @@ class HouseCreateSerializer(ModelSerializer):
     def create(self, validate_data):
 
         house_number = validate_data.get('house_number')
+        
         house = House.objects.filter(
             house_number=house_number,
-            street=validate_data['street']
+            street_id=validate_data['street']
         )
 
         if not house:

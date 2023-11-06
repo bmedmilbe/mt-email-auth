@@ -162,12 +162,12 @@ class PersonAdmin(admin.ModelAdmin):
             # elif person.bi_estado == 6:
             #     person.status = "D"
 
-            if person.id_issue_local.id == 13:
-                person.nationality_id = 3
-            if person.father_name == "-1":
-                person.father_name = None
-            if person.mother_name == "-1":
-                person.mother_name = None
+            # if person.id_issue_local.id == 13:
+            #     person.nationality_id = 3
+            # if person.father_name == "-1":
+            #     person.father_name = None
+            # if person.mother_name == "-1":
+            #     person.mother_name = None
             
             # pprint("passou")
 
@@ -316,10 +316,10 @@ class CertificateAdmin(admin.ModelAdmin):
         # return super().get_queryset(request)
 
     list_display = [
-        "type", "number", "text", "main_person", "secondary_person", "date_issue"
+        "type", "number", "main_person", "secondary_person", "date_issue"
     ]
 
-    list_per_page = 100
+    list_per_page = 50
     ordering = ["-id"]
     list_filter = ["type",
                    "status"

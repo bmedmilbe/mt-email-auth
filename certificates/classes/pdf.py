@@ -98,14 +98,19 @@ class PDF():
             self.conta_details = self.conta(type1, type2, gerado.number, value)
 
     def render_pdf(self):
-        dash = 123 * " -"
+        ifen = Ifen.objects.get(name="data")
+        dash = ifen.size * " -"
 
         self.date = f"- - - Câmara Distrital de {self.bi.address.street.town.county.name}, na Cidade da {self.bi.address.street.town.name}, aos {self.date}."
 
         # size = Ifen.objects.filter(name='DATA').first().size
 
+        
+
         self.date = f"{self.date}{dash[len(self.date):]}"
-        dash = 853 * " -"
+
+        ifen = Ifen.objects.get(name="texto")
+        dash = ifen.size * " -"
         self.text = f"- - - {self.text}{dash[len(self.text):]}"
 
         # self.footer = StringHelper.data(StringHelper,gerado.date_issue)

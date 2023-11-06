@@ -296,10 +296,7 @@ class Ifen(models.Model):
     size = models.IntegerField()
 
     def __str__(self) -> str:
-        text = ""
-        for self.size in range(0, self.size+1):
-            text = f"{text}-"
-        return text
+        return str(self.size)
 
 
 class CertificateTitle(models.Model):
