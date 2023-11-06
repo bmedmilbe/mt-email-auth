@@ -194,6 +194,8 @@ class Instituition(models.Model):
 
 
 class Person(models.Model):
+    id = models.AutoField(primary_key=True, default=2346)
+
     name = models.CharField(max_length=255)
     surname = models.CharField(max_length=255, default="", null=True)
     birth_date = models.DateField(
@@ -316,6 +318,9 @@ class CertificateTitle(models.Model):
 
 
 class Certificate(models.Model):
+
+    
+    id = models.AutoField(primary_key=True, default=2763)
 
     type = models.ForeignKey(
         CertificateTitle, on_delete=models.PROTECT, null=True)

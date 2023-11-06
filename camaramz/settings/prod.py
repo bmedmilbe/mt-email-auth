@@ -43,6 +43,7 @@ CORS_ALLOWED_ORIGIN_REGEXES = [
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_ALL_ORIGINS = True
 
+
 DATABASES = {"default": dj_database_url.config()}
 
 # SECURITY WARNING: keep the secret key used in production secret!
