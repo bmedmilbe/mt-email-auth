@@ -76,7 +76,7 @@ class StringHelper():
             naturalidade = f"{bi.birth_address.birth_country.name}, de nacionalidade {data.nationality}"
 
         # pprint(naturalidade)
-        return f"{self.toBold(bi.name)} {self.toBold(bi.surname)}, {self.estado( bi)}, natural de {naturalidade}, nascid{StringHelper.oa(self, bi.gender)} em {self.ext_data(self, bi.birth_date)}, filh{StringHelper.oa(self, bi.gender)} de {self.toBold(self.pais(self, bi))}, portador{self.oa2(self, bi.gender)} do {bi.id_type.name} número {self.NumeroEmExtenso(bi.id_number)}, passado pelo {bi.id_issue_local.name}, aos { self.ext_data(self, bi.id_issue_date)},{vivo}"
+        return f"{bi.name} {self.toBold(bi.surname)}, {self.estado( bi)}, natural de {naturalidade}, nascid{StringHelper.oa(self, bi.gender)} em {self.ext_data(self, bi.birth_date)}, filh{StringHelper.oa(self, bi.gender)} de {self.toBold(self.pais(self, bi))}, portador{self.oa2(self, bi.gender)} do {bi.id_type.name} número {self.NumeroEmExtenso(bi.id_number)}, passado pelo {bi.id_issue_local.name}, aos { self.ext_data(self, bi.id_issue_date)},{vivo}"
 
     def pais(self, bi: Person):
         if bi.father_name and bi.mother_name:

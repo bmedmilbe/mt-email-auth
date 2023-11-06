@@ -207,7 +207,7 @@ class HouseCreateSerializer(ModelSerializer):
         )
 
         if not house:
-            validate_data["house_number"] = house_number
+            validate_data["house_number"] = house_number if house_number != -1 else None
             return super().create(validate_data)
         return house.first()
 
