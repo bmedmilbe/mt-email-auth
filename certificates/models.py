@@ -179,7 +179,7 @@ class PersonBirthAddress(models.Model):
         if self.birth_town:
             address = f"{address}{self.birth_town.name}, "
         if self.birth_county:
-            address = f"distrito de {address}{self.birth_county.name}, " if address == "" else f"{address}, distrito de {address}{self.birth_county.name}, "
+            address = f"distrito de {self.birth_county.name}, " if address == "" else f"{address} distrito de {self.birth_county.name}, "
 
         address = f"{address}{self.birth_country.name}"
 
