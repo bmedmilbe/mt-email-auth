@@ -143,7 +143,7 @@ REST_FRAMEWORK = {
 
 # uid = "MQ"
 # token = "afnd93-8d1799decda7137bbf57c047ed33ee86"
-DOMAIN = "localhost:3000"
+
 SITE_NAME = "Camâra Mé-Zóchi"
 DJOSER = {
     "SET_PASSWORD_RETYPE": True,
