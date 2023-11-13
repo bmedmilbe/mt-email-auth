@@ -62,3 +62,9 @@ AWS_SECRET_ACCESS_KEY=os.environ['AWS_SECRET_ACCESS_KEY']
 AWS_STORAGE_BUCKET_NAME=os.environ['AWS_STORAGE_BUCKET_NAME'] 
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com'% AWS_STORAGE_BUCKET_NAME
 
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_HOST_USER = "edmilbe@gmail.com"
+EMAIL_HOST_PASSWORD = "vpawkftfpryiqaly"
+EMAIL_PORT = 587  # 25
+EMAIL_USE_TLS = True
+
