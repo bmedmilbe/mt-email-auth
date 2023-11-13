@@ -52,6 +52,7 @@ MOVED = os.environ["MOVED"]
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
+DOMAIN = "camaramz-cc67c4aaa69f.herokuapp.com"
 
 # ALLOWED_HOSTS = ["camaramz.herokuapp.com"]
 
