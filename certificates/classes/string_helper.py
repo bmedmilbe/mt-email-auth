@@ -152,7 +152,7 @@ class StringHelper():
 
             # text = f"{text} "
 
-        pprint(text)
+        # pprint(text)
         return text
         for person in parents.all():
             index = index+1

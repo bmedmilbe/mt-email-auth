@@ -10,9 +10,9 @@ from django.conf import settings
 from .models import Information, SecreatarySection, Secretary, Service, Tour, Post, ImagesTour, Messages, Post, PostDocument, PostFile, PostImages, Role, Section, Team
 from core.serializers import UserCreateSerializer
 import urllib3
-import requests
-import requests
+
 import docx2txt
+import requests
 from io import BytesIO
 import timeago
 from datetime import datetime, timezone

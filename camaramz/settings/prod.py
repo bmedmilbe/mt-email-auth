@@ -68,3 +68,6 @@ EMAIL_HOST_PASSWORD = "vpawkftfpryiqaly"
 EMAIL_PORT = 587  # 25
 EMAIL_USE_TLS = True
 
+
+# https://www.totaljobs.com/job/warehouse-operative/proman-job101381919?utm_campaign=google_jobs_apply&utm_source=google_jobs_apply&utm_medium=organic
+

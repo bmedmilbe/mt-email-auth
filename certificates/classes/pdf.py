@@ -110,8 +110,11 @@ class PDF():
         self.date = f"{self.date}{dash[len(self.date):]}"
 
         ifen = Ifen.objects.get(name="texto")
-        dash = ifen.size * " -"
-        self.text = f"- - - {self.text}{dash[len(self.text):]}"
+        resto = len(self.text)%88
+        dash = int((resto + (88-resto))) *"-"
+        # dash = (int(int(int(len(self.text))%92)) - 6) * "_ "
+        # - - - 
+        self.text = f"{self.text}"
 
         # self.footer = StringHelper.data(StringHelper,gerado.date_issue)
         # Col
