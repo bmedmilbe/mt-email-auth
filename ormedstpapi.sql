@@ -4,18 +4,18 @@
 --
 
 COPY "public"."core_user" ("id", "password", "last_login", "is_superuser", "username", "first_name", "last_name", "is_staff", "is_active", "date_joined", "phone", "email", "valid", "parthner") FROM stdin;
-22	pbkdf2_sha256$600000$WBBF8vxh80GqO1j5BHJi2V$l4jfbhmDjPc/aNuVaeL500BMrmXNtcxhtsM49omTM2k=	\N	f	aguilardominguez87@gmail.com	Yelena	Barroso	f	t	2023-07-21 12:22:28.308511+00	\N	aguilardominguez87@gmail.com	f   2
-9	pbkdf2_sha256$600000$bHTN3Cg997NUn3qEDCDvXV$WkziTBJDbqxf6/YOBR4TyaUfbgXIoB6hFrPGjdrhTEM=	\N	f	cremildebraganca@hotmail.com	Cremilde	Bragança	f	t	2023-07-21 12:25:33.482331+00	\N	cremildebraganca@hotmail.com	f   2
-21	pbkdf2_sha256$600000$uCMcNz6WpNWqwBGhqOIAH3$PgbywCpvYdP3eFfsiMn5CjqSxY8CS6YbVo5i48yUbrI=	\N	t	m.cassandra.soares@gmail.com	Miryan	Bandeira dos Prazeres Cassandra Soares	t	t	2023-07-20 13:42:00+00	9913920	m.cassandra.soares@gmail.com	t   2
-15	pbkdf2_sha256$600000$chsCO0YHrlzPtxsTlTvaDP$aqzxA0B+xCmx+5XXqH9uTH0quM4xMwvr/17q3GuOM5w=	2023-12-09 05:56:40.220431+00	t	edmilbe	Edmilbe	Ramos	t	t	2023-04-12 16:11:43+00	07448019595	edmilbe@gmail.com	f   2
-11	pbkdf2_sha256$600000$octow83aVZlwFNU70tA6H6$F5MGnXHnmptdybk/FgYQ2E8bHlL26YqMhqpoks1Y4sg=	\N	f	niurkasolange@gmail.com	Niurka Solange	Silveira D’Almeida	f	t	2023-09-14 06:58:30.650852+00	\N	niurkasolange@gmail.com	f   2
-13	pbkdf2_sha256$600000$mpZLAOl4NCH3KjGlreOkLX$am+SMkchVKOM3Nzlk8YLK3J/shv37E8Dc8kjDQebZkA=	\N	f	bannelso@yahoo.com.br	Nelson	Bandeira	f	t	2023-09-14 07:24:07.162786+00	\N	bannelso@yahoo.com.br	f   2
-14	pbkdf2_sha256$600000$D6CpoxQ66bTk0eOAu0JBvx$Jc7Yyp0VR/t92eKT4RlfCRp3FhDXKAHEIuHrJs5b774=	\N	f	eulamaquengo@gmail.com	Eula	Carvalho Maquengo	f	t	2023-09-14 09:30:15.3463+00	\N	eulamaquengo@gmail.com	f   2
-17	pbkdf2_sha256$600000$TK7CxSRmWxyH00CrFcSE44$7du6lACTO2P7i+p9OUnsL8/dUmDMeY/oN4BZBzzxYRM=	\N	f	edmilbe24@gmail.com	Nome do miudeo	E este	f	t	2023-06-27 09:26:55.14852+00	\N	edmilbe24@gmail.com	f   2
-18	pbkdf2_sha256$600000$Nyt91TM7MqOTd99pHVy8Ex$+/SZx1vrcbJLl1LQM5xLebqeQ166KMFHN1A5oPqdvrc=	\N	f	yelleric2@gmail.com	Yell Eric	Jordão da Costa	f	t	2023-07-14 11:17:30.059548+00	\N	yelleric2@gmail.com	f   2
-19	pbkdf2_sha256$600000$Xlp1Wo5dvdkrlbO6C9CVIH$UsCgVByaJxNSeuvDR0kdmRw1qaNQmKsS/QwVIX2Nttg=	\N	f	Silvafelicia274@gmail.com	Felicia	Silva	f	t	2023-07-19 17:50:53.318288+00	\N	Silvafelicia274@gmail.com	f   2
-20	pbkdf2_sha256$600000$PgCepxlGx8vYvNJ7pI8J5o$Q8LygLCPkHvX3FrHOrpjVlbhyxIttzBYiXT9tuaiWlY=	\N	t	mcelvaznas@gmail.com	Celso	Matos	t	t	2023-07-19 17:54:08+00	9804041	mcelvaznas@gmail.com	t   2
-16	pbkdf2_sha256$600000$kYuLoSouCyMGttAvMEwcLk$DnTF0dpXwpRQf4lZfEZl1LT8a4me8jL1u/c0Z+LCeFo=	2023-09-28 15:05:24.665577+00	t	epinaneto@gmail.com	Eduardo	Pina Neto	t	t	2023-06-22 08:42:11+00	+2399985491	epinaneto@gmail.com	t   2
+22	pbkdf2_sha256$600000$WBBF8vxh80GqO1j5BHJi2V$l4jfbhmDjPc/aNuVaeL500BMrmXNtcxhtsM49omTM2k=	\N	f	aguilardominguez87@gmail.com	Yelena	Barroso	f	t	2023-07-21 12:22:28.308511+00	\N	aguilardominguez87@gmail.com	f 2
+9	pbkdf2_sha256$600000$bHTN3Cg997NUn3qEDCDvXV$WkziTBJDbqxf6/YOBR4TyaUfbgXIoB6hFrPGjdrhTEM=	\N	f	cremildebraganca@hotmail.com	Cremilde	Bragança	f	t	2023-07-21 12:25:33.482331+00	\N	cremildebraganca@hotmail.com	f 2
+21	pbkdf2_sha256$600000$uCMcNz6WpNWqwBGhqOIAH3$PgbywCpvYdP3eFfsiMn5CjqSxY8CS6YbVo5i48yUbrI=	\N	t	m.cassandra.soares@gmail.com	Miryan	Bandeira dos Prazeres Cassandra Soares	t	t	2023-07-20 13:42:00+00	9913920	m.cassandra.soares@gmail.com	t 2
+15	pbkdf2_sha256$600000$chsCO0YHrlzPtxsTlTvaDP$aqzxA0B+xCmx+5XXqH9uTH0quM4xMwvr/17q3GuOM5w=	2023-12-09 05:56:40.220431+00	t	edmilbe	Edmilbe	Ramos	t	t	2023-04-12 16:11:43+00	07448019595	edmilbe@gmail.com	f 2
+11	pbkdf2_sha256$600000$octow83aVZlwFNU70tA6H6$F5MGnXHnmptdybk/FgYQ2E8bHlL26YqMhqpoks1Y4sg=	\N	f	niurkasolange@gmail.com	Niurka Solange	Silveira D’Almeida	f	t	2023-09-14 06:58:30.650852+00	\N	niurkasolange@gmail.com	f 2
+13	pbkdf2_sha256$600000$mpZLAOl4NCH3KjGlreOkLX$am+SMkchVKOM3Nzlk8YLK3J/shv37E8Dc8kjDQebZkA=	\N	f	bannelso@yahoo.com.br	Nelson	Bandeira	f	t	2023-09-14 07:24:07.162786+00	\N	bannelso@yahoo.com.br	f 2
+14	pbkdf2_sha256$600000$D6CpoxQ66bTk0eOAu0JBvx$Jc7Yyp0VR/t92eKT4RlfCRp3FhDXKAHEIuHrJs5b774=	\N	f	eulamaquengo@gmail.com	Eula	Carvalho Maquengo	f	t	2023-09-14 09:30:15.3463+00	\N	eulamaquengo@gmail.com	f 2
+17	pbkdf2_sha256$600000$TK7CxSRmWxyH00CrFcSE44$7du6lACTO2P7i+p9OUnsL8/dUmDMeY/oN4BZBzzxYRM=	\N	f	edmilbe24@gmail.com	Nome do miudeo	E este	f	t	2023-06-27 09:26:55.14852+00	\N	edmilbe24@gmail.com	f 2
+18	pbkdf2_sha256$600000$Nyt91TM7MqOTd99pHVy8Ex$+/SZx1vrcbJLl1LQM5xLebqeQ166KMFHN1A5oPqdvrc=	\N	f	yelleric2@gmail.com	Yell Eric	Jordão da Costa	f	t	2023-07-14 11:17:30.059548+00	\N	yelleric2@gmail.com	f 2
+19	pbkdf2_sha256$600000$Xlp1Wo5dvdkrlbO6C9CVIH$UsCgVByaJxNSeuvDR0kdmRw1qaNQmKsS/QwVIX2Nttg=	\N	f	Silvafelicia274@gmail.com	Felicia	Silva	f	t	2023-07-19 17:50:53.318288+00	\N	Silvafelicia274@gmail.com	f 2
+20	pbkdf2_sha256$600000$PgCepxlGx8vYvNJ7pI8J5o$Q8LygLCPkHvX3FrHOrpjVlbhyxIttzBYiXT9tuaiWlY=	\N	t	mcelvaznas@gmail.com	Celso	Matos	t	t	2023-07-19 17:54:08+00	9804041	mcelvaznas@gmail.com	t 2
+16	pbkdf2_sha256$600000$kYuLoSouCyMGttAvMEwcLk$DnTF0dpXwpRQf4lZfEZl1LT8a4me8jL1u/c0Z+LCeFo=	2023-09-28 15:05:24.665577+00	t	epinaneto@gmail.com	Eduardo	Pina Neto	t	t	2023-06-22 08:42:11+00	+2399985491	epinaneto@gmail.com	t 2
 \.
 
 
