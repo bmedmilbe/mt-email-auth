@@ -1,6 +1,6 @@
 
 
-COPY "public"."blog_area" ("id", "title") FROM stdin;
+COPY "public"."ormed_area" ("id", "title") FROM stdin;
 1	Clinica Geral
 2	Ortopedia
 3	Cirurgia Geral
@@ -19,10 +19,10 @@ COPY "public"."blog_area" ("id", "title") FROM stdin;
 
 
 --
--- Data for Name: blog_country; Type: TABLE DATA; Schema: public; Owner: yvnrmnimddzwou
+-- Data for Name: ormed_country; Type: TABLE DATA; Schema: public; Owner: yvnrmnimddzwou
 --
 
-COPY "public"."blog_country" ("id", "name") FROM stdin;
+COPY "public"."ormed_country" ("id", "name") FROM stdin;
 1	São Tomé e Príncipe
 2	Cuba
 3	Portugal
@@ -40,10 +40,10 @@ COPY "public"."blog_country" ("id", "name") FROM stdin;
 
 
 --
--- Data for Name: blog_doctor; Type: TABLE DATA; Schema: public; Owner: yvnrmnimddzwou
+-- Data for Name: ormed_doctor; Type: TABLE DATA; Schema: public; Owner: yvnrmnimddzwou
 --
 
-COPY "public"."blog_doctor" ("id", "birth_date", "bio", "id_number", "area_id", "country_id", "id_type_id", "level_id", "verified", "create_at", "user_id", "id_valid", "document", "picture") FROM stdin;
+COPY "public"."ormed_doctor" ("id", "birth_date", "bio", "id_number", "area_id", "country_id", "id_type_id", "level_id", "verified", "create_at", "user_id", "id_valid", "document", "picture") FROM stdin;
 2	2005-05-31	hgfaduh ljhdlh	8748654	1	1	1	1	f	2023-06-27 09:26:55.372738+00	17	2023-06-27	\N	\N
 6	1983-03-31	Médica cardiologista, HAM	84608	4	1	1	1	t	2023-07-20 13:42:01.082166+00	21	2023-09-20		ormed/doctors/images/Screenshot_2023-07-09-20-31-15-743-edit_com.facebook.katana2.jpg
 4	1965-02-22	Licenciada em medicina desde 1985. Trabalho atualmente no serviço de pediatria do HAM	33713	1	1	1	1	t	2023-07-19 17:50:53.549846+00	19	2023-07-19		ormed/doctors/images/image0_2.jpeg
@@ -59,19 +59,19 @@ COPY "public"."blog_doctor" ("id", "birth_date", "bio", "id_number", "area_id", 
 
 
 --
--- Data for Name: blog_gallery; Type: TABLE DATA; Schema: public; Owner: yvnrmnimddzwou
+-- Data for Name: ormed_gallery; Type: TABLE DATA; Schema: public; Owner: yvnrmnimddzwou
 --
 
-COPY "public"."blog_gallery" ("id", "title", "date", "description", "slug", "active") FROM stdin;
+COPY "public"."ormed_gallery" ("id", "title", "date", "description", "slug", "active") FROM stdin;
 1	Congresso Ormed	2023-06-22 09:24:51.788398+00	Fotos do congresso f	congresso-ormed	t
 \.
 
 
 --
--- Data for Name: blog_idtype; Type: TABLE DATA; Schema: public; Owner: yvnrmnimddzwou
+-- Data for Name: ormed_idtype; Type: TABLE DATA; Schema: public; Owner: yvnrmnimddzwou
 --
 
-COPY "public"."blog_idtype" ("id", "name") FROM stdin;
+COPY "public"."ormed_idtype" ("id", "name") FROM stdin;
 1	Bilhete de Identidade
 2	Passaporte
 3	Cartão de Residência Temporário
@@ -79,19 +79,19 @@ COPY "public"."blog_idtype" ("id", "name") FROM stdin;
 
 
 --
--- Data for Name: blog_imagesgallery; Type: TABLE DATA; Schema: public; Owner: yvnrmnimddzwou
+-- Data for Name: ormed_imagesgallery; Type: TABLE DATA; Schema: public; Owner: yvnrmnimddzwou
 --
 
-COPY "public"."blog_imagesgallery" ("id", "image", "gallery_id") FROM stdin;
+COPY "public"."ormed_imagesgallery" ("id", "image", "gallery_id") FROM stdin;
 6	ormed/gallerys/images/cris-tagupa-9ZXHUr5aCwM-unsplash.jpg	1
 \.
 
 
 --
--- Data for Name: blog_law; Type: TABLE DATA; Schema: public; Owner: yvnrmnimddzwou
+-- Data for Name: ormed_law; Type: TABLE DATA; Schema: public; Owner: yvnrmnimddzwou
 --
 
-COPY "public"."blog_law" ("id", "file", "title", "description", "slug") FROM stdin;
+COPY "public"."ormed_law" ("id", "file", "title", "description", "slug") FROM stdin;
 4	ormed/laws/documents/II_Congresso_Ordinario_-_Deliberacao_nº_1_de_7_de_Maio_de_2016_-_Atualizado.pdf	Regulamento de Inscrição e Renovação na ORMED	Deliberação n.o 1, de 7 de Maio de 2016 \r\nRegulamento de Inscrição e de Renovação da Inscrição na Ordem dos Médicos de São Tomé e Príncipe - ORMED-STP \r\nCom a publicação e a entrada em vigor Lei nº 8/2014, de 15 de Dezembro Lei que  criou a  Ordem dos Médicos de São Tomé e Príncipe (ORMED-STP) e aprovou o respetivo Estatuto foram igualmente institucionalizados os respetivos órgãos sociais, nomeadamente o Conselho Executivo da Ordem	regulamento-de-inscricao-e-renovacao-na-ormed
 5	ormed/laws/documents/Aprova_o_estatuto_da_ordem_dos_medicos_de_sao_tome_e_principe_-_Leinº8_-_20.pdf	Estatuto da Ordem dos Médicos	A Ordem dos Médicos congrega todos os licenciados em Medicina, doravante designados de médicos, que, residindo no País, exerçam, queiram exercer, ou tenham exercido em qualquer regime de trabalho, a profissão médica, na observância das disposições do presente Estatuto.	estatuto-da-ordem-dos-medicos
 6	ormed/laws/documents/ormed.pdf	Acta IV e V Congresso Ordinário	Regulamento n1/2018 de Estagio de Familiarização Deliberação n002/2018 de Trajo e Insígnia profissional\r\nRegulamento Geral dos Colégios de Especialidades	acta-iv-e-v-congresso-ordinario
@@ -99,10 +99,10 @@ COPY "public"."blog_law" ("id", "file", "title", "description", "slug") FROM std
 
 
 --
--- Data for Name: blog_level; Type: TABLE DATA; Schema: public; Owner: yvnrmnimddzwou
+-- Data for Name: ormed_level; Type: TABLE DATA; Schema: public; Owner: yvnrmnimddzwou
 --
 
-COPY "public"."blog_level" ("id", "title") FROM stdin;
+COPY "public"."ormed_level" ("id", "title") FROM stdin;
 1	Licenciatura
 2	Mestrado
 3	Doutoramento
@@ -110,10 +110,10 @@ COPY "public"."blog_level" ("id", "title") FROM stdin;
 
 
 --
--- Data for Name: blog_messages; Type: TABLE DATA; Schema: public; Owner: yvnrmnimddzwou
+-- Data for Name: ormed_messages; Type: TABLE DATA; Schema: public; Owner: yvnrmnimddzwou
 --
 
-COPY "public"."blog_messages" ("id", "name", "email", "subject_id", "text", "sent", "date") FROM stdin;
+COPY "public"."ormed_messages" ("id", "name", "email", "subject_id", "text", "sent", "date") FROM stdin;
 1	Eduardo Pina Neto	edmilbe@gmail.com	1	criterios de inscrição na ordem	t	2023-06-22 08:56:30.323855+00
 2	Edmilbe Ramos	edmilbe14@hotmail.com	1	Mensagem teste!	t	2023-07-07 14:06:46.715902+00
 3	Felicia Silva	silvafelicia274@gmail.com	1	Estou na rede	t	2023-07-19 18:02:29.953775+00
@@ -121,10 +121,10 @@ COPY "public"."blog_messages" ("id", "name", "email", "subject_id", "text", "sen
 
 
 --
--- Data for Name: blog_post; Type: TABLE DATA; Schema: public; Owner: yvnrmnimddzwou
+-- Data for Name: ormed_post; Type: TABLE DATA; Schema: public; Owner: yvnrmnimddzwou
 --
 
-COPY "public"."blog_post" ("id", "title", "date", "picture", "active", "slug", "text_file") FROM stdin;
+COPY "public"."ormed_post" ("id", "title", "date", "picture", "active", "slug", "text_file") FROM stdin;
 2	Ordem dos Médicos promete mais e melhor saúde para todos	2023-06-26 21:55:50.301543+00	ormed/posts/images/Ordem-dos-médicos-3-.jpg	t	ordem-dos-medicos-promete-mais-e-melhor-saude-para-todos	ormed/posts/documents/Ordem_dos_Médicos_promete_mais_e_melhor_saúde_para_todos.docx
 3	Quem é o nosso Bastinário	2023-12-01 17:03:06.894879+00	ormed/posts/images/celsomatoss.jpg	t	quem-e-o-nosso-bastinario	ormed/posts/documents/Celso_Matos.docx
 4	Formação Específica com a China	2023-12-01 17:13:09.659516+00	ormed/posts/images/Medicos-para-China-1-2-2048x1536.jpg	t	formacao-especifica-com-a-china	ormed/posts/documents/Formacao_China.docx
@@ -134,26 +134,26 @@ COPY "public"."blog_post" ("id", "title", "date", "picture", "active", "slug", "
 
 
 --
--- Data for Name: blog_postdocument; Type: TABLE DATA; Schema: public; Owner: yvnrmnimddzwou
+-- Data for Name: ormed_postdocument; Type: TABLE DATA; Schema: public; Owner: yvnrmnimddzwou
 --
 
-COPY "public"."blog_postdocument" ("id", "document", "post_id") FROM stdin;
+COPY "public"."ormed_postdocument" ("id", "document", "post_id") FROM stdin;
 \.
 
 
 --
--- Data for Name: blog_postfile; Type: TABLE DATA; Schema: public; Owner: yvnrmnimddzwou
+-- Data for Name: ormed_postfile; Type: TABLE DATA; Schema: public; Owner: yvnrmnimddzwou
 --
 
-COPY "public"."blog_postfile" ("id", "file") FROM stdin;
+COPY "public"."ormed_postfile" ("id", "file") FROM stdin;
 \.
 
 
 --
--- Data for Name: blog_postimages; Type: TABLE DATA; Schema: public; Owner: yvnrmnimddzwou
+-- Data for Name: ormed_postimages; Type: TABLE DATA; Schema: public; Owner: yvnrmnimddzwou
 --
 
-COPY "public"."blog_postimages" ("id", "picture", "post_id") FROM stdin;
+COPY "public"."ormed_postimages" ("id", "picture", "post_id") FROM stdin;
 1	ormed/posts/images/Ordem-dos-médicos-.jpg	2
 2	ormed/posts/images/Dr-Celso-Matos--e1629875061776.jpg	2
 3	ormed/posts/images/Ordem-dos-médicos-1-e1629874989655.jpg	2
@@ -164,18 +164,18 @@ COPY "public"."blog_postimages" ("id", "picture", "post_id") FROM stdin;
 
 
 --
--- Data for Name: blog_postvideos; Type: TABLE DATA; Schema: public; Owner: yvnrmnimddzwou
+-- Data for Name: ormed_postvideos; Type: TABLE DATA; Schema: public; Owner: yvnrmnimddzwou
 --
 
-COPY "public"."blog_postvideos" ("id", "video", "post_id") FROM stdin;
+COPY "public"."ormed_postvideos" ("id", "video", "post_id") FROM stdin;
 \.
 
 
 --
--- Data for Name: blog_role; Type: TABLE DATA; Schema: public; Owner: yvnrmnimddzwou
+-- Data for Name: ormed_role; Type: TABLE DATA; Schema: public; Owner: yvnrmnimddzwou
 --
 
-COPY "public"."blog_role" ("id", "title") FROM stdin;
+COPY "public"."ormed_role" ("id", "title") FROM stdin;
 1	Secretario do Conselho SNSMP
 6	Bastonário
 7	Vice-Bastonário
@@ -198,10 +198,10 @@ COPY "public"."blog_role" ("id", "title") FROM stdin;
 
 
 --
--- Data for Name: blog_section; Type: TABLE DATA; Schema: public; Owner: yvnrmnimddzwou
+-- Data for Name: ormed_section; Type: TABLE DATA; Schema: public; Owner: yvnrmnimddzwou
 --
 
-COPY "public"."blog_section" ("id", "title") FROM stdin;
+COPY "public"."ormed_section" ("id", "title") FROM stdin;
 2	Conselho Fiscal
 3	Conselho de Disciplina, Ética e de Deontologia Médica
 4	Conselho de Ensino, Educação e Carreiras Médicas
@@ -210,10 +210,10 @@ COPY "public"."blog_section" ("id", "title") FROM stdin;
 
 
 --
--- Data for Name: blog_team; Type: TABLE DATA; Schema: public; Owner: yvnrmnimddzwou
+-- Data for Name: ormed_team; Type: TABLE DATA; Schema: public; Owner: yvnrmnimddzwou
 --
 
-COPY "public"."blog_team" ("id", "doctor_id", "role_id") FROM stdin;
+COPY "public"."ormed_team" ("id", "doctor_id", "role_id") FROM stdin;
 2	1	1
 3	4	3
 4	3	12
@@ -225,10 +225,10 @@ COPY "public"."blog_team" ("id", "doctor_id", "role_id") FROM stdin;
 
 
 --
--- Data for Name: blog_usersection; Type: TABLE DATA; Schema: public; Owner: yvnrmnimddzwou
+-- Data for Name: ormed_usersection; Type: TABLE DATA; Schema: public; Owner: yvnrmnimddzwou
 --
 
-COPY "public"."blog_usersection" ("id", "section_id", "user_id") FROM stdin;
+COPY "public"."ormed_usersection" ("id", "section_id", "user_id") FROM stdin;
 1	1	19
 2	4	21
 3	4	18
