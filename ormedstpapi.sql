@@ -7,7 +7,6 @@ COPY "public"."core_user" ("id", "password", "last_login", "is_superuser", "user
 22	pbkdf2_sha256$600000$WBBF8vxh80GqO1j5BHJi2V$l4jfbhmDjPc/aNuVaeL500BMrmXNtcxhtsM49omTM2k=	\N	f	aguilardominguez87@gmail.com	Yelena	Barroso	f	t	2023-07-21 12:22:28.308511+00	\N	aguilardominguez87@gmail.com	f
 10	pbkdf2_sha256$600000$bHTN3Cg997NUn3qEDCDvXV$WkziTBJDbqxf6/YOBR4TyaUfbgXIoB6hFrPGjdrhTEM=	\N	f	cremildebraganca@hotmail.com	Cremilde	Bragança	f	t	2023-07-21 12:25:33.482331+00	\N	cremildebraganca@hotmail.com	f
 21	pbkdf2_sha256$600000$uCMcNz6WpNWqwBGhqOIAH3$PgbywCpvYdP3eFfsiMn5CjqSxY8CS6YbVo5i48yUbrI=	\N	t	m.cassandra.soares@gmail.com	Miryan	Bandeira dos Prazeres Cassandra Soares	t	t	2023-07-20 13:42:00+00	9913920	m.cassandra.soares@gmail.com	t
-15	pbkdf2_sha256$600000$chsCO0YHrlzPtxsTlTvaDP$aqzxA0B+xCmx+5XXqH9uTH0quM4xMwvr/17q3GuOM5w=	2023-12-09 05:56:40.220431+00	t	edmilbe	Edmilbe	Ramos	t	t	2023-04-12 16:11:43+00	07448019595	edmilbe@gmail.com	f
 11	pbkdf2_sha256$600000$octow83aVZlwFNU70tA6H6$F5MGnXHnmptdybk/FgYQ2E8bHlL26YqMhqpoks1Y4sg=	\N	f	niurkasolange@gmail.com	Niurka Solange	Silveira D’Almeida	f	t	2023-09-14 06:58:30.650852+00	\N	niurkasolange@gmail.com	f
 13	pbkdf2_sha256$600000$mpZLAOl4NCH3KjGlreOkLX$am+SMkchVKOM3Nzlk8YLK3J/shv37E8Dc8kjDQebZkA=	\N	f	bannelso@yahoo.com.br	Nelson	Bandeira	f	t	2023-09-14 07:24:07.162786+00	\N	bannelso@yahoo.com.br	f
 14	pbkdf2_sha256$600000$D6CpoxQ66bTk0eOAu0JBvx$Jc7Yyp0VR/t92eKT4RlfCRp3FhDXKAHEIuHrJs5b774=	\N	f	eulamaquengo@gmail.com	Eula	Carvalho Maquengo	f	t	2023-09-14 09:30:15.3463+00	\N	eulamaquengo@gmail.com	f
