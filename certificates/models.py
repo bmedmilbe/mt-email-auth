@@ -11,7 +11,7 @@ from datetime import datetime
 
 class Customer(models.Model):
     user = models.OneToOneField(
-        settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     level = models.IntegerField(default=1, null=True)
 

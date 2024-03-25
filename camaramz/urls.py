@@ -18,14 +18,18 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 
-admin.site.site_header = "Camara MZ Admin"
+admin.site.site_header = "Site Tops"
 admin.site.index_title = "Admin Panel"
 
 urlpatterns = [
     path("", include("core.urls")),
     path("admin/", admin.site.urls),
     path("certificates/", include("certificates.urls")),
-    path("blog/", include("blog.urls")),
+    path("cmz/", include("cmz.urls")),
+    path("ormed/", include("ormed.urls")),
+    path("cecab/", include("cecab.urls")),
+    path("nanehouse/", include("nanehouse.urls")),
+    path("setup/", include("setup.urls")),
     path("auth/", include("djoser.urls")),
     path("auth/", include("djoser.urls.jwt")),
 ]

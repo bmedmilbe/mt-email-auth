@@ -43,7 +43,11 @@ INSTALLED_APPS = [
     "corsheaders",
     "djoser",
     "certificates",
-    "blog",
+    "cmz",
+    "ormed",
+    "cecab",
+    "nanehouse",
+    "setup",
     "core",
 ]
 
@@ -163,6 +167,10 @@ DJOSER = {
         "password_reset_confirm_retype": "core.serializers.PasswordResetConfirmRetypeSerializer",
         # 'token_create': 'apps.accounts.serializers.CustomTokenCreateSerializer',
     },
+    # 'EMAIL': {
+    #     'password_reset': 'your_app.views.PasswordResetEmail',
+    # },
+
 }
 
 
@@ -241,3 +249,42 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 MOVED = 872
+
+EMAIL_HOST_USER = "edmilbe@gmail.com"
+EMAIL_HOST_PASSWORD = "vpawkftfpryiqaly"
+
+WEBSITES = ["CMZ", "ORMED", "CECAB", "NANEHOUSE"]
+
+
+EMAILS = {
+    WEBSITES[0]: {
+        "EMAIL": "edmilbe@gmail.com",
+        "PASSWORD":  "vpawkftfpryiqaly",
+        "WEBSITE":  "https://camaramz-cc67c4aaa69f.herokuapp.com/",
+        "LOGO":  "https://www.camaramezochi.st/files/stp/camara2.png",
+
+    },
+    WEBSITES[1]: {
+        "EMAIL": "ormedstp@gmail.com",
+        "PASSWORD":  "tbsrqlvuphlkqkce",
+        "WEBSITE":  "https://ormedstp.herokuapp.com/",
+        "LOGO":  "https://ormedstp.herokuapp.com/images/logo-2.png",
+
+    },
+    WEBSITES[2]: {
+        "EMAIL": "direcaocecab@gmail.com",
+        "PASSWORD":  "pfyp czdj ihkz ghik",
+        "WEBSITE":  "https://www.cecab.st/",
+        "LOGO":  "https://www.cecab.st/images/logo.png",
+
+    },
+    WEBSITES[3]: {
+        "EMAIL": EMAIL_HOST_USER,
+        "PASSWORD":  EMAIL_HOST_PASSWORD,
+        "WEBSITE":  "https://www.edmilbe.pro/",
+        "LOGO":  "https://edmilbe-fa58f9b99040.herokuapp.com/light/assets/imgs/header/profile.jpg",
+
+    },
+}
+
+

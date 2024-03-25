@@ -6,6 +6,13 @@ from django.contrib.auth.models import AbstractUser
 
 class User(AbstractUser):
     email = models.EmailField(unique=True)
+    parthner = models.IntegerField(default=1)
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = ["username"]  # removes email from REQUIRED_FIELDS
+    
     # REQUIRED_FIELDS = []  # removes email from REQUIRED_FIELDS
+
+    def __str__(self) -> str:
+        return f'{self.first_name} {self.last_name}'
+
+

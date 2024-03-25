@@ -3,14 +3,26 @@ from djoser.serializers import (
     UserSerializer,
     SetPasswordRetypeSerializer,
     SetUsernameSerializer,
-    SendEmailResetSerializer,
+    # SendEmailResetSerializer,
     PasswordResetConfirmRetypeSerializer,
 )
 from django.db.transaction import atomic
-
+from rest_framework.serializers import ModelSerializer
+from rest_framework import serializers
 from .models import User
 from pprint import pprint
+import random
+import string
+from django.conf import settings
 
+from django.core.mail import get_connection, send_mail
+from django.core.mail.message import EmailMessage
+from django.template.loader import render_to_string
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import get_template
+from django.template import Context
+
+# https://stackoverflow.com/questions/2809547/creating-email-templates-with-django
 
 class UserCreateSerializer(UserCreateSerializer):
     class Meta:
@@ -20,6 +32,7 @@ class UserCreateSerializer(UserCreateSerializer):
             "first_name",
             "last_name",
             "email",
+            "parthner",
             "password",
             "username",
         ]
@@ -37,49 +50,28 @@ class UserSerializer(UserSerializer):
         ]
 
 
-class SendEmailResetSerializer(SendEmailResetSerializer):
-    class Meta:
-        model = User
-        fields = ["id", "email"]
 
 
-class PasswordResetConfirmRetypeSerializer(PasswordResetConfirmRetypeSerializer):
+class PasswordResetConfirmRetypeSerializer(ModelSerializer):
     class Meta:
         model = User
         fields = ["id", "uid", "token", "new_password", "re_new_password"]
 
+    def create(self, validated_data):
+        email = validated_data['email']
+        UserTokens.objects.filter(email=email).delete()
+        reset_instance = UserTokens.objects.create(email=email)
 
-class SetPasswordRetypeSerializer(SetPasswordRetypeSerializer):
+        return reset_instance
+
+
+class SetPasswordRetypeSerializer(ModelSerializer):
     class Meta:
         model = User
         fields = ["id", "current_password", "new_password", "re_new_password"]
 
 
-class SetUsernameSerializer(SetUsernameSerializer):
+class SetUsernameSerializer(ModelSerializer):
     class Meta:
         model = User
         fields = ["id", "new_email", "re_new_email", "current_password"]
-
-
-class SetUsernameSerializer(SetUsernameSerializer):
-    class Meta:
-        model = User
-        fields = ["id", "new_email", "re_new_email", "current_password"]
-
-    # atomic()
-
-    # def update(self, instance, validated_data):
-    #     pprint(validated_data)
-    #     data = validated_data
-    #     data['email'] = data['new_username']
-    #     return super().update(instance, data)
-
-
-# new_password
-# re_new_password
-# current_password
-# HTTP 204 No Content
-
-# new_{USERNAME_FIELD}
-# re_new_{USERNAME_FIELD}
-# current_password

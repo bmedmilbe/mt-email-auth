@@ -9,6 +9,12 @@ import json
 from pprint import pprint
 # Create your views here.
 import logging
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.decorators import action, api_view
+from rest_framework.response import Response
+from rest_framework import serializers, status
+from rest_framework.viewsets import ModelViewSet, GenericViewSet
 
 logger = logging.getLogger(__name__)
 
@@ -60,3 +66,4 @@ def my_address(request):
     
 
     # return render(request, 'core/hello.html', {'data':location_data})
+
