@@ -2,10 +2,10 @@
 
 
 --
--- Data for Name: blog_association; Type: TABLE DATA; Schema: public; Owner: mivtooimwtygwz
+-- Data for Name: cecab_association; Type: TABLE DATA; Schema: public; Owner: mivtooimwtygwz
 --
 
-COPY "public"."blog_association" ("id", "name", "registered", "address", "president_name", "number_of_associated", "picture", "district_id") FROM stdin;
+COPY "public"."cecab_association" ("id", "name", "registered", "address", "president_name", "number_of_associated", "picture", "district_id") FROM stdin;
 42	São José	2004-01-01	Norte	x	39	cecab/blog/association_images/São_José.png	1
 7	Boa Entrada	2004-01-01	Centro	x	92	cecab/blog/association_images/th_1.jpg	3
 3	Agua Sampaio	2004-01-01	Centro	x	51	cecab/blog/association_images/th_1.jpg	3
@@ -50,27 +50,27 @@ COPY "public"."blog_association" ("id", "name", "registered", "address", "presid
 
 
 --
--- Data for Name: blog_associationimages; Type: TABLE DATA; Schema: public; Owner: mivtooimwtygwz
+-- Data for Name: cecab_associationimages; Type: TABLE DATA; Schema: public; Owner: mivtooimwtygwz
 --
 
-COPY "public"."blog_associationimages" ("id", "image", "associaton_id") FROM stdin;
+COPY "public"."cecab_associationimages" ("id", "image", "associaton_id") FROM stdin;
 \.
 
 
 --
--- Data for Name: blog_band; Type: TABLE DATA; Schema: public; Owner: mivtooimwtygwz
+-- Data for Name: cecab_band; Type: TABLE DATA; Schema: public; Owner: mivtooimwtygwz
 --
 
-COPY "public"."blog_band" ("id", "title", "link", "picture") FROM stdin;
+COPY "public"."cecab_band" ("id", "title", "link", "picture") FROM stdin;
 1	Guadalupe	https://www.youtube.com/watch?v=PKN09s8QFC0	
 \.
 
 
 --
--- Data for Name: blog_district; Type: TABLE DATA; Schema: public; Owner: mivtooimwtygwz
+-- Data for Name: cecab_district; Type: TABLE DATA; Schema: public; Owner: mivtooimwtygwz
 --
 
-COPY "public"."blog_district" ("id", "name") FROM stdin;
+COPY "public"."cecab_district" ("id", "name") FROM stdin;
 1	Lembá
 3	Lobata
 2	Mê Zóchi
@@ -78,10 +78,10 @@ COPY "public"."blog_district" ("id", "name") FROM stdin;
 
 
 --
--- Data for Name: blog_messages; Type: TABLE DATA; Schema: public; Owner: mivtooimwtygwz
+-- Data for Name: cecab_messages; Type: TABLE DATA; Schema: public; Owner: mivtooimwtygwz
 --
 
-COPY "public"."blog_messages" ("id", "name", "email", "text", "subject", "sent", "date") FROM stdin;
+COPY "public"."cecab_messages" ("id", "name", "email", "text", "subject", "sent", "date") FROM stdin;
 1	Edmilbe	edmilbe@gmail.com	Message Text	New Subject	t	2023-11-24 11:20:06.84883+00
 2	Kilo	kilo@gmail.com	Menagem qq!	Informcao	t	2023-11-24 15:24:17.380592+00
 3	Kilo	kilo@gmail.com	Menagem qq! 2	Informcao	t	2023-11-24 15:26:37.017315+00
@@ -89,81 +89,81 @@ COPY "public"."blog_messages" ("id", "name", "email", "text", "subject", "sent",
 
 
 --
--- Data for Name: blog_pathner; Type: TABLE DATA; Schema: public; Owner: mivtooimwtygwz
+-- Data for Name: cecab_pathner; Type: TABLE DATA; Schema: public; Owner: mivtooimwtygwz
 --
 
-COPY "public"."blog_pathner" ("id", "title", "picture") FROM stdin;
+COPY "public"."cecab_pathner" ("id", "title", "picture") FROM stdin;
 1	Kaoká	cecab/blog/pathner_images/th_3.jpg
 \.
 
 
 --
--- Data for Name: blog_post; Type: TABLE DATA; Schema: public; Owner: mivtooimwtygwz
+-- Data for Name: cecab_post; Type: TABLE DATA; Schema: public; Owner: mivtooimwtygwz
 --
 
-COPY "public"."blog_post" ("id", "title", "slug", "picture", "text_file", "active", "date") FROM stdin;
+COPY "public"."cecab_post" ("id", "title", "slug", "picture", "text_file", "active", "date") FROM stdin;
 1	Dia da Mulher	dia-da-mulher	cecab/blog/post_images/th_5.jpg	cecab/blog/posts/Novo_Documento_do_Microsoft_Word.docx	t	2023-11-24 11:02:28.334387+00
 \.
 
 
 --
--- Data for Name: blog_postdocument; Type: TABLE DATA; Schema: public; Owner: mivtooimwtygwz
+-- Data for Name: cecab_postdocument; Type: TABLE DATA; Schema: public; Owner: mivtooimwtygwz
 --
 
-COPY "public"."blog_postdocument" ("id", "document", "post_id") FROM stdin;
+COPY "public"."cecab_postdocument" ("id", "document", "post_id") FROM stdin;
 \.
 
 
 --
--- Data for Name: blog_postimages; Type: TABLE DATA; Schema: public; Owner: mivtooimwtygwz
+-- Data for Name: cecab_postimages; Type: TABLE DATA; Schema: public; Owner: mivtooimwtygwz
 --
 
-COPY "public"."blog_postimages" ("id", "picture", "post_id") FROM stdin;
+COPY "public"."cecab_postimages" ("id", "picture", "post_id") FROM stdin;
 2	cecab/blog/post_images/WIN_20231116_09_18_30_Pro.jpg	1
 \.
 
 
 --
--- Data for Name: blog_postvideos; Type: TABLE DATA; Schema: public; Owner: mivtooimwtygwz
+-- Data for Name: cecab_postvideos; Type: TABLE DATA; Schema: public; Owner: mivtooimwtygwz
 --
 
-COPY "public"."blog_postvideos" ("id", "video", "post_id") FROM stdin;
+COPY "public"."cecab_postvideos" ("id", "video", "post_id") FROM stdin;
 1	https://www.youtube.com/watch?v=9fb68HBMVWY	1
 \.
 
 
 --
--- Data for Name: blog_role; Type: TABLE DATA; Schema: public; Owner: mivtooimwtygwz
+-- Data for Name: cecab_role; Type: TABLE DATA; Schema: public; Owner: mivtooimwtygwz
 --
 
-COPY "public"."blog_role" ("id", "title") FROM stdin;
+COPY "public"."cecab_role" ("id", "title") FROM stdin;
 1	Diretor Executivo
 \.
 
 
 --
--- Data for Name: blog_spot; Type: TABLE DATA; Schema: public; Owner: mivtooimwtygwz
+-- Data for Name: cecab_spot; Type: TABLE DATA; Schema: public; Owner: mivtooimwtygwz
 --
 
-COPY "public"."blog_spot" ("id", "title", "link", "created_at", "picture") FROM stdin;
+COPY "public"."cecab_spot" ("id", "title", "link", "created_at", "picture") FROM stdin;
 1	Dia da Mulher	https://www.youtube.com/watch?v=PKN09s8QFC0	2023-09-12	cecab/blog/band_images/WIN_20231116_09_18_30_Pro.jpg
 \.
 
 
 --
--- Data for Name: blog_team; Type: TABLE DATA; Schema: public; Owner: mivtooimwtygwz
+-- Data for Name: cecab_team; Type: TABLE DATA; Schema: public; Owner: mivtooimwtygwz
 --
 
-COPY "public"."blog_team" ("id", "name", "picture", "role_id") FROM stdin;
+COPY "public"."cecab_team" ("id", "name", "picture", "role_id") FROM stdin;
 2	Kilo	cecab/blog/team_images/th_3.jpg	1
 \.
 
 
 --
--- Data for Name: blog_yeargols; Type: TABLE DATA; Schema: public; Owner: mivtooimwtygwz
+-- Data for Name: cecab_yeargols; Type: TABLE DATA; Schema: public; Owner: mivtooimwtygwz
 --
 
-COPY "public"."blog_yeargols" ("id", "year", "associations", "agricultors", "products") FROM stdin;
+COPY "public"."cecab_yeargols" ("id", "year", "associations", "agricultors", "products") FROM stdin;
 1	2020	42	3000	120.00
 \.
 
