@@ -2,6 +2,14 @@ from django.contrib import admin
 from . import models
 # Register your models here.
 
+from django.contrib.contenttypes.models import ContentType
+
+
+
+@admin.register(ContentType)
+class ContentTypeAdmin(admin.ModelAdmin):
+    list_display = ["id", "model", "app_label"]
+
 
 @admin.register(models.User)
 class UserAdmin(admin.ModelAdmin):

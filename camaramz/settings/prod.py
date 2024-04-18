@@ -11,7 +11,7 @@ from .common import *
 # EMAIL_USE_TLS = os.environ["EMAIL_USE_TLS"]
 
 DEBUG = False
-ALLOWED_HOSTS = ["camaramzapi-6cf2b687304f.herokuapp.com","cecabapi-37570558936e.herokuapp.com", "ormedstpapi.herokuapp.com"]
+ALLOWED_HOSTS = ["camaramzapi-6cf2b687304f.herokuapp.com"]
 DJANGO_SETTINGS_MODULE = os.environ["DJANGO_SETTINGS_MODULE"]
 
 

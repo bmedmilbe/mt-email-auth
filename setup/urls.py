@@ -6,6 +6,7 @@ router = routers.DefaultRouter()
 
 
 router.register("email_reset", views.PasswordViewSet, basename="password")
+router.register("reset_password_confirm", views.PasswordConfirmViewSet, basename="password_confirm")
 
 
 # customers_router.register(r"parcels", views.ParcelsViewSet, basename="customer-parcels")

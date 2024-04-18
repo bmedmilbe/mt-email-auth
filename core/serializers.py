@@ -21,6 +21,8 @@ from django.template.loader import render_to_string
 from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
 from django.template import Context
+from django.contrib.contenttypes.models import ContentType
+# from django.contrib.auth.models import User
 
 # https://stackoverflow.com/questions/2809547/creating-email-templates-with-django
 
@@ -53,16 +55,33 @@ class UserSerializer(UserSerializer):
 
 
 class PasswordResetConfirmRetypeSerializer(ModelSerializer):
+    uid = serializers.CharField()
+    token = serializers.UUIDField()
+    new_password = serializers.CharField()
+    re_new_password = serializers.CharField()
+
+
     class Meta:
         model = User
-        fields = ["id", "uid", "token", "new_password", "re_new_password"]
+        fields = ["uid", "token", "new_password", "re_new_password"]
 
     def create(self, validated_data):
-        email = validated_data['email']
-        UserTokens.objects.filter(email=email).delete()
-        reset_instance = UserTokens.objects.create(email=email)
 
-        return reset_instance
+        if validated_data['new_password'] != validated_data['re_new_password']:
+            serializers.ValidationError("Password not equal")
+
+        email = validated_data['email']
+        ct = ContentType.objects.get_for_id(50)
+        UserTokens = ct.model_class()
+        users = UserTokens.objects.filter(token=validated_data['token'])
+        if users.exists:
+            user = User.objects.get(email=users.first().email)
+            user.set_password(validated_data['re_new_password'])  # Replace with the desired new password
+            user.save()
+            users.delete()
+        # reset_instance = UserTokens.objects.create(email=email)
+
+        return validated_data
 
 
 class SetPasswordRetypeSerializer(ModelSerializer):

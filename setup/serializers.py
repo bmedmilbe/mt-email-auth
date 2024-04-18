@@ -14,6 +14,8 @@ from pprint import pprint
 import random
 import string
 from django.conf import settings
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth.models import User
 
 from django.core.mail import get_connection, send_mail
 from django.core.mail.message import EmailMessage
@@ -52,6 +54,36 @@ class UserSerializer(UserSerializer):
             "username",
         ]
 
+
+
+class PasswordResetConfirmRetypeSerializer(ModelSerializer):
+    uid = serializers.CharField()
+    token = serializers.UUIDField()
+    new_password = serializers.CharField()
+    re_new_password = serializers.CharField()
+
+
+    class Meta:
+        model = User
+        fields = ["uid", "token", "new_password", "re_new_password"]
+
+    def create(self, validated_data):
+
+        if validated_data['new_password'] != validated_data['re_new_password']:
+            serializers.ValidationError("Password not equal")
+
+        email = validated_data['email']
+        ct = ContentType.objects.get_for_id(50)
+        UserTokens = ct.model_class()
+        users = UserTokens.objects.filter(email=email, token=validated_data['token'])
+        if users.exists:
+            user = User.objects.get(email=email)
+            user.set_password(validated_data['re_new_password'])  # Replace with the desired new password
+            user.save()
+            users.delete()
+        # reset_instance = UserTokens.objects.create(email=email)
+
+        return validated_data
 
 
 
@@ -94,7 +126,7 @@ class SendEmailResetSerializer(ModelSerializer):
         convert_to_html_content =  render_to_string(
                                     template_name='emails/email_restore.html',
                                     context={'username': email,'token': reset_instance.token, 'parthner':parthner
-                                             , 'website':f"{settings.EMAILS[validated_data['parthner']]['WEBSITE']}/reset/uid/{reset_instance.token}/"
+                                             , 'website':f"{settings.EMAILS[validated_data['parthner']]['WEBSITE']}/reset-password/uid/{reset_instance.token}/"
                                              , 'logo':f"{settings.EMAILS[validated_data['parthner']]['LOGO']}"
                                               }
                                     )
@@ -140,16 +172,38 @@ class SendEmailResetSerializer(ModelSerializer):
         return validated_data
 
 class PasswordResetConfirmRetypeSerializer(ModelSerializer):
+    uid = serializers.CharField()
+    token = serializers.UUIDField()
+    new_password = serializers.CharField()
+    re_new_password = serializers.CharField()
+    
+
     class Meta:
-        model = settings.AUTH_USER_MODEL
-        fields = ["id", "uid", "token", "new_password", "re_new_password"]
+        model = UserTokens
+        fields = ["uid", "token", "new_password", "re_new_password"]
 
     def create(self, validated_data):
-        email = validated_data['email']
-        UserTokens.objects.filter(email=email).delete()
-        reset_instance = UserTokens.objects.create(email=email)
 
-        return reset_instance
+        if validated_data['new_password'] != validated_data['re_new_password']:
+            raise serializers.ValidationError({"password":"Password not equal"})
+
+        # email = validated_data['email']
+        
+        user_token = UserTokens.objects.filter( token=validated_data['token'])
+        if user_token.exists():
+
+            ct = ContentType.objects.get_for_id(48)
+            user = ct.model_class()
+            user = user.objects.get(email=user_token.first().email)
+            # user = User.objects.get(email=user_token.first().email)
+            user.set_password(validated_data['re_new_password'])  # Replace with the desired new password
+            user.save()
+            user_token.delete()
+        else:
+            raise serializers.ValidationError({"password":"Token not valid"})
+        # reset_instance = UserTokens.objects.create(email=email)
+
+        return {"uid":"", "token":"", "new_password":"", "re_new_password":""}
 
 
 class SetPasswordRetypeSerializer(ModelSerializer):
