@@ -1,6 +1,6 @@
-from django.db import models
-from django.conf import settings
-import pathlib
+# from django.db import models
+# from django.conf import settings
+# import pathlib
 
 # def path(path, filename, file_extension):
 #     # return  f'blog/{path}'
@@ -11,7 +11,7 @@ import pathlib
 
 # class Secretary(models.Model):
 #     user = models.ForeignKey(settings.AUTH_USER_MODEL,
-#                              on_delete=models.CASCADE)
+#                              on_delete=models.CASCADE, related_name="secretaries")
 #     def __str__(self) -> str:
 #         return f'{self.user.first_name} {self.user.last_name}' 
 
@@ -59,7 +59,7 @@ import pathlib
 #     title = models.CharField(max_length=255)
 #     slug = models.SlugField(max_length=255, null=True)
 #     picture = models.FileField(upload_to='camaramz/posts/images/')
-#     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT)
+#     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, related_name="posts")
 
 #     text_file = models.FileField(upload_to='camaramz/posts/documents/', null=True)
 #     active = models.BooleanField(default=False)

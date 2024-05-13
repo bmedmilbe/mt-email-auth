@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     "djoser",
     "certificates",
     "cmz",
+    # "blog",
     "ormed",
     "cecab",
     "nanehouse",
