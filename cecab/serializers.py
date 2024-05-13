@@ -232,7 +232,7 @@ class AssociationSerializer(serializers.ModelSerializer):
     images = AssociationImagesSerializer(many=True)
     class Meta:
         model = Association
-        fields = ['id', 'name', 'registered', 'address', 'president_name', 'number_of_associated', 'picture', 'images',  'district_name']
+        fields = ['id', 'name', 'registered', 'address', 'number_of_associated', 'picture', 'images',  'district_name']
     def get_district(self, association: Association):
         return association.district.name
 
