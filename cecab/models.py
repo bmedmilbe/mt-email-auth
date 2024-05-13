@@ -34,7 +34,7 @@ class Association(models.Model):
     name = models.CharField(max_length=255)  
     registered = models.DateField()
     address = models.CharField(max_length=255)  
-    president_name = models.CharField(max_length=255)
+    # president_name = models.CharField(max_length=255)
     number_of_associated = models.IntegerField()
     picture = models.FileField(upload_to='cecab/blog/association_images')
     district = models.ForeignKey(

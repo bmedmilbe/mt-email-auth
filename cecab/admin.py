@@ -18,7 +18,7 @@ class TeamAdmin(admin.ModelAdmin):
 
 @admin.register(models.Association)
 class AssociationAdmin(admin.ModelAdmin):
-    list_display = ['name', 'president_name', 'number_of_associated']
+    list_display = ['name',  'number_of_associated']
     search_fields = ['name']
 
 @admin.register(models.AssociationImages)
