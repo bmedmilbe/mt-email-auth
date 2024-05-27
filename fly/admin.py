@@ -139,7 +139,7 @@ class TableAdmin(admin.ModelAdmin):
                                 # return 1
                                 try:
                                     flight = Flight.objects.get(route =route, date=date)
-                                    flight.price=price
+                                    flight.price=price * Decimal(0.8)
                                     # pprint(price)
                                     flight.save()
                                     
@@ -147,7 +147,7 @@ class TableAdmin(admin.ModelAdmin):
                                 except Flight.DoesNotExist:
                                     Flight.objects.create(
                                         date=date,
-                                        price=price,
+                                        price=price * Decimal(0.8),
                                         route =route
                                     )
                                                                 
