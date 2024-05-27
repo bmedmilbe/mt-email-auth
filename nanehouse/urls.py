@@ -13,7 +13,7 @@ router.register("cities", views.CityViewSet, basename="cities")
 router.register("countries", views.CountryViewSet, basename="countries")
 router.register("streets", views.StreetViewSet, basename="streets")
 
-router.register("houses", views.HouseViewSet, basename="countries")
+router.register("houses", views.HouseViewSet, basename="houses")
 
 
 

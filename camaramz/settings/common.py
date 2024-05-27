@@ -48,6 +48,7 @@ INSTALLED_APPS = [
     "ormed",
     "cecab",
     "nanehouse",
+    "fly",
     "setup",
     "core",
 ]
