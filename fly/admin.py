@@ -18,13 +18,13 @@ from cryptography.fernet import Fernet
 from decimal import Decimal
 from django.db.models import Count, ExpressionWrapper
 from . import models
-from . models import Flight, Airport
+# from . models import Flight, Airport
 from django.conf import settings
 from django.db.models import Q
 import os
 # Register your models here.
 
-@admin.register(models.Table)
+# @admin.register(models.Table)
 class TableAdmin(admin.ModelAdmin):
     list_display = ["date","file"]
     def save_model(self, request, obj, form, change):
@@ -172,20 +172,21 @@ class TableAdmin(admin.ModelAdmin):
                 # s3 = boto3.client('s3')
                 # s3.delete_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME,name=settings.AWS_SECRET_ACCESS_KEY, name=f"{obj.file.name}")
             # obj.save()
-@admin.register(models.Flight)
-class FlightAdmin(admin.ModelAdmin):
-    list_display = ["route","date", "price"]
-    list_filter = ["route"]
+# @admin.register(models.Flight)
+# class FlightAdmin(admin.ModelAdmin):
+#     list_display = ["route","date", "price"]
+#     list_filter = ["route"]
 
-@admin.register(models.Airport)
-class AirportAdmin(admin.ModelAdmin):
-    list_display = ["acronym","name", "country"]
-    # list_filter = ["country"]
+# @admin.register(models.Airport)
+# class AirportAdmin(admin.ModelAdmin):
+#     list_display = ["acronym","name", "country"]
+#     # list_filter = ["country"]
 
-@admin.register(models.Country)
-class CountryAdmin(admin.ModelAdmin):
-    list_display = ["acronym","name",]
-@admin.register(models.Request)
+# @admin.register(models.Country)
+# class CountryAdmin(admin.ModelAdmin):
+#     list_display = ["acronym","name",]
+@admin.register(models.Enquire)
 class RequestAdmin(admin.ModelAdmin):
-    list_display = ["name","message","flight"]
+    list_display = ["contact","country","depart_date", "return_date", "base_price", "final_price", "paid","obs"]
+    list_editable = ["base_price", "final_price", "paid","obs"]
                     
