@@ -187,6 +187,7 @@ class TableAdmin(admin.ModelAdmin):
 #     list_display = ["acronym","name",]
 @admin.register(models.Enquire)
 class RequestAdmin(admin.ModelAdmin):
-    list_display = ["contact","country","depart_date", "return_date", "base_price", "final_price", "paid","obs"]
+    list_display = ["contact","country","country_to","depart_date", "return_date", "base_price", "final_price", "paid","obs"]
     list_editable = ["base_price", "final_price", "paid","obs"]
+    list_filter = ['contact']
                     
