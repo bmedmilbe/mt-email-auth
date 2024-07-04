@@ -11,6 +11,14 @@ class Country(models.Model):
 
 class Contact(models.Model):
     contact = models.CharField(max_length=255, null=True, blank=True)
+    date =models.DateTimeField(auto_now=True, blank=True, null=True) 
+    
+    def __str__(self) -> str:
+        return f'{self.contact}' 
+    
+class ContactOff(models.Model):
+    contact = models.CharField(max_length=255, null=True, blank=True)
+    date =models.DateTimeField(auto_now=True, blank=True, null=True) 
     
     def __str__(self) -> str:
         return f'{self.contact}' 
@@ -28,6 +36,7 @@ class Enquire(models.Model):
     paid = models.BooleanField(default=False)
     obs = models.TextField(null=True, blank=True)
     done =  models.BooleanField(default=False)
+
 
 
 

@@ -7,6 +7,7 @@ router = routers.DefaultRouter()
 # router.register("countries", views.CountryViewSet, basename="countries")
 # router.register("flight", views.FlightViewSet, basename="flight")
 router.register("enquires", views.EnquireViewSet, basename="enquires")
+router.register("contacts", views.ContcatOffViewSet, basename="contacts")
 
 
 

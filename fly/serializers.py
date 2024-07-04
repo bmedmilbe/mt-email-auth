@@ -6,7 +6,7 @@ from django.core.mail import BadHeaderError
 from templated_mail.mail import BaseEmailMessage
 from django.apps import apps
 from django.conf import settings
-from .models import  Contact, Enquire, Country
+from .models import  Contact, ContactOff, Enquire, Country
 from core.serializers import UserCreateSerializer
 from django.core.files import File
 import timeago
@@ -59,6 +59,21 @@ class EnquireCreatSerializer(serializers.ModelSerializer):
 
         Enquire.objects.create(contact_id=contact.id, depart_date=depart_date, return_date=return_date, country_id=country.id, country_to_id=country_to.id)
         return {**validated_data}
+
+class ContactOffSerializer(serializers.ModelSerializer): 
+   
+    contact = serializers.CharField()
+    
+
+
+    class Meta:
+        model = ContactOff
+        fields = ['contact']
+
+    
+        
+        
+      
 
         
 
