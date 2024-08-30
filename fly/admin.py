@@ -9,169 +9,186 @@ from django.urls import reverse
 from openpyxl import load_workbook
 from django.core.files import File
 import requests
-from io import BytesIO
+from io import BytesIO, StringIO
 from boto3.session import Session
 import hashlib
+import docx2txt
+
 from openpyxl import Workbook
 import boto3
 from cryptography.fernet import Fernet
 from decimal import Decimal
 from django.db.models import Count, ExpressionWrapper
 from . import models
-# from . models import Flight, Airport
+from . models import Flight
 from django.conf import settings
 from django.db.models import Q
 import os
 # Register your models here.
 
-# @admin.register(models.Table)
-class TableAdmin(admin.ModelAdmin):
-    list_display = ["date","file"]
+@admin.register(models.Trush)
+class TrushAdmin(admin.ModelAdmin):
+    list_display = ["date"]
     def save_model(self, request, obj, form, change):
 
-        # session = Session(aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
-        #           aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY)
-
-        #     # s3_client = session.client('s3')
-        # s3_resource = session.resource('s3')
-        # my_bucket = s3_resource.Bucket(settings.AWS_STORAGE_BUCKET_NAME)
-
-        # pprint(settings.BASE_DIR)
-        # my_bucket.download_file(obj.file.name,settings.BASE_DIR )
-
-        # response = my_bucket.delete_objects(
-        #         Delete={
-        #             'Objects': [
-        #                 {
-        #                     'Key': f"{obj.file.name}"   # the_name of_your_file
-        #                 }
-        #             ]
-        #         }
-        #     )
+        
         super().save_model(request, obj, form, change)
 
         # obj.save()
         months = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"]
         columns = ["a", "b", "c", "d", "e", "f", "g"]
 
+        months = ["TAP", "TAAG"]
 
-        portugal_airports = list(Airport.objects.filter(country__acronym="PT"))
-        rest_airports = list(Airport.objects.filter(~Q(country__acronym="PT")))
-        routes = list()
-        for portugal_airport in portugal_airports:
-            for rest_airport in rest_airports:
-                routes.append(f"{portugal_airport.acronym}-{rest_airport.acronym}".upper())
-                routes.append(f"{rest_airport.acronym}-{portugal_airport.acronym}".upper())
-        
-
-        
-
-        prices = dict()
-        url = obj.file.url
-        
+        exists = list()
         if obj.file.url != None:
-            docx = BytesIO(requests.get(url).content)
-            # Write the stuff
-            with open("flights.xlsx", "wb") as f:
-                f.write(docx.getbuffer())
-                # pprint(docx)
-                # pass
-            workbook = load_workbook(filename="flights.xlsx")
+            txt_obj = BytesIO(requests.get(obj.file.url).content)
+            all_data = f"{docx2txt.process(txt_obj)}".replace("\r"," ").replace("\n"," ").replace("  ", " ")
+            Flight.objects.all().delete()
+            airline = None
+            count = -1
+            words = all_data.split(" ")
+            for word in words:
+                        count = count + 1
+                        
+                        if word == "TAP" or word == "TAAG":
+                            airline = word
 
-            # routes = list()
-            # for portugal_airport in portugal_airports:
-            #     for rest_airport in rest_airports:
-            #         # pprint(f"{portugal_airport.acronym}-{rest_airport.acronym}".upper())
-            #         routes.append(f"{portugal_airport.acronym}-{rest_airport.acronym}".upper())
-            #         routes.append(f"{rest_airport.acronym}-{portugal_airport.acronym}".upper())
-                    # workbook.create_sheet(f"{portugal_airport.acronym}-{rest_airport.acronym}".upper())
-                    # workbook.create_sheet(f"{rest_airport.acronym}-{portugal_airport.acronym}".upper())       
-                # workbook.save('flights.xlsx')
-            
-            
-            # workbook = load_workbook(filename=obj.file.url)
-            
-            for route in routes:
-                sheet = workbook[route]
-                current_month = None
-                month_group = None
-                year = None
-                month_dict = dict()
-                for row in range(1, sheet.max_row+1):
-                    for column in columns:
-                        # pprint(sheet)
-                        cell = sheet[f"{column}{row}"].value
-                        if cell:
-                            if "MAIS" in str(cell).upper():
-                                counter = 0
-                                for month in months:
-                                    counter = counter + 1
-                                    if month.upper() in cell.upper():
-                                        current_month = counter
-                                        break
-                            if month_group != months[current_month-1].upper():
-                                month_group = months[current_month-1].upper()
-                                # pprint(f"{month_group}")
-                                month_dict[month_group] = list()
-
-                            price = None
-                            day = str(cell).replace("\n", " ").replace("  ", " ")
-                            if "EURMAIS" in day.upper():
-                                if year != day.split(" ")[1]:
-                                    year = day.split(" ")[1]
-                                    # price[year] = list()
-                                break
-                            elif " EUR" in day.upper():
-                                cell_contents = day.split(" ")
-                                day = cell_contents[0] if cell_contents[0].isnumeric() else None
-                                price = cell_contents[1]
-                            else:
-                                day = day.split(" ")[0]
+                        
+                        if "/" in word:
+                            date = word.split("/")
                             
+                            day = date[0] if int(date[0]) > 9 else f"0{date[0]}"
+                            month = date[1] if int(date[1]) > 9 else f"0{date[1]}"
+                            time = words[count+1]
+                            date = f"2024-{month}-{day} {time}"
+                        
+                        if airline != None and word.startswith("€"):
+                            price = (int(word.replace("€","").replace(",","")) + 32) * 27
+                            airline_id = 1 if airline == "TAP" else 2
                             
-                            if price:
-                                date = f'{year}-{current_month}-{(day)}'
-                                month_dict[month_group].append({f"date":f'{year}-{current_month}-{(day)}',f"price":price })
-                                # pprint(f"{year}-{current_month}-{(day)}: {price if price != None else 'NO FLY'}")
-                                # pprint(Decimal(float(price.replace(",", "."))))
-                                # return 1
-                                price = Decimal(float(price.replace(".", "").replace(",", ".")))
-                                # return 1
-                                try:
-                                    flight = Flight.objects.get(route =route, date=date)
-                                    flight.price=price * Decimal(0.8)
-                                    # pprint(price)
-                                    flight.save()
-                                    
-                    
-                                except Flight.DoesNotExist:
-                                    Flight.objects.create(
-                                        date=date,
-                                        price=price * Decimal(0.8),
-                                        route =route
+                            if date not in exists:
+                                    exists.append(date)
+                                
+                                    flight = Flight.objects.filter(
+                                            
+                                            airline_id=airline_id,
+                                            date__year=2024,
+                                            date__month=month,
+                                            date__day=day,
+                                            city_id=1, 
+                                            city_to_id=2,
                                     )
-                                                                
-                    # pprint(month_dict)
+
+                                    if flight.exists():
+                                         flight = flight.first()
+                                         flight.final_price=price
+                                         flight.base_price = int(word.replace("€","").replace(",",""))
+                                        
+                                         flight.save()
+                                    else:
+                                        Flight.objects.create(
+                                            final_price=price,
+                                            airline_id=airline_id,
+                                            date=date,city_id=1, 
+                                            city_to_id=2,
+                                            base_price = int(word.replace("€","").replace(",",""))
+                                            )  
+                            airline = None
+                        # print(word)
+                # ... read the file ...
+                # file.close()
+        # if obj.file.url != None:
+
+        #     with open(f"{file_name}", 'r') as file:
+        #         Flight.objects.all().delete()
+        #         airline = None
+        #         for line in file:
+        #             words = line.split()
+        #             for word in words:
+        #                 # Process each word
+        #                 if word == "TAP" or word == "TAAG":
+        #                     airline = word
+                        
+        #                 if "/" in word:
+        #                     date = word.split("/")
+        #                     day = date[0] if int(date[0]) > 9 else f"0{date[0]}"
+        #                     month = date[1] if int(date[1]) > 9 else f"0{date[1]}"
+        #                     date = f"2024-{month}-{day}"
+                        
+        #                 if airline != None and word.startswith("€"):
+        #                     price = (int(word.replace("€","")) + 30) * 27
+        #                     airline_id = 1 if airline == "TAP" else 2
+        #                     Flight.objects.create(
+        #                         final_price=price,
+        #                         airline_id=airline_id,
+        #                         date=date,city_id=1, 
+        #                         city_to_id=2,
+        #                         base_price = int(word.replace("€",""))
+        #                         )
+        #                     airline = None
+        #                 print(word)
+        #         # ... read the file ...
+        #         file.close()
+
+            # # extract text
+            # text = docx2txt.process(txt)
+            # pprint(text)
+            # with open(obj.file.url, 'r') as file:
                 
-                # pprint(obj.file.url)
-                # conn = S3Connection(settings.AWS_ACCESS_KEY, settings.AWS_SECRET_KEY)
-                # bucket_name = 'bm-edmilbe-bucket'
-                # file_key = 'fly/flight/flight.xlsx'
+            #     airline = None
+            #     for line in file:
+            #         words = line.split()
+            #         for word in words:
+            #             # Process each word
+            #             if word == "TAP" or word == "TAAG":
+            #                 airline = word
+                        
+            #             if "/" in word:
+            #                 date = word.split("/")
+            #                 day = date[0] if int(date[0]) > 9 else f"0{date[0]}"
+            #                 month = date[1] if int(date[1]) > 9 else f"0{date[1]}"
+            #                 date = f"2024-{month}-{day}"
+                        
+            #             if airline != None and word.startswith("€"):
+            #                 price = (int(word.replace("€","")) + 30) * 27
+            #                 airline_id = 1 if airline == "TAP" else 2
+            #                 Flight.objects.create(
+            #                     final_price=price,
+            #                     airline_id=airline_id,
+            #                     date=date,city_id=1, 
+            #                     city_to_id=2,
+            #                     base_price = int(word.replace("€",""))
+            #                     )
+            #                 airline = None
+            #             print(word)
+            #     # ... read the file ...
+            #     file.close()
 
-                # bucket = Bucket(conn, bucket_name)
-                # k = Key(bucket=bucket, name=file_key)
-                # k.delete()
-                # os.remove(obj.file.url)
-                # obj.file.delete()
-                # os.remove(os.path.join(settings.MEDIA_ROOT,f"{obj.file.name}"))
+@admin.register(models.Airline)
+class AirlineAdmin(admin.ModelAdmin):
+    list_display = ["id","name"]  
 
+@admin.register(models.City)
+class CityAdmin(admin.ModelAdmin):
+    list_display = ["id","name"] 
 
+@admin.register(models.Flight)
+class FlightAdmin(admin.ModelAdmin):
+    list_display = ["final_price", "airline", "date"] 
+    ordering = ["final_price"] 
+    list_filter = ["airline"]
+
+@admin.register(models.Enquire)
+class EnquireAdmin(admin.ModelAdmin):
+    list_display = ["contact", "flight", "status"] 
+    list_editable = ["status"]   
+
+      
 
                 
 
-                # s3 = boto3.client('s3')
-                # s3.delete_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME,name=settings.AWS_SECRET_ACCESS_KEY, name=f"{obj.file.name}")
-            # obj.save()
+         
 # @admin.register(models.Flight)
 # class FlightAdmin(admin.ModelAdmin):
 #     list_display = ["route","date", "price"]
@@ -185,12 +202,14 @@ class TableAdmin(admin.ModelAdmin):
 # @admin.register(models.Country)
 # class CountryAdmin(admin.ModelAdmin):
 #     list_display = ["acronym","name",]
-@admin.register(models.Enquire)
-class RequestAdmin(admin.ModelAdmin):
-    list_display = ["contact","country","country_to","depart_date", "return_date", "base_price", "final_price", "paid","obs"]
-    list_editable = ["base_price", "final_price", "paid","obs"]
-    list_filter = ['contact']
-@admin.register(models.ContactOff)
-class RequestAdmin(admin.ModelAdmin):
-    list_display = ["contact","date"]
+
+
+# @admin.register(models.Enquire)
+# class RequestAdmin(admin.ModelAdmin):
+#     list_display = ["contact","country","country_to","depart_date", "return_date", "base_price", "final_price", "paid","obs"]
+#     list_editable = ["base_price", "final_price", "paid","obs"]
+#     list_filter = ['contact']
+# @admin.register(models.ContactOff)
+# class RequestAdmin(admin.ModelAdmin):
+#     list_display = ["contact","date"]
                     

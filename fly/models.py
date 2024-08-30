@@ -2,41 +2,58 @@ from django.db import models
 
 # Create your models here.
 
-class Country(models.Model):
+class Trush(models.Model):
+    date = models.DateField(auto_now=True)
+    file = models.FileField(upload_to='marvoa/prices', null=True)
+    text = models.TextField(null=True)
+    
+
+class City(models.Model):
     name = models.CharField(max_length=255, null=True, blank=True)
     
     def __str__(self) -> str:
         return f'{self.name}' 
 
+class Airline(models.Model):
+    name = models.CharField(max_length=255, unique=True)
 
-class Contact(models.Model):
-    contact = models.CharField(max_length=255, null=True, blank=True)
-    date =models.DateTimeField(auto_now=True, blank=True, null=True) 
-    
     def __str__(self) -> str:
-        return f'{self.contact}' 
+        return f'{self.name}' 
+
+
+class Flight(models.Model):
     
-class ContactOff(models.Model):
-    contact = models.CharField(max_length=255, null=True, blank=True)
-    date =models.DateTimeField(auto_now=True, blank=True, null=True) 
+    date = models.DateTimeField() 
+    city = models.ForeignKey(City, on_delete=models.CASCADE, null=True, blank=True, related_name="city")
+    city_to =  models.ForeignKey(City, on_delete=models.CASCADE,  null=True, blank=True, related_name="city_to")
+    base_price = models.IntegerField(blank=True, null=True) 
+    final_price = models.IntegerField(blank=True, null=True) 
+    airline =  models.ForeignKey(Airline, on_delete=models.CASCADE,  null=True, blank=True, related_name="arlines")
     
-    def __str__(self) -> str:
-        return f'{self.contact}' 
+    class Meta():
+        unique_together = ['airline', 'date', 'city', 'final_price']
+    
+    def __str__(self):
+        return f"{self.airline.name} {self.date} {self.final_price}"
 
 class Enquire(models.Model):
-    contact = models.ForeignKey(Contact, on_delete=models.CASCADE)
+    contact = models.CharField(max_length=255, null=True, blank=True)
+    date =models.DateTimeField(auto_now=True, blank=True, null=True) 
+    flight = models.ForeignKey(Flight, on_delete=models.CASCADE, null=True, blank=True, related_name="flights")
+    STATUS_TALKED = "T"
+    STATUS_PENDENT = "P"
+    STATUS_COMPLETED = "D"
+    STATUS_CHOICES = [
+        (STATUS_TALKED, "Talked"),
+        (STATUS_PENDENT, "Pendent"),
+        (STATUS_COMPLETED, "Completed"),
+    ]
 
-    date = models.DateTimeField(auto_now=True, blank=True) 
-    country = models.ForeignKey(Country, on_delete=models.CASCADE, null=True, blank=True, related_name="countries")
-    country_to =  models.ForeignKey(Country, on_delete=models.CASCADE,  null=True, blank=True, related_name="countries_to")
-    depart_date =   models.DateField() 
-    return_date =   models.DateField(blank=True, null=True) 
-    base_price = models.DecimalField(decimal_places=2, max_digits=8,blank=True, null=True) 
-    final_price = models.DecimalField(decimal_places=2, max_digits=8,blank=True, null=True) 
-    paid = models.BooleanField(default=False)
-    obs = models.TextField(null=True, blank=True)
-    done =  models.BooleanField(default=False)
-
+    status = models.CharField(
+        max_length=1, default=STATUS_PENDENT, choices=STATUS_CHOICES
+    )
+    def __str__(self) -> str:
+        return f'{self.contact}' 
 
 
 

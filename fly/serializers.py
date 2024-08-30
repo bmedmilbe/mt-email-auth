@@ -6,7 +6,7 @@ from django.core.mail import BadHeaderError
 from templated_mail.mail import BaseEmailMessage
 from django.apps import apps
 from django.conf import settings
-from .models import  Contact, ContactOff, Enquire, Country
+from .models import City,Airline, Enquire,Flight
 from core.serializers import UserCreateSerializer
 from django.core.files import File
 import timeago
@@ -20,56 +20,62 @@ from django.core.mail import get_connection, send_mail
 from django.db.models import Q
 
 
-class EnquireCreatSerializer(serializers.ModelSerializer): 
+class CitySerializer(serializers.ModelSerializer): 
    
-    contact_detail = serializers.CharField()
-    country = serializers.CharField()
-    country_to = serializers.CharField()
-
-
     class Meta:
-        model = Enquire
-        fields = ['country','country_to','depart_date','return_date', 'contact_detail']
-
-    def create(self, validated_data):
-        
-        contacts = Contact.objects.filter(contact=validated_data['contact_detail'])
-        
-        contact = contacts.first()
-        if contact == None:
-            contact = Contact.objects.create(contact=validated_data["contact_detail"])
-
-        countries = Country.objects.filter(name=validated_data['country'])
-        
-        country = countries.first()
-        if country == None:
-            country = Country.objects.create(name=validated_data["country"])
-
-
-        countries = Country.objects.filter(name=validated_data['country_to'])
-        
-        country_to = countries.first()
-        if country_to == None:
-            country_to = Country.objects.create(name=validated_data["country_to"])
-        
-        
-        # country = validated_data["country"]
-        depart_date = validated_data["depart_date"]
-        return_date = validated_data["return_date"]
-
-        Enquire.objects.create(contact_id=contact.id, depart_date=depart_date, return_date=return_date, country_id=country.id, country_to_id=country_to.id)
-        return {**validated_data}
-
-class ContactOffSerializer(serializers.ModelSerializer): 
+        model = City
+        fields = ['name']
+    
+class AirlineSerializer(serializers.ModelSerializer): 
    
-    contact = serializers.CharField()
+    class Meta:
+        model = Airline
+        fields = ['name']
+
+
+class FlightSerializer(serializers.ModelSerializer): 
+    city = CitySerializer()
+    city_to = CitySerializer()
+    airline = AirlineSerializer()
+    class Meta:
+        model = Flight
+        fields = ['id','final_price', 'airline','city','city_to', "date"]
+
     
 
 
-    class Meta:
-        model = ContactOff
-        fields = ['contact']
 
+
+class EnquireSerializer(serializers.ModelSerializer): 
+    flight = FlightSerializer()
+    class Meta:
+        model = Enquire
+        fields = ['contact', 'flight','status']
+
+
+class EnquireCreateSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Enquire
+        fields = [
+            "id",
+            "contact",
+            "flight",
+        ]
+
+    # def create(self, validate_data):
+
+    #     house_number = validate_data.get('house_number')
+        
+    #     house = House.objects.filter(
+    #         house_number=house_number,
+    #         street_id=validate_data['street']
+    #     )
+
+    #     if not house:
+    #         validate_data["house_number"] = house_number if house_number != -1 else None
+    #         return super().create(validate_data)
+    #     return house.first()
     
         
         
