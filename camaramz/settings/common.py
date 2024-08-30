@@ -243,13 +243,13 @@ ADMINS = [("Ramos", "admin@hotmail.com")]
 PRICE_PARCEL_BY_KG = 15
 PRICE_FLIGTH_BY_KG = 3.3
 
-# AWS_ACCESS_KEY_ID = 'AKIA2QHYRZDKXSR7F2KK'
-# AWS_SECRET_ACCESS_KEY = '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'
-# AWS_STORAGE_BUCKET_NAME = 'bm-edmilbe-bucket'
-# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-# # storages.backends.s3boto3.S3Boto3Storage
-# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-# AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
+AWS_ACCESS_KEY_ID = 'AKIA2QHYRZDKXSR7F2KK'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'bm-edmilbe-bucket'
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# storages.backends.s3boto3.S3Boto3Storage
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 MOVED = 872
 
 EMAIL_HOST_USER = "edmilbe@gmail.com"

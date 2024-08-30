@@ -19,6 +19,7 @@ from django.utils.html import strip_tags
 from django.core.mail import get_connection, send_mail
 from django.db.models import Q
 
+from django.core.mail import send_mail
 
 class CitySerializer(serializers.ModelSerializer): 
    
@@ -63,19 +64,19 @@ class EnquireCreateSerializer(serializers.ModelSerializer):
             "flight",
         ]
 
-    # def create(self, validate_data):
+    def create(self, validate_data):
 
-    #     house_number = validate_data.get('house_number')
+            email = "dulxeslopes16@gmail.com"
+            subject = f'Ligue para {validate_data["contact"]}'
+            message = f'Ligue para {validate_data["contact"]}'
+            from_email = 'edmilbe@gmail.com'  # Replace with your email address
+            recipient_list = [email]
+            send_mail(subject, message, from_email, recipient_list)
+            # return render(request, 'email_sent.html')  # Render a success template
+
+
         
-    #     house = House.objects.filter(
-    #         house_number=house_number,
-    #         street_id=validate_data['street']
-    #     )
-
-    #     if not house:
-    #         validate_data["house_number"] = house_number if house_number != -1 else None
-    #         return super().create(validate_data)
-    #     return house.first()
+            return super().create(validate_data)
     
         
         
