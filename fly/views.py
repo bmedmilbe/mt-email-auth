@@ -10,8 +10,8 @@ from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, UpdateMode
 # from .serializers import ContactOffSerializer, EnquireCreatSerializer
 # Create your views here.
 from pprint import pprint
-from datetime import datetime
 from django.db.models import Q
+from datetime import datetime, timedelta, time
 
 from rest_framework.permissions import (
     IsAuthenticated,
@@ -32,7 +32,8 @@ class EnquireViewSet(ListModelMixin, CreateModelMixin,  GenericViewSet):
         return EnquireSerializer
 
 class FlightsViewSet(ListModelMixin,  GenericViewSet):
-    queryset = Flight.objects.order_by("-date", "airline__name")
+    
+    queryset = Flight.objects.filter(date__gt=datetime.now()).order_by("-date", "airline__name")
     
     serializer_class = FlightSerializer
 
