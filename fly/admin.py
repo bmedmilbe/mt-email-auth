@@ -65,6 +65,7 @@ class TrushAdmin(admin.ModelAdmin):
                         
                         if airline != None and word.startswith("€"):
                             price = (int(word.replace("€","").replace(",","")) + 32) * 27
+                            # price = (int(word.replace("€","").replace(",","")) + 70) * 27
                             airline_id = 1 if airline == "TAP" else 2
                             
                             if date not in exists:
