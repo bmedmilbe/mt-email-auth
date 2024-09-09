@@ -2,10 +2,7 @@ from django.db import models
 
 # Create your models here.
 
-class Trush(models.Model):
-    date = models.DateField(auto_now=True)
-    file = models.FileField(upload_to='marvoa/prices', null=True)
-    text = models.TextField(null=True)
+
     
 
 class City(models.Model):
@@ -13,6 +10,14 @@ class City(models.Model):
     
     def __str__(self) -> str:
         return f'{self.name}' 
+
+class Trush(models.Model):
+    date = models.DateField(auto_now=True)
+    file = models.FileField(upload_to='marvoa/prices', null=True)
+    text = models.TextField(null=True)
+    city_from = models.ForeignKey(City, on_delete=models.CASCADE, null=True, blank=True, related_name="city_from_trush")
+    city_to = models.ForeignKey(City, on_delete=models.CASCADE, null=True, blank=True, related_name="city_to_trush")
+
 
 class Airline(models.Model):
     name = models.CharField(max_length=255, unique=True)

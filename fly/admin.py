@@ -28,7 +28,7 @@ import os
 
 @admin.register(models.Trush)
 class TrushAdmin(admin.ModelAdmin):
-    list_display = ["date"]
+    list_display = ["date", "city_from", "city_to"]
     def save_model(self, request, obj, form, change):
 
         
@@ -41,10 +41,12 @@ class TrushAdmin(admin.ModelAdmin):
         months = ["TAP", "TAAG"]
 
         exists = list()
+        city_from = obj.city_from.id
+        city_to = obj.city_to.id
         if obj.file.url != None:
             txt_obj = BytesIO(requests.get(obj.file.url).content)
             all_data = f"{docx2txt.process(txt_obj)}".replace("\r"," ").replace("\n"," ").replace("  ", " ")
-            Flight.objects.all().delete()
+            Flight.objects.filter(city_id=city_from, city_to_id=city_to).delete()
             airline = None
             count = -1
             words = all_data.split(" ")
@@ -64,8 +66,11 @@ class TrushAdmin(admin.ModelAdmin):
                             date = f"2024-{month}-{day} {time}"
                         
                         if airline != None and word.startswith("€"):
-                            price = (int(word.replace("€","").replace(",","")) + 32) * 27
+                            
+                            price = (int(word.replace("€","").replace(",","")) + 32)
                             # price = (int(word.replace("€","").replace(",","")) + 70) * 27
+                            if city_from == 1:
+                                 price = (int(word.replace("€","").replace(",","")) + 32) * 27
                             airline_id = 1 if airline == "TAP" else 2
                             
                             if date not in exists:
@@ -74,11 +79,12 @@ class TrushAdmin(admin.ModelAdmin):
                                     flight = Flight.objects.filter(
                                             
                                             airline_id=airline_id,
-                                            date__year=2024,
-                                            date__month=month,
-                                            date__day=day,
-                                            city_id=1, 
-                                            city_to_id=2,
+                                            # date__year=2024,
+                                            # date__month=month,
+                                            # date__day=day,
+                                            date=date,
+                                            city_id=city_from, 
+                                            city_to_id=city_to,
                                     )
 
                                     if flight.exists():
@@ -91,8 +97,8 @@ class TrushAdmin(admin.ModelAdmin):
                                         Flight.objects.create(
                                             final_price=price,
                                             airline_id=airline_id,
-                                            date=date,city_id=1, 
-                                            city_to_id=2,
+                                            date=date,city_id=city_from, 
+                                            city_to_id=city_to,
                                             base_price = int(word.replace("€","").replace(",",""))
                                             )  
                             airline = None
@@ -176,9 +182,9 @@ class CityAdmin(admin.ModelAdmin):
 
 @admin.register(models.Flight)
 class FlightAdmin(admin.ModelAdmin):
-    list_display = ["final_price", "airline", "date"] 
+    list_display = ["final_price", "airline", "date", "city"] 
     ordering = ["final_price"] 
-    list_filter = ["airline"]
+    list_filter = ["airline", "city"]
 
 @admin.register(models.Enquire)
 class EnquireAdmin(admin.ModelAdmin):

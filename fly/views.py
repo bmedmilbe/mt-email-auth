@@ -32,8 +32,15 @@ class EnquireViewSet(ListModelMixin, CreateModelMixin,  GenericViewSet):
         return EnquireSerializer
 
 class FlightsViewSet(ListModelMixin,  GenericViewSet):
+    def get_queryset(self):
+        city = self.request.query_params.get("city", 1)
+
+        return Flight.objects.filter(date__gt=datetime.now(), city_id=city).order_by("-date", "airline__name")
+        
+
+
     
-    queryset = Flight.objects.filter(date__gt=datetime.now()).order_by("-date", "airline__name")
+    # queryset = Flight.objects.filter(date__gt=datetime.now()).order_by("-date", "airline__name")
     
     serializer_class = FlightSerializer
 

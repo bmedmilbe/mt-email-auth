@@ -66,12 +66,11 @@ class EnquireCreateSerializer(serializers.ModelSerializer):
 
     def create(self, validate_data):
 
-            email = "dulxeslopes16@gmail.com"
+            recipient_list = ["dulxeslopes16@gmail.com","edmilbe@gmail.com"]
             subject = f'Ligue para {validate_data["contact"]}'
             flight = validate_data["flight"]
             message = f'Ligue para {validate_data["contact"]}. Pretende viajar em {flight.date}, na {flight.airline.name} e custa {flight.final_price} dbs'
             from_email = 'edmilbe@gmail.com'  # Replace with your email address
-            recipient_list = [email]
             send_mail(subject, message, from_email, recipient_list)
             # return render(request, 'email_sent.html')  # Render a success template
 
