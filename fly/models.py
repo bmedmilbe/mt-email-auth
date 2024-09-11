@@ -10,6 +10,7 @@ class City(models.Model):
     
     def __str__(self) -> str:
         return f'{self.name}' 
+    
 
 class Trush(models.Model):
     date = models.DateField(auto_now=True)
@@ -59,6 +60,34 @@ class Enquire(models.Model):
     )
     def __str__(self) -> str:
         return f'{self.contact}' 
+    
+
+
+# class Users(models.Model):
+#     name = models.CharField(max_length=255, null=True, blank=True)
+#     def __str__(self) -> str:
+#         return f'{self.name}' 
+
+# class Moviments(models.Model):
+#     user = models.ForeignKey(Users, on_delete=models.PROTECT, null=True, blank=True, related_name="users")
+#     value = models.IntegerField(blank=True, null=True) 
+#     date = models.DateTimeField(auto_now=True, blank=True, null=True) 
+#     description = models.CharField(max_length=255, null=True, blank=True)
+#     TYPE_IN = "IN"
+#     TYPE_OUT = "OUT"
+    
+#     TYPE_CHOICES = [
+#         (TYPE_IN, "Received"),
+#         (TYPE_OUT, "Gave"),
+#     ]
+
+#     type = models.CharField( max_length=3, choices=TYPE_CHOICES)
+
+class Menssenger(models.Model):
+    file = models.FileField(upload_to='exchange/balances', null=True)
+    details = models.TextField(blank=True, null=True)
+    
+    
 
 
 

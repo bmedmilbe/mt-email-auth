@@ -67,7 +67,7 @@ class TrushAdmin(admin.ModelAdmin):
                         
                         if airline != None and word.startswith("€"):
                             
-                            price = (int(word.replace("€","").replace(",","")) + 32)
+                            price = (int(word.replace("€","").replace(",","")) + 15)
                             # price = (int(word.replace("€","").replace(",","")) + 70) * 27
                             if city_from == 1:
                                  price = (int(word.replace("€","").replace(",","")) + 32) * 27
@@ -190,6 +190,92 @@ class FlightAdmin(admin.ModelAdmin):
 class EnquireAdmin(admin.ModelAdmin):
     list_display = ["contact", "flight", "status"] 
     list_editable = ["status"]   
+
+# @admin.register(models.Users)
+# class UsersAdmin(admin.ModelAdmin):
+#     list_display = ["name"] 
+
+
+# @admin.register(models.Moviments)
+# class MovimentsAdmin(admin.ModelAdmin):
+#     list_display = ["user","value","description", "date", "type"] 
+
+#     list_filter = ["user", "type", "date"]
+
+
+
+@admin.register(models.Menssenger)
+class MenssengerAdmin(admin.ModelAdmin):
+    list_display = ["id","file"]
+    def save_model(self, request, obj, form, change):
+
+        
+        super().save_model(request, obj, form, change)
+
+        # obj.save()
+        months = ["Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho", "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"]
+        columns = ["a", "b", "c", "d", "e", "f", "g"]
+
+        months = ["TAP", "TAAG"]
+
+        exists = list()
+        
+        if obj.file.url != None:
+            txt_obj = BytesIO(requests.get(obj.file.url).content)
+            all_data = f"{docx2txt.process(txt_obj)}".replace("\r"," ").replace("\n"," ").replace("  ", " ").replace(",00.", "").replace(".,00", "")\
+                .replace(",00", "").replace(".", "")\
+                .replace("Hamilton Lucas Gln","").replace("Faustina Martins Ramos","")
+            count = -1
+            words = all_data.split(" ")
+            value = 0
+            users = ["Hamilton","Faustina"]
+            current_user =words[0]
+            description = ""
+            result = { 
+                 users[0]: {
+                 'in': 0,
+                 'out': 0
+            },
+            users[1]:{
+                 'in': 0,
+                 'out': 0
+            }}
+            for word in words:
+                count = count + 1
+                
+                if word in users:
+                     
+                    if count > 1:
+
+                        for x in description.split(" "):
+                             if x.isnumeric():
+                                #   pprint(x)
+                                  value = int(x)
+
+                        result[current_user] = {
+                         "in": result[current_user]['in'] + value if "RECEBI" in description.upper() else result[current_user]['in'],
+                         "out": result[current_user]['out'] + value if "RECEBI" not in description.upper() else result[current_user]['out']
+                         
+                         }
+
+                        # pprint(f"{current_user} {value} {description.replace(str(value),'')}")
+                             
+                    current_user = word
+                    description = ''
+                else:
+                     description = f"{description} {word}"
+
+            details = """"""
+            # for user in users: 
+            in_ = result[users[0]]['in']+result[users[1]]['in']
+            out_ = result[users[0]]['out']+result[users[1]]['out']
+            details = f"""Recebeu {in_}, entregou {out_}.\nSaldo:{in_-out_} (se foi entregue todo o valor anotado)\nCaso haja valor por entregar faça {out_} - (total de valores por entregar), porque esses valores ainda não foram entregue."""
+
+            obj.details = details 
+
+            super().save_model(request, obj, form, change)       
+                     
+                     
 
       
 
