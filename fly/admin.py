@@ -20,7 +20,7 @@ from cryptography.fernet import Fernet
 from decimal import Decimal
 from django.db.models import Count, ExpressionWrapper
 from . import models
-from . models import Flight
+from . models import Airline, Flight
 from django.conf import settings
 from django.db.models import Q
 import os
@@ -43,6 +43,7 @@ class TrushAdmin(admin.ModelAdmin):
         exists = list()
         city_from = obj.city_from.id
         city_to = obj.city_to.id
+        airlines = ["TAP", "TAAG", "EuroAtlantic", "Royal", "Qatar", "LAM"]
         if obj.file.url != None:
             txt_obj = BytesIO(requests.get(obj.file.url).content)
             all_data = f"{docx2txt.process(txt_obj)}".replace("\r"," ").replace("\n"," ").replace("  ", " ")
@@ -53,7 +54,7 @@ class TrushAdmin(admin.ModelAdmin):
             for word in words:
                         count = count + 1
                         
-                        if word == "TAP" or word == "TAAG":
+                        if word in airlines:
                             airline = word
 
                         
@@ -71,7 +72,8 @@ class TrushAdmin(admin.ModelAdmin):
                             # price = (int(word.replace("€","").replace(",","")) + 70) * 27
                             if city_from == 1:
                                  price = (int(word.replace("€","").replace(",","")) + 32) * 27
-                            airline_id = 1 if airline == "TAP" else 2
+                            # airline_id = 1 if airline == "TAP" else 2
+                            airline_id = Airline.objects.filter(name__istartswith=airline).first().id
                             
                             if date not in exists:
                                     exists.append(date)
