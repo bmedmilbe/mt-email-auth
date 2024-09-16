@@ -121,12 +121,13 @@ class SendEmailResetSerializer(ModelSerializer):
 
         UserTokens.objects.filter(email=email).delete()
         reset_instance = UserTokens.objects.create(email=email, token=uuid.uuid4())
-
         parthner = validated_data['parthner']
+        auth = "auth/" if parthner == "CMZ" else ""
+
         convert_to_html_content =  render_to_string(
                                     template_name='emails/email_restore.html',
                                     context={'username': email,'token': reset_instance.token, 'parthner':parthner
-                                             , 'website':f"{settings.EMAILS[validated_data['parthner']]['WEBSITE']}/reset-password/uid/{reset_instance.token}/"
+                                             , 'website':f"{settings.EMAILS[validated_data['parthner']]['WEBSITE']}{auth}/reset-password/uid/{reset_instance.token}/"
                                              , 'logo':f"{settings.EMAILS[validated_data['parthner']]['LOGO']}"
                                               }
                                     )

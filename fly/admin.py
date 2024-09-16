@@ -57,7 +57,6 @@ class TrushAdmin(admin.ModelAdmin):
                         if word in airlines:
                             airline = word
 
-                        
                         if "/" in word:
                             date = word.split("/")
                             
@@ -225,8 +224,11 @@ class MenssengerAdmin(admin.ModelAdmin):
         if obj.file.url != None:
             txt_obj = BytesIO(requests.get(obj.file.url).content)
             all_data = f"{docx2txt.process(txt_obj)}".replace("\r"," ").replace("\n"," ").replace("  ", " ").replace(",00.", "").replace(".,00", "")\
-                .replace(",00", "").replace(".", "")\
+                .replace(",00", "")\
                 .replace("Hamilton Lucas Gln","").replace("Faustina Martins Ramos","")
+            
+            
+
             count = -1
             words = all_data.split(" ")
             value = 0
@@ -243,6 +245,16 @@ class MenssengerAdmin(admin.ModelAdmin):
                  'out': 0
             }}
             for word in words:
+                if ".00" in word:
+                    pprint(word)
+                    if word[-1] == "0" and word[-2] == "0" and word[-3] == ".":
+                          word = word[:-3]
+
+                    pprint(word)
+
+                if "." in word:
+                    word = word.replace(".","")
+                    pprint(word)
                 count = count + 1
                 
                 if word in users:
@@ -252,15 +264,17 @@ class MenssengerAdmin(admin.ModelAdmin):
                         for x in description.split(" "):
                              if x.isnumeric():
                                 #   pprint(x)
-                                  value = int(x)
+                                if int(x) > 31:
+                                    value = int(x)
 
                         result[current_user] = {
                          "in": result[current_user]['in'] + value if "RECEBI" in description.upper() else result[current_user]['in'],
                          "out": result[current_user]['out'] + value if "RECEBI" not in description.upper() else result[current_user]['out']
-                         
                          }
 
-                        # pprint(f"{current_user} {value} {description.replace(str(value),'')}")
+                        if not "RECEBI" in description.upper():
+                            # pprint(f" {value} ")
+                            pass
                              
                     current_user = word
                     description = ''
