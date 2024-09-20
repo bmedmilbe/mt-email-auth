@@ -220,6 +220,8 @@ class MenssengerAdmin(admin.ModelAdmin):
         months = ["TAP", "TAAG"]
 
         exists = list()
+        ins = """"""
+        outs =""""""
         
         if obj.file.url != None:
             txt_obj = BytesIO(requests.get(obj.file.url).content)
@@ -246,21 +248,21 @@ class MenssengerAdmin(admin.ModelAdmin):
             }}
             for word in words:
                 if ".00" in word:
-                    pprint(word)
+                    # pprint(word)
                     if word[-1] == "0" and word[-2] == "0" and word[-3] == ".":
                           word = word[:-3]
 
-                    pprint(word)
+                    # pprint(word)
 
                 if "." in word:
                     word = word.replace(".","")
-                    pprint(word)
+                    # pprint(word)
                 count = count + 1
                 
                 if word in users:
                      
                     if count > 1:
-
+                        value = 0
                         for x in description.split(" "):
                              if x.isnumeric():
                                 #   pprint(x)
@@ -271,15 +273,18 @@ class MenssengerAdmin(admin.ModelAdmin):
                          "in": result[current_user]['in'] + value if "RECEBI" in description.upper() else result[current_user]['in'],
                          "out": result[current_user]['out'] + value if "RECEBI" not in description.upper() else result[current_user]['out']
                          }
+                        if 'RECEBI' in description.upper():
+                            ins = f"""{ins}\n{value}"""
+                        elif 'RECEBI' not in description.upper() and value > 0:
+                            outs = f"""{outs}\n{value}"""
 
-                        if not "RECEBI" in description.upper():
-                            # pprint(f" {value} ")
-                            pass
+                        # pprint(f"{value} | {description}")
                              
                     current_user = word
                     description = ''
                 else:
                      description = f"{description} {word}"
+                     
 
             details = """"""
             # for user in users: 
@@ -287,7 +292,9 @@ class MenssengerAdmin(admin.ModelAdmin):
             out_ = result[users[0]]['out']+result[users[1]]['out']
             details = f"""Recebeu {in_}, entregou {out_}.\nSaldo:{in_-out_} (se foi entregue todo o valor anotado)\nCaso haja valor por entregar faça {out_} - (total de valores por entregar), porque esses valores ainda não foram entregue."""
 
-            obj.details = details 
+            obj.details = f"{details} \nEntrada: {ins} \nSaida:{outs}" 
+            # pprint(ins)
+            # pprint(outs)
 
             super().save_model(request, obj, form, change)       
                      
