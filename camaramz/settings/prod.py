@@ -57,10 +57,6 @@ DOMAIN = "camaramz-cc67c4aaa69f.herokuapp.com"
 # ALLOWED_HOSTS = ["camaramz.herokuapp.com"]
 
 
-AWS_ACCESS_KEY_ID=os.environ['AWS_ACCESS_KEY_ID']
-AWS_SECRET_ACCESS_KEY=os.environ['AWS_SECRET_ACCESS_KEY']
-AWS_STORAGE_BUCKET_NAME=os.environ['AWS_STORAGE_BUCKET_NAME'] 
-AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com'% AWS_STORAGE_BUCKET_NAME
 
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_HOST_USER = "edmilbe@gmail.com"
