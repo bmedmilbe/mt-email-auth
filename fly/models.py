@@ -19,6 +19,13 @@ class Trush(models.Model):
     city_from = models.ForeignKey(City, on_delete=models.CASCADE, null=True, blank=True, related_name="city_from_trush")
     city_to = models.ForeignKey(City, on_delete=models.CASCADE, null=True, blank=True, related_name="city_to_trush")
 
+class Law(models.Model):
+    current_law = models.FileField(upload_to='kandja/law', null=True)
+    cv_code = models.FileField(upload_to='kandja/law', null=True)
+
+    new_code = models.FileField(upload_to='kandja/law', null=True)
+
+
 
 class Airline(models.Model):
     name = models.CharField(max_length=255, unique=True)

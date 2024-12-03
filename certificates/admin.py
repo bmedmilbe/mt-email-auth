@@ -10,6 +10,11 @@ import os
 from django.utils.text import slugify
 # Register your models here.
 from django.core.files import File
+from openpyxl import load_workbook
+from io import BytesIO
+import requests
+
+
 # from django.db.migrations.recorder import MigrationRecorder
 
 
@@ -97,6 +102,83 @@ class CovalsAdmin(admin.ModelAdmin):
     list_editable = ["date_used", "square"]
     ordering = ["date_used"]
     list_per_page = 30
+
+    def save_model(self, request, obj, form, change):
+        super().save_model(request, obj, form, change)
+
+
+        # reading csv file 
+        if obj.catalogue != None:
+            # df = pd.read_csv(obj.catalogue.path)
+            # print(df.head())
+            pass
+        
+        if obj.cards.url != None:
+            # pprint(File(open(obj.cards.url, 'rb')))
+            url = obj.cards.url
+            # url = "http://127.0.0.1:8000/media/camaramz/posts/documents/text_cecab_rubish_1.docx"
+            docx = BytesIO(requests.get(url).content)
+            # Write the stuff
+            with open("output.xlsx", "wb") as f:
+                f.write(docx.getbuffer())
+                # pprint(docx)
+                # pass
+            workbook = load_workbook(filename="output.xlsx")
+            sheet = workbook["Uploaded"]
+            m = hashlib.sha256()
+            for row in range(2, sheet.max_row+1):
+                card_number = int(sheet[f"a{row}"].value)+100000
+                size = len(str(card_number))
+                zerros = (6-size) * "0" 
+                
+                venv = settings.TOPUP_KEY
+                number = f"{zerros}{card_number}"
+                
+                var =  str(str(int(sheet[f'b{row}'].value)) + venv).encode('utf-8')
+            
+                code = hashlib.sha224(var).hexdigest()
+                # print("number: ", number)
+                # print("code: ", code)
+                
+                key = Fernet.generate_key()
+                fernet = Fernet(key)
+                # print("key: ", key)
+                # encNumber = fernet.encrypt(number.encode())
+                # print("encrypted number: ", encNumber)
+                # decNumber = fernet.decrypt(encNumber).decode()
+                # print("decrypted number: ", decNumber)
+                value = str(int(sheet[f"c{row}"].value))
+                # pprint(str(int(sheet[f'b{row}'].value)))
+
+
+
+                # 1 - 3: 36 - 50 115000 - 115036 
+                # 1 - 2: 24 - 100 115037 - 115060
+                # 1 - 2: 24 - 200 115061 - 115084
+                
+                encValue = fernet.encrypt(value.encode())
+                # print("encrypted value: ", encValue)
+                decValue = fernet.decrypt(encValue).decode()
+                # print("decrypted value: ", decValue)
+                
+                models.Card.objects.create(
+                    number=number,
+                    code =code,
+                    key=key,
+                    value = encValue,
+                    # currency=sheet[f'c{row}'].value
+                    currency_id=2
+
+                )
+            # for card in models.Card.objects.all():
+            #     fernet = Fernet(card.key)
+                # pprint(card.number)
+                # pprint(card.code)
+                # pprint(fernet.decrypt(bytes(card.value)).decode())
+
+           
+
+
 
 
 @admin.register(models.Cemiterio)
