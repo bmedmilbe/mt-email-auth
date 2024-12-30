@@ -542,7 +542,7 @@ class CertificateAdmin(admin.ModelAdmin):
                     newcertificate.status = "A"
 
 
-                newcertificate.date_issue = f"{certificate['atestado_date']} 00:00:00"
+                newcertificate.date_issue = f"{certificate['atestado_date']}"
                 newcertificate.obs = certificate["atestado_obs"]
                 newcertificate.number = f"{certificate['atestado_number']}"
                 newcertificate.type_id1 = int(certificate["atestado_type1"])
@@ -553,7 +553,7 @@ class CertificateAdmin(admin.ModelAdmin):
                     pass
                 else:
                     cer = cer.first()
-                    cer.date_issue = f"{certificate['atestado_date']} 00:00:00"
+                    cer.date_issue = f"{certificate['atestado_date']}"
                     cer.save()
                     
 
@@ -577,7 +577,7 @@ class CertificateAdmin(admin.ModelAdmin):
                     #     cer.status = "A"
 
 
-                    # cer.date_issue = f"{certificate['atestado_date']} 00:00:00"
+                    # cer.date_issue = f"{certificate['atestado_date']}"
                     # cer.obs = certificate["atestado_obs"]
                     # cer.number = f"{certificate['atestado_number']}"
                     # cer.type_id1 = int(certificate["atestado_type1"])
@@ -587,7 +587,7 @@ class CertificateAdmin(admin.ModelAdmin):
 
                 # if cer.exists():
                 #     cer = cer.first()
-                #     cer.date_issue = f"{certificate['atestado_date']} 00:00:00"
+                #     cer.date_issue = f"{certificate['atestado_date']}"
                 #     cer.save()
                 #     # newcertificate.save()
                 #     pprint(newcertificate)
