@@ -589,7 +589,7 @@ class CertificateAdmin(admin.ModelAdmin):
                 else:
                     cer = cer.first()
                     cer.date_issue = f"{certificate['atestado_date']}"
-                    # cer.save()
+                    cer.save()
                     
 
                     
