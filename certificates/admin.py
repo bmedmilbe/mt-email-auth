@@ -553,27 +553,34 @@ class CertificateAdmin(admin.ModelAdmin):
                     pass
                 else:
                     cer = cer.first()
-                    cer.main_person_id = int(certificate["atestado_bi"])
-                    cer.type_id = int(certificate["atestado_type"])
-                    
-                    cer.status = certificate["atestado_state"]
-                    state = int(certificate["atestado_state"])
-                    if state == 1:
-                        cer.status = "P"
-                    elif state == 2:
-                        cer.status = "R"
-                    elif state == 3:
-                        cer.status = "C"
-                    elif state == 4:
-                        cer.status = "F"
-                    elif state == 5:
-                        cer.status = "A"
-
-
                     cer.date_issue = f"{certificate['atestado_date']} 00:00:00"
-                    cer.obs = certificate["atestado_obs"]
-                    cer.number = f"{certificate['atestado_number']}"
-                    cer.type_id1 = int(certificate["atestado_type1"])
+                    cer.save()
+                    
+
+                    
+                
+        
+                    # cer.main_person_id = int(certificate["atestado_bi"])
+                    # cer.type_id = int(certificate["atestado_type"])
+                    
+                    # cer.status = certificate["atestado_state"]
+                    # state = int(certificate["atestado_state"])
+                    # if state == 1:
+                    #     cer.status = "P"
+                    # elif state == 2:
+                    #     cer.status = "R"
+                    # elif state == 3:
+                    #     cer.status = "C"
+                    # elif state == 4:
+                    #     cer.status = "F"
+                    # elif state == 5:
+                    #     cer.status = "A"
+
+
+                    # cer.date_issue = f"{certificate['atestado_date']} 00:00:00"
+                    # cer.obs = certificate["atestado_obs"]
+                    # cer.number = f"{certificate['atestado_number']}"
+                    # cer.type_id1 = int(certificate["atestado_type1"])
                     # cer.save()
                     pass
 
