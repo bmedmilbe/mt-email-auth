@@ -549,47 +549,47 @@ class CertificateAdmin(admin.ModelAdmin):
         
         # Open and read the JSON file
         count = 1
-        with open('atestados.json', 'r') as file:
-            data = list(json.load(file))
-            for certificate in data:
-                newcertificate = models.Certificate()
-                newcertificate.id = int(certificate["atestado_id"])
+        # with open('atestados.json', 'r') as file:
+        #     data = list(json.load(file))
+        #     for certificate in data:
+        #         newcertificate = models.Certificate()
+        #         newcertificate.id = int(certificate["atestado_id"])
 
-                newcertificate.date_issue = f"{certificate['atestado_date']}"
+        #         newcertificate.date_issue = f"{certificate['atestado_date']}"
 
 
-                newcertificate.id = int(certificate["atestado_id"])
-                newcertificate.main_person_id = int(certificate["atestado_bi"])
-                newcertificate.type_id = int(certificate["atestado_type"])
+        #         newcertificate.id = int(certificate["atestado_id"])
+        #         newcertificate.main_person_id = int(certificate["atestado_bi"])
+        #         newcertificate.type_id = int(certificate["atestado_type"])
                 
-                newcertificate.status = certificate["atestado_state"]
-                state = int(certificate["atestado_state"])
-                if state == 1:
-                    newcertificate.status = "P"
-                elif state == 2:
-                    newcertificate.status = "R"
-                elif state == 3:
-                    newcertificate.status = "C"
-                elif state == 4:
-                    newcertificate.status = "F"
-                elif state == 5:
-                    newcertificate.status = "A"
+        #         newcertificate.status = certificate["atestado_state"]
+        #         state = int(certificate["atestado_state"])
+        #         if state == 1:
+        #             newcertificate.status = "P"
+        #         elif state == 2:
+        #             newcertificate.status = "R"
+        #         elif state == 3:
+        #             newcertificate.status = "C"
+        #         elif state == 4:
+        #             newcertificate.status = "F"
+        #         elif state == 5:
+        #             newcertificate.status = "A"
 
 
-                newcertificate.date_issue = f"{certificate['atestado_date']}"
-                newcertificate.obs = certificate["atestado_obs"]
-                newcertificate.number = f"{certificate['atestado_number']}"
-                newcertificate.type_id1 = int(certificate["atestado_type1"])
+        #         newcertificate.date_issue = f"{certificate['atestado_date']}"
+        #         newcertificate.obs = certificate["atestado_obs"]
+        #         newcertificate.number = f"{certificate['atestado_number']}"
+        #         newcertificate.type_id1 = int(certificate["atestado_type1"])
                 
-                cer = models.Certificate.objects.filter(id=int(certificate["atestado_id"]))
-                if not cer.exists():
+        #         cer = models.Certificate.objects.filter(id=int(certificate["atestado_id"]))
+        #         if not cer.exists():
 
-                    # newcertificate.save()
-                    pass
-                else:
-                    cer = cer.first()
-                    cer.date_issue = f"{certificate['atestado_date']}"
-                    # cer.save()
+        #             # newcertificate.save()
+        #             pass
+        #         else:
+        #             cer = cer.first()
+        #             cer.date_issue = f"{certificate['atestado_date']}"
+        #             # cer.save()
                     
 
                     
