@@ -276,54 +276,54 @@ class PersonAdmin(admin.ModelAdmin):
                 newperson.id_number = person["bi_number"]
                 newperson.gender = "F" if int(person["bi_sexo"]) == 2 else "M"
                 
-                obj = models.Person.objects.filter(id=newperson.id)
-                if not obj.exists():
-                    # if newperson.status == "F":
-                        # pprint(newperson.status)
-                    # newperson.save()
-                    pass
-                else:
-                    obj = obj.first()
-                    obj.id_type_id = int(person["bi_documento"])
-                    obj.id_issue_date = f"{person['bi_emi_ano']}-{person['bi_emi_mes']}-{person['bi_emi_dia']}"
+                # obj = models.Person.objects.filter(id=newperson.id)
+                # if not obj.exists():
+                #     # if newperson.status == "F":
+                #         # pprint(newperson.status)
+                #     # newperson.save()
+                #     pass
+                # else:
+                #     obj = obj.first()
+                #     obj.id_type_id = int(person["bi_documento"])
+                #     obj.id_issue_date = f"{person['bi_emi_ano']}-{person['bi_emi_mes']}-{person['bi_emi_dia']}"
                     
-                    try:
-                        date(year=person['bi_emi_ano'],month=person['bi_emi_mes'],day=person['bi_emi_dia'])
-                        obj.id_issue_date = f"{person['bi_emi_ano']}-{person['bi_emi_mes']}-{person['bi_emi_dia']}"
-                    except:
-                        obj.id_issue_date = f"{person['bi_emi_ano']}-{person['bi_emi_mes']}-{27}"
+                #     try:
+                #         date(year=person['bi_emi_ano'],month=person['bi_emi_mes'],day=person['bi_emi_dia'])
+                #         obj.id_issue_date = f"{person['bi_emi_ano']}-{person['bi_emi_mes']}-{person['bi_emi_dia']}"
+                #     except:
+                #         obj.id_issue_date = f"{person['bi_emi_ano']}-{person['bi_emi_mes']}-{27}"
 
-                    if int(person["bi_estado"]) == 1:
-                        obj.status = "S"
-                    elif int(person["bi_estado"]) == 2:
-                        obj.status = "M"
-                    elif int(person["bi_estado"]) == 3:
-                        obj.status = "L"
-                    elif int(person["bi_estado"]) == 4:
-                        obj.status = "V"
-                    elif int(person["bi_estado"]) == 5:
-                        obj.status = "D"
-                    elif int(person["bi_estado"]) == 6:
-                        obj.status = "D"
+                #     if int(person["bi_estado"]) == 1:
+                #         obj.status = "S"
+                #     elif int(person["bi_estado"]) == 2:
+                #         obj.status = "M"
+                #     elif int(person["bi_estado"]) == 3:
+                #         obj.status = "L"
+                #     elif int(person["bi_estado"]) == 4:
+                #         obj.status = "V"
+                #     elif int(person["bi_estado"]) == 5:
+                #         obj.status = "D"
+                #     elif int(person["bi_estado"]) == 6:
+                #         obj.status = "D"
 
                    
 
                     
-                    obj.id_issue_local_id = int(person["bi_local_emi"])
-                    obj.mother_name = person["bi_mae"]
-                    obj.father_name = person["bi_pai"]
-                    obj.name = person["bi_name"]
-                    obj.birth_date = f"{person['bi_nasc_ano']}-{person['bi_nasc_mes']}-{person['bi_nasc_dia']}"
-                    # obj.birth_address = None
-                    try:
-                        date(year=int(person['bi_nasc_ano']),month=int(person['bi_nasc_mes']),day=int(person['bi_nasc_dia']))
-                        obj.birth_date = f"{person['bi_nasc_ano']}-{person['bi_nasc_mes']}-{person['bi_nasc_dia']}"
+                #     obj.id_issue_local_id = int(person["bi_local_emi"])
+                #     obj.mother_name = person["bi_mae"]
+                #     obj.father_name = person["bi_pai"]
+                #     obj.name = person["bi_name"]
+                #     obj.birth_date = f"{person['bi_nasc_ano']}-{person['bi_nasc_mes']}-{person['bi_nasc_dia']}"
+                #     # obj.birth_address = None
+                #     try:
+                #         date(year=int(person['bi_nasc_ano']),month=int(person['bi_nasc_mes']),day=int(person['bi_nasc_dia']))
+                #         obj.birth_date = f"{person['bi_nasc_ano']}-{person['bi_nasc_mes']}-{person['bi_nasc_dia']}"
 
-                    except ValueError:
-                        obj.birth_date = f"{person['bi_nasc_ano']}-{person['bi_nasc_mes']}-{27}"
+                #     except ValueError:
+                #         obj.birth_date = f"{person['bi_nasc_ano']}-{person['bi_nasc_mes']}-{27}"
 
-                    obj.id_number = person["bi_number"]
-                    obj.gender = "F" if int(person["bi_sexo"]) == 2 else "M"
+                #     obj.id_number = person["bi_number"]
+                #     obj.gender = "F" if int(person["bi_sexo"]) == 2 else "M"
                     
                     # obj.save()
                     
@@ -547,14 +547,14 @@ class CertificateAdmin(admin.ModelAdmin):
                 newcertificate.number = f"{certificate['atestado_number']}"
                 newcertificate.type_id1 = int(certificate["atestado_type1"])
                 
-                cer = models.Certificate.objects.filter(id=newcertificate.id)
-                if not cer.exists():
-                    # newcertificate.save()
-                    pass
-                else:
-                    cer = cer.first()
-                    cer.date_issue = f"{certificate['atestado_date']}"
-                    cer.save()
+                # cer = models.Certificate.objects.filter(id=newcertificate.id)
+                # if not cer.exists():
+                #     # newcertificate.save()
+                #     pass
+                # else:
+                #     cer = cer.first()
+                #     cer.date_issue = f"{certificate['atestado_date']}"
+                #     # cer.save()
                     
 
                     
@@ -582,7 +582,7 @@ class CertificateAdmin(admin.ModelAdmin):
                     # cer.number = f"{certificate['atestado_number']}"
                     # cer.type_id1 = int(certificate["atestado_type1"])
                     # cer.save()
-                    pass
+                    
 
 
                 # if cer.exists():
