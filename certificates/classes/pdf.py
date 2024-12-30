@@ -3,6 +3,7 @@
 
 from decimal import Decimal
 from io import BytesIO
+import os
 from django.http import HttpResponse
 from django.template.loader import get_template
 from xhtml2pdf import pisa
@@ -122,6 +123,7 @@ class PDF():
     #   {{date}}
 
         template = get_template("certificates/certificate_off.html")
+        
         context = {}
         context_dict = {
             'body': self.text,
@@ -140,26 +142,34 @@ class PDF():
             'bi': self.bi,
             'logo': 'https://bm-edmilbe-bucket.s3.eu-north-1.amazonaws.com/camaramz/extras/stp.41e0f117.png'
         }
-        # pprint(context_dict['prices'])
+
         html = template.render(context_dict)
         response = BytesIO()
         pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), response)
-        # pprint(result.getvalue())
-
-        # file_name = uuid.uuid4()
+        
         file_path = self.certificate.number
-        file_path = f"/certificates/{self.type2.id}-{self.type1.slug}-de-{self.type2.slug}/{file_path}.pdf"
+        folder= f"/certificates/{self.type2.id}-{self.type1.slug}-de-{self.type2.slug}/"
+        
+        if not os.path.exists(f"{str(settings.MEDIA_ROOT)}{folder}"):
+            os.mkdir(f"{str(settings.MEDIA_ROOT)}{folder}")
+
+        file_path = f"{folder}/{file_path}.pdf"
         folder_online = f"{self.type2.id}-{self.type1.slug}-de-{self.type2.slug}/{self.certificate.number}.pdf"
+        
+    
         try:
             path = str(settings.MEDIA_ROOT) + \
                 f"{file_path}"
+            
+            # print("file_nama2: ", file_path)
+
             with open(path, 'wb+') as output:
                 pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), output)
                 # pprint(path)
                 certificate = Certificate.objects.get(id=self.certificate.id)
                 certificate.file.save(f'{folder_online}', File(output))
                 file_path = certificate.file.url
-                print("file_nama: ", file_path)
+                # print("file_nama: ", file_path)
 
         except Exception as e:
             print("error", e)

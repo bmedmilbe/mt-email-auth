@@ -31,9 +31,12 @@ class AtestadoOne(Document):
         self.text = f"Atesta para {fim} {data.type2.name} que, {StringHelper.text_bi(StringHelper, data.type2,data.bi1,data.bi2,data.data)} reside efetivamente {StringHelper.house_address(StringHelper, data.bi1.address)}, deste Estado{tempo}."
         
 
-       
+
         pdf_object = PDF(self.text,self.data.type,self.data.type2, data.certificate, self.data.data,self.data.bi1)
+        # pprint(data.certificate.file)
+
         file_name, status = pdf_object.render_pdf()
+        # pprint(file_name)
         return self.text, file_name, status
     
     # def pdf_render(self, ):

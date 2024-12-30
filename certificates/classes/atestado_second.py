@@ -27,5 +27,8 @@ class AtestadoSecond(Document):
 
         pdf_object = PDF(self.text, self.data.type, self.data.type2,
                          data.certificate, self.data.data, self.data.bi1)
+        pprint(data.certificate.file)
+
         file_name, status = pdf_object.render_pdf()
+        # pprint(pdf_object)
         return self.text, file_name, status

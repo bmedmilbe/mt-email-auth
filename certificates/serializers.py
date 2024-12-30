@@ -465,16 +465,18 @@ class CertificateModelOneCreateSerializer(ModelSerializer):
         validate_data["type_id"] = int(self.context['type_id'])
         text_helper = StringHelper()
         # pprint(validate_data)
-        certificate = super().create(validate_data)
+        new_validate_data = validate_data.copy()
+
+        certificate = super().create(new_validate_data)
 
         model = AtestadoOne(DocumentData(
             validate_data["main_person"], validate_data, certificate, validate_data["secondary_person"]))
-
+        # pprint(certificate.file)
         text, file_name, status = StringHelper.renderText(model)
-
+        # pprint(text)
         validate_data["text"] = text
-        validate_data["file_name"] = f"/media/certificates/{file_name}.pdf"
-        pprint(validate_data["file_name"])
+        # validate_data["file_name"] = f"/media/certificates/{file_name}.pdf"
+        # pprint(validate_data["file_name"])
         # Certificate.objects.update(certificate,text=validate_data["text"])
         Certificate.objects.filter(pk=certificate.id).update(
             text=validate_data["text"], status="P")
@@ -483,6 +485,7 @@ class CertificateModelOneCreateSerializer(ModelSerializer):
             certificate_id=certificate.id, house=validate_data["main_person"].address)
 
         certificate = Certificate.objects.get(pk=certificate.id)
+        # pprint(file_name)
 
         return {**validate_data, "id": certificate.id, "file": certificate.file}
 
@@ -623,6 +626,7 @@ class CertificateModelTwoCreateSerializer(ModelSerializer):
         model = AtestadoSecond(DocumentData(
             validate_data["main_person"], validate_data, certificate, validate_data["secondary_person"]))
         # pprint( StringHelper.renderText(model))
+        # pprint(certificate.file)
         text, file_name, status = StringHelper.renderText(model)
 
         validate_data["text"] = text
@@ -639,7 +643,7 @@ class CertificateModelTwoCreateSerializer(ModelSerializer):
             validate_data["university"] = university.id
 
         certificate = Certificate.objects.get(pk=certificate.id)
-        pprint(file_name)
+        # pprint(file_name)
 
         return {**validate_data, "id": certificate.id, "file": certificate.file}
 
