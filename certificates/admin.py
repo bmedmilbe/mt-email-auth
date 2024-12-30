@@ -536,7 +536,7 @@ class CertificateAdmin(admin.ModelAdmin):
                 
         #         try:
                     
-        #             with open(file_path, 'wb') as output:
+        #             with open(file_path, 'wb+') as output:
         #                 item.file.save(f'{file_path_online}', File(output))
         #                 # file_path = item.file.url
         #                 # print("file_nama: ", file_path)
@@ -589,7 +589,7 @@ class CertificateAdmin(admin.ModelAdmin):
                 else:
                     cer = cer.first()
                     cer.date_issue = f"{certificate['atestado_date']}"
-                    cer.save()
+                    # cer.save()
                     
 
                     
