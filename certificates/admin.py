@@ -554,7 +554,7 @@ class CertificateAdmin(admin.ModelAdmin):
             for certificate in data:
                 newcertificate = models.Certificate()
                 newcertificate.id = int(certificate["atestado_id"])
-                cer = models.Certificate.objects.filter(id=int(certificate["atestado_id"], date_issue__year=2024,date_issue__month=12,date_issue__day=30))
+                cer = models.Certificate.objects.filter(id=int(certificate["atestado_id"]))
                 if not cer.exists():
 
                     # newcertificate.save()
@@ -562,7 +562,7 @@ class CertificateAdmin(admin.ModelAdmin):
                 else:
                     cer = cer.first()
                     cer.date_issue = f"{certificate['atestado_date']}"
-                    cer.save()
+                    # cer.save()
                     
                 # newcertificate.date_issue = f"{certificate['atestado_date']}"
 
