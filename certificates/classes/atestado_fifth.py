@@ -36,9 +36,12 @@ class AtestadoFifth(Document):
             text = StringHelper.simple_person_text(StringHelper,simple_persons)
 
             single_person = CertificateSinglePerson.objects.filter(type_id=data.type2.id).first()
+            # pprint(CertificateSinglePerson.objects.all())
+
             single_person_text = f"d{StringHelper.oa(StringHelper,single_person.gender)} {StringHelper.toBold(single_person.name)}, que  foi funcionári{StringHelper.oa(StringHelper,single_person.gender)} de {data.data['instituition'].name}"
 
         qtd = simple_persons.count()
+        
 
         m = "m" if qtd > 1 else ""
 

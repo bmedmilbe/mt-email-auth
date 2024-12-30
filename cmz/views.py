@@ -1,21 +1,14 @@
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import render
 from django.db.models.aggregates import Count
-from certificates.models import IDType, Street
-from certificates.serializers import IDTypeSerializer, StreetSerializer
 from rest_framework.response import Response
-from rest_framework import status
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
-from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin, CreateModelMixin
-from .models import  Service, Tour, ImagesTour, Messages, Post, PostDocument, PostFile, PostImages, Section, Team
-from .serializers import InformationSerializer, PostImagesSerializer, ServiceSerializer, TourSerializer, ImagesTourSerializer,MessagesSerializer, PostSerializer, SectionSerializer, TeamSerializer
+from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, UpdateModelMixin, CreateModelMixin
+from .models import  Service, Tour, ImagesTour, Messages, Post, Section, Team
+from .serializers import InformationSerializer, ServiceSerializer, TourSerializer, ImagesTourSerializer,MessagesSerializer, PostSerializer, SectionSerializer, TeamSerializer
 from rest_framework.decorators import action
-from django.core.mail import send_mail, mail_admins, BadHeaderError, EmailMessage
+from django.core.mail import BadHeaderError
 from templated_mail.mail import BaseEmailMessage
-from pprint import pprint
 from rest_framework.permissions import (
-    IsAuthenticated,
-    IsAdminUser,
-    IsAuthenticatedOrReadOnly,
     AllowAny,
 )
 # Create your views here.

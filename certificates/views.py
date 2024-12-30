@@ -512,10 +512,10 @@ class PersonBirthAddressViewSet(ModelViewSet):
 class CountysViewSet(ModelViewSet):
     # permission_classes = [IsAuthenticated]
 
-    queryset = County.objects.all()
+    queryset = County.objects.all().order_by("name")
 
     def get_queryset(self):
-        return (County.objects.all())
+        return (County.objects.all().order_by("name"))
 
     def get_serializer_class(self):
         return CountySerializer
@@ -524,10 +524,10 @@ class CountysViewSet(ModelViewSet):
 class UniversitysViewSet(ModelViewSet):
     # permission_classes = [IsAuthenticated]
 
-    queryset = University.objects.all()
+    queryset = University.objects.all().order_by("name")
 
     def get_queryset(self):
-        return (University.objects.all())
+        return (University.objects.all().order_by("name"))
 
     def get_serializer_class(self):
         return UniversitySerializer
@@ -536,10 +536,10 @@ class UniversitysViewSet(ModelViewSet):
 class TownViewSet(ModelViewSet):
     # permission_classes = [IsAuthenticated]
 
-    queryset = Town.objects.all()
+    queryset = Town.objects.all().order_by("name")
 
     def get_queryset(self):
-        return (Town.objects.all())
+        return (Town.objects.all().order_by("name"))
 
     def get_serializer_class(self):
         return TownSerializer
@@ -559,9 +559,12 @@ class HouseViewSet(ModelViewSet):
 class PersonViewSet(ModelViewSet):
     # permission_classes = [IsAuthenticated]
 
-    queryset = Person.objects.all()
+
+
+    # queryset = Person.objects.all()
 
     def get_queryset(self):
+        pprint(self.request)
         return (Person.objects.all())
 
     def get_serializer_class(self):
@@ -578,9 +581,8 @@ class PersonViewSet(ModelViewSet):
     ordering_fields = ["name",
                        "id_number", "birth_date", "id_issue_date"]
 
-    # def get_serializer_context(self):
-    #     return {"type_id": self.kwargs.get('title_pk')}
-    # return {"customer_id": get_customer(self.request.user).id}
+    def get_serializer_context(self):
+        return {"id": self.kwargs.get('pk')}
 
     # @action(detail=False, methods=["POST"])
     # def secret(self, request, *args, **kwargs):

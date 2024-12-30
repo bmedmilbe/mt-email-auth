@@ -146,7 +146,7 @@ REST_FRAMEWORK = {
 
     "COERCE_DECIMAL_TO_STRING": False,
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 1000,
+    'PAGE_SIZE': 30,
     'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend']
 }
 
@@ -251,6 +251,8 @@ AWS_SECRET_ACCESS_KEY = 'c2qIEzuaRKArLjVxQUa5LrDLy98k4NpOQFupfE8Y'
 AWS_STORAGE_BUCKET_NAME = 'bm-edmilbe-bucket'
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 # storages.backends.s3boto3.S3Boto3Storage
+
+
 STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 

@@ -333,11 +333,11 @@ class PersonCreateOrUpdateSerializer(ModelSerializer):
             {"person": "There is a person with same ID already registered"})
 
     def update(self, instance, validate_data):
+
+        pprint(self.context)
         person = Person.objects.filter(
 
-            nationality=validate_data['nationality'],
-            id_type=validate_data['id_type'],
-            id_number=validate_data['id_number']
+            id=self.context['id']
         )
 
         if not validate_data['father_name'] and not validate_data['mother_name']:
@@ -870,6 +870,7 @@ class CertificateModelFifthCreateSerializer(ModelSerializer):
         elif not Instituition.objects.filter(id=institution).exists():
             raise serializers.ValidationError(
                 {'institution': "This instituition is not valid"})
+        
 
         return institution
 
@@ -928,6 +929,16 @@ class CertificateModelFifthCreateSerializer(ModelSerializer):
         # set the number and type,
         # set and save the text in text dev  mode
 
+        if int(self.context['type_id']) == 12:
+            
+            if CertificateSimplePerson.objects.filter(type_id=12).count() == 0:
+                raise serializers.ValidationError(
+                {'persons': "No simple persons"})
+            elif CertificateSinglePerson.objects.filter(type_id=12).count() == 0:
+                raise serializers.ValidationError(
+                {'persons': "No single person"})
+
+
         current_year = date.today().year
         certificates = Certificate.objects.filter(
             type_id=self.context['type_id'], date_issue__year=current_year)
@@ -946,6 +957,8 @@ class CertificateModelFifthCreateSerializer(ModelSerializer):
         # pprint(validate_data["instituition"])
         validate_data["instituition"] = instituition = Instituition.objects.filter(
             id=validate_data["instituition"]).first()
+        
+
 
         model = AtestadoFifth(DocumentData(
             validate_data["main_person"], validate_data, certificate, validate_data["secondary_person"]))
