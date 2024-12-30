@@ -257,7 +257,7 @@ class PersonAdmin(admin.ModelAdmin):
                 elif int(person["bi_estado"]) == 6:
                     newperson.status = "D"
 
-                pprint(newperson.status)
+                # pprint(newperson.status)
 
                 newperson.id = person["bi_id"]
                 newperson.id_issue_local_id = int(person["bi_local_emi"])
@@ -280,8 +280,8 @@ class PersonAdmin(admin.ModelAdmin):
                 if not obj.exists():
                     # if newperson.status == "F":
                         # pprint(newperson.status)
-                    newperson.save()
-                    # pass
+                    # newperson.save()
+                    pass
                 else:
                     obj = obj.first()
                     obj.id_type_id = int(person["bi_documento"])
@@ -325,7 +325,7 @@ class PersonAdmin(admin.ModelAdmin):
                     obj.id_number = person["bi_number"]
                     obj.gender = "F" if int(person["bi_sexo"]) == 2 else "M"
                     
-                    obj.save()
+                    # obj.save()
                     
 
 
@@ -463,8 +463,8 @@ class InstitutionAdmin(admin.ModelAdmin):
             new_entity.name = entity['entidade_name']
 
             if not models.Instituition.objects.filter(id=new_entity.id).exists():
-                new_entity.save()
-                # pass
+                # new_entity.save()
+                pass
         return super().get_queryset(request)
 
 
@@ -549,7 +549,8 @@ class CertificateAdmin(admin.ModelAdmin):
                 
                 cer = models.Certificate.objects.filter(id=newcertificate.id)
                 if not cer.exists():
-                    newcertificate.save()
+                    # newcertificate.save()
+                    pass
                 else:
                     cer = cer.first()
                     cer.main_person_id = int(certificate["atestado_bi"])
@@ -573,7 +574,8 @@ class CertificateAdmin(admin.ModelAdmin):
                     cer.obs = certificate["atestado_obs"]
                     cer.number = f"{certificate['atestado_number']}"
                     cer.type_id1 = int(certificate["atestado_type1"])
-                    cer.save()
+                    # cer.save()
+                    pass
 
 
                 # if cer.exists():
