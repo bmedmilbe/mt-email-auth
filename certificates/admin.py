@@ -518,7 +518,7 @@ class CertificateAdmin(admin.ModelAdmin):
     
     def get_queryset(self, request: HttpRequest) -> QuerySet[Any]:
         
-        certificates = [models.Certificate.objects.order_by("-id")]
+        certificates = list(models.Certificate.objects.order_by("-id"))
         # certificates = []
         for item in certificates:
             # file_path = item.number
