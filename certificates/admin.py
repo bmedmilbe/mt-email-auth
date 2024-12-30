@@ -525,7 +525,7 @@ class CertificateAdmin(admin.ModelAdmin):
             new_folder= f"/certificates/{item.type.id}-{item.type.certificate_type.slug}-de-{item.type.slug}"
             current_folder= f"/certificates/gerados/{item.type.certificate_type.id}/{item.type.id}"
             file_path = f"{str(settings.MEDIA_ROOT)}{current_folder}/{item.number}.pdf"
-            pprint(file_path)
+            # pprint(file_path)
 
             if os.path.exists(file_path):
                 # os.mkdir(f"{str(settings.MEDIA_ROOT)}{folder}")
@@ -554,7 +554,7 @@ class CertificateAdmin(admin.ModelAdmin):
             for certificate in data:
                 newcertificate = models.Certificate()
                 newcertificate.id = int(certificate["atestado_id"])
-                cer = models.Certificate.objects.filter(id=int(certificate["atestado_id"], date_issue__gt=certificate['atestado_date']))
+                cer = models.Certificate.objects.filter(id=int(certificate["atestado_id"], date_issue__year=2024,date_issue__month=12,date_issue__day=30))
                 if not cer.exists():
 
                     # newcertificate.save()
