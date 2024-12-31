@@ -1,6 +1,7 @@
 # Create your views here.
 
 # from msilib.schema import File
+from certificates.permission import IsStaff
 import stripe
 
 import os
@@ -208,6 +209,7 @@ class CovalSetUpViewSet(ModelViewSet):
     # permission_classes = [IsAuthenticated]
 
     queryset = Coval.objects.all().order_by("square", "-number")
+    permission_classes = [IsStaff]
 
     def get_serializer_class(self):
         if self.request.method == "GET":
@@ -223,6 +225,7 @@ class CertificateViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixin
     queryset = Certificate.objects.select_related(
         "type", "main_person", "house", "secondary_person").order_by("-id").all()
     pagination_class = PageNumberPagination
+    permission_classes = [IsStaff]
 
     def get_serializer_class(self):
         if self.request.method == "PUT" or self.request.method == "PATCH":
@@ -580,6 +583,9 @@ class PersonViewSet(ModelViewSet):
 
     ordering_fields = ["name",
                        "id_number", "birth_date", "id_issue_date"]
+
+    permission_classes = [IsStaff]
+
 
     def get_serializer_context(self):
         return {"id": self.kwargs.get('pk')}
