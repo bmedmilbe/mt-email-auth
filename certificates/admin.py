@@ -558,8 +558,9 @@ class CertificateAdmin(admin.ModelAdmin):
                 cer = models.Certificate.objects.filter(id=int(certificate["atestado_id"])).first()
                 if cer != None:
                     cer.date_issue = f"{certificate['atestado_date']}"
-                    pprint(cer.date_issue)
-                    # cer.save()
+                    # pprint(cer.date_issue)
+
+                    cer.save()
                     # pass
                 
                     
@@ -675,7 +676,7 @@ class CertificateAdmin(admin.ModelAdmin):
         # return super().get_queryset(request)
 
     list_display = [
-        "type", "number", "main_person","secondary_person"
+        "type", "number", "date_issue", "main_person","secondary_person"
     ]
 
     list_per_page = 50

@@ -325,7 +325,7 @@ class Certificate(models.Model):
     type = models.ForeignKey(
         CertificateTitle, on_delete=models.PROTECT, null=True)
     number = models.CharField(max_length=255, null=True)
-    # date_issue = models.DateTimeField( null=True)
+    date_issue = models.DateTimeField( null=True)
     text = models.TextField(default="", null=True)
     main_person = models.ForeignKey(
         Person, on_delete=models.PROTECT, related_name="main_person_certificates", null=True)
