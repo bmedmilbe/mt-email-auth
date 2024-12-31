@@ -4,6 +4,7 @@ from fly.models import Enquire, Flight
 from fly.serializers import EnquireCreateSerializer, EnquireSerializer, FlightSerializer
 from rest_framework.response import Response
 from rest_framework import status
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin, CreateModelMixin
 # from .models import ContactOff, Enquire
@@ -30,6 +31,10 @@ class EnquireViewSet(ListModelMixin, CreateModelMixin,  GenericViewSet):
         if self.request.method == "POST":
             return EnquireCreateSerializer
         return EnquireSerializer
+    
+class PaginationHundread(PageNumberPagination):
+    page_size = 100
+    
 
 class FlightsViewSet(ListModelMixin,  GenericViewSet):
     def get_queryset(self):
@@ -43,6 +48,7 @@ class FlightsViewSet(ListModelMixin,  GenericViewSet):
     # queryset = Flight.objects.filter(date__gt=datetime.now()).order_by("-date", "airline__name")
     
     serializer_class = FlightSerializer
+    pagination_class = PaginationHundread
 
    
 
