@@ -547,22 +547,22 @@ class CertificateAdmin(admin.ModelAdmin):
         #         pprint(file_path)
         
         
-        # # Open and read the JSON file
-        # count = 1
-        # with open('atestados.json', 'r') as file:
-        #     data = list(json.load(file))
-        #     for certificate in data:
-        #         newcertificate = models.Certificate()
-        #         newcertificate.id = int(certificate["atestado_id"])
-        #         cer = models.Certificate.objects.filter(id=int(certificate["atestado_id"]))
-        #         if not cer.exists():
-
-        #             # newcertificate.save()
-        #             pass
-        #         else:
-        #             cer = cer.first()
-        #             cer.date_issue = f"{certificate['atestado_date']}"
+        # Open and read the JSON file
+        count = 1
+        with open('atestados.json', 'r') as file:
+            data = list(json.load(file))
+            for certificate in   sorted(data, key=lambda x: x["atestado_id"]):
+                newcertificate = models.Certificate()
+                newcertificate.id = int(certificate["atestado_id"])
+               
+                cer = models.Certificate.objects.filter(id=int(certificate["atestado_id"])).first()
+                if cer != None:
+                    cer.date_issue = f"{certificate['atestado_date']}"
+                    pprint(cer.date_issue)
                     # cer.save()
+                    # pass
+                
+                    
                     
                 # newcertificate.date_issue = f"{certificate['atestado_date']}"
 
@@ -675,7 +675,7 @@ class CertificateAdmin(admin.ModelAdmin):
         # return super().get_queryset(request)
 
     list_display = [
-        "type", "number", "main_person", "date_issue","secondary_person", "date_issue"
+        "type", "number", "main_person","secondary_person"
     ]
 
     list_per_page = 50
