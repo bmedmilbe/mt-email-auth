@@ -548,20 +548,20 @@ class CertificateAdmin(admin.ModelAdmin):
         
         
         # Open and read the JSON file
-        count = 1
-        with open('atestados.json', 'r') as file:
-            data = list(json.load(file))
-            for certificate in   sorted(data, key=lambda x: x["atestado_id"]):
-                newcertificate = models.Certificate()
-                newcertificate.id = int(certificate["atestado_id"])
+        # count = 1
+        # with open('atestados.json', 'r') as file:
+        #     data = list(json.load(file))
+        #     for certificate in   sorted(data, key=lambda x: x["atestado_id"]):
+        #         newcertificate = models.Certificate()
+        #         newcertificate.id = int(certificate["atestado_id"])
                
-                cer = models.Certificate.objects.filter(id=int(certificate["atestado_id"])).first()
-                if cer != None:
-                    cer.date_issue = f"{certificate['atestado_date']}"
-                    # pprint(cer.date_issue)
+        #         cer = models.Certificate.objects.filter(id=int(certificate["atestado_id"])).first()
+        #         if cer != None:
+        #             cer.date_issue = f"{certificate['atestado_date']}"
+        #             # pprint(cer.date_issue)
 
-                    cer.save()
-                    # pass
+        #             cer.save()
+        #             # pass
                 
                     
                     
