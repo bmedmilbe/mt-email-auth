@@ -518,48 +518,50 @@ class CertificateAdmin(admin.ModelAdmin):
     
     def get_queryset(self, request: HttpRequest) -> QuerySet[Any]:
         
-        # certificates = list(models.Certificate.objects.order_by("-id"))
-        # # certificates = []
-        # for item in certificates:
-        #     if not item.file.storage.exists(item.file.name):
-        #         # file_path = item.number
-        #         new_folder= f"/certificates/{item.type.id}-{item.type.certificate_type.slug}-de-{item.type.slug}"
-        #         current_folder= f"/certificates/gerados3/{item.type.certificate_type.id}/{item.type.id}"
-        #         file_path = f"{str(settings.MEDIA_ROOT)}{current_folder}/{item.number}.pdf"
-        #         # # pprint(file_path)
-        #         # original_file_path = Path(file_path)
-        #         # # Create a new File object from the moved file path
-        #         if os.path.exists(file_path):
-        #         #     with default_storage.open(file_path, 'rb') as f:
-        #         #         new_file = File(f)
-        #         #         item.file = new_file
-        #         #         item.save()
-        #         # else:
-        #         #     pprint(file_path)
-        #         # # Assign the new File object to the copied_file field
-        #         # self.copied_file = new_file 
-        #         # if os.path.exists(file_path):
-        #         #     # os.mkdir(f"{str(settings.MEDIA_ROOT)}{folder}")
+        certificates = list(models.Certificate.objects.filter(file="").order_by("-id"))
+        
+        # certificates = []
+        for item in certificates:
+                # pprint(item.file)
+            # if not item.file.storage.exists(item.file.name):
+                # file_path = item.number
+                new_folder= f"/certificates/{item.type.id}-{item.type.certificate_type.slug}-de-{item.type.slug}"
+                current_folder= f"/certificates/gerados3/{item.type.certificate_type.id}/{item.type.id}"
+                file_path = f"{str(settings.MEDIA_ROOT)}{current_folder}/{item.number}.pdf"
+                # # pprint(file_path)
+                # original_file_path = Path(file_path)
+                # # Create a new File object from the moved file path
+                if os.path.exists(file_path):
+                #     with default_storage.open(file_path, 'rb') as f:
+                #         new_file = File(f)
+                #         item.file = new_file
+                #         item.save()
+                # else:
+                #     pprint(file_path)
+                # # Assign the new File object to the copied_file field
+                # self.copied_file = new_file 
+                # if os.path.exists(file_path):
+                #     # os.mkdir(f"{str(settings.MEDIA_ROOT)}{folder}")
 
-        #         #     # file_path = f"{new_folder}/{item.number}.pdf"
-        #             # file_path = f"{new_folder}/{item.number}.pdf"
-        #             file_path_online = f"{item.type.id}-{item.type.certificate_type.slug}-de-{item.type.slug}/{item.number}.pdf"
+                #     # file_path = f"{new_folder}/{item.number}.pdf"
+                    # file_path = f"{new_folder}/{item.number}.pdf"
+                    file_path_online = f"{item.type.id}-{item.type.certificate_type.slug}-de-{item.type.slug}/{item.number}.pdf"
                     
-        #             try:
+                    try:
                         
-        #                 with open(file_path, 'rb') as output:
-        #                     item.file.save(f'{file_path_online}', File(output))
-        #                     # file_path = item.file.url
-        #                     # pprint(file_path_online)
-        #                     pass
+                        with open(file_path, 'rb') as output:
+                            item.file.save(f'{file_path_online}', File(output))
+                            # file_path = item.file.url
+                            # pprint(file_path_online)
+                            pass
 
-        #             except Exception as e:
-        #                 print("error", e)
-        #         else:
-        #             # print("not founf", file_path)
+                    except Exception as e:
+                        print("error", e)
+                else:
+                    # print("not founf", file_path)
 
-        #             # pprint(file_path)
-        #             pass
+                    # pprint(file_path)
+                    pass
             
         
         # Open and read the JSON file
