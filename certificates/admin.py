@@ -523,7 +523,7 @@ class CertificateAdmin(admin.ModelAdmin):
         for item in certificates:
             # file_path = item.number
             new_folder= f"/certificates/{item.type.id}-{item.type.certificate_type.slug}-de-{item.type.slug}"
-            current_folder= f"/certificates/gerados2/{item.type.certificate_type.id}/{item.type.id}"
+            current_folder= f"/certificates/gerados3/{item.type.certificate_type.id}/{item.type.id}"
             file_path = f"{str(settings.MEDIA_ROOT)}{current_folder}/{item.number}.pdf"
             # # pprint(file_path)
             # original_file_path = Path(file_path)
