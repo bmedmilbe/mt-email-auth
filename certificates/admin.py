@@ -518,50 +518,50 @@ class CertificateAdmin(admin.ModelAdmin):
     
     def get_queryset(self, request: HttpRequest) -> QuerySet[Any]:
         
-        certificates = list(models.Certificate.objects.filter(file=None).order_by("-id"))
-        # certificates = []
-        for item in certificates:
-            # file_path = item.number
-            new_folder= f"/certificates/{item.type.id}-{item.type.certificate_type.slug}-de-{item.type.slug}"
-            current_folder= f"/certificates/gerados/{item.type.certificate_type.id}/{item.type.id}"
-            file_path = f"{str(settings.MEDIA_ROOT)}{current_folder}/{item.number}.pdf"
-            # pprint(file_path)
+        # certificates = list(models.Certificate.objects.filter(file=None).order_by("-id"))
+        # # certificates = []
+        # for item in certificates:
+        #     # file_path = item.number
+        #     new_folder= f"/certificates/{item.type.id}-{item.type.certificate_type.slug}-de-{item.type.slug}"
+        #     current_folder= f"/certificates/gerados/{item.type.certificate_type.id}/{item.type.id}"
+        #     file_path = f"{str(settings.MEDIA_ROOT)}{current_folder}/{item.number}.pdf"
+        #     # pprint(file_path)
 
-            if os.path.exists(file_path):
-                # os.mkdir(f"{str(settings.MEDIA_ROOT)}{folder}")
+        #     if os.path.exists(file_path):
+        #         # os.mkdir(f"{str(settings.MEDIA_ROOT)}{folder}")
 
-                # file_path = f"{new_folder}/{item.number}.pdf"
-                # file_path = f"{new_folder}/{item.number}.pdf"
-                file_path_online = f"{item.type.id}-{item.type.certificate_type.slug}-de-{item.type.slug}/{item.number}.pdf"
+        #         # file_path = f"{new_folder}/{item.number}.pdf"
+        #         # file_path = f"{new_folder}/{item.number}.pdf"
+        #         file_path_online = f"{item.type.id}-{item.type.certificate_type.slug}-de-{item.type.slug}/{item.number}.pdf"
                 
-                try:
+        #         try:
                     
-                    with open(file_path, 'wb+') as output:
-                        item.file.save(f'{file_path_online}', File(output))
-                        # file_path = item.file.url
-                        # print("file_nama: ", file_path)
+        #             with open(file_path, 'wb+') as output:
+        #                 item.file.save(f'{file_path_online}', File(output))
+        #                 # file_path = item.file.url
+        #                 # print("file_nama: ", file_path)
 
-                except Exception as e:
-                    print("error", e)
-            else:
-                pprint(file_path)
+        #         except Exception as e:
+        #             print("error", e)
+        #     else:
+        #         pprint(file_path)
         
         
-        # Open and read the JSON file
-        count = 1
-        with open('atestados.json', 'r') as file:
-            data = list(json.load(file))
-            for certificate in data:
-                newcertificate = models.Certificate()
-                newcertificate.id = int(certificate["atestado_id"])
-                cer = models.Certificate.objects.filter(id=int(certificate["atestado_id"]))
-                if not cer.exists():
+        # # Open and read the JSON file
+        # count = 1
+        # with open('atestados.json', 'r') as file:
+        #     data = list(json.load(file))
+        #     for certificate in data:
+        #         newcertificate = models.Certificate()
+        #         newcertificate.id = int(certificate["atestado_id"])
+        #         cer = models.Certificate.objects.filter(id=int(certificate["atestado_id"]))
+        #         if not cer.exists():
 
-                    # newcertificate.save()
-                    pass
-                else:
-                    cer = cer.first()
-                    cer.date_issue = f"{certificate['atestado_date']}"
+        #             # newcertificate.save()
+        #             pass
+        #         else:
+        #             cer = cer.first()
+        #             cer.date_issue = f"{certificate['atestado_date']}"
                     # cer.save()
                     
                 # newcertificate.date_issue = f"{certificate['atestado_date']}"
