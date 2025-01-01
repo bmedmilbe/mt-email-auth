@@ -118,6 +118,16 @@ class CountrysViewSet(
     serializer_class = CountrySerializer
     pagination_class = Pagination300
 
+class CovalsViewSet(
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    GenericViewSet,
+):
+    queryset = Coval.objects.all().order_by("number")
+
+    serializer_class = CovalSerializer
+    pagination_class = Pagination300
+
 
 class CemiteriosViewSet(
     mixins.ListModelMixin,
@@ -287,7 +297,8 @@ class CertificateModelViewSet(ModelViewSet):
         type_id = int(self.kwargs.get('title_pk'))
         # pprint(self.request.method)
         if self.request.method in ["POST", "PUT",  "PATCH"]:
-            if type_id == 1 or type_id == 5 or type_id == 6 or type_id == 7 or type_id == 9 or type_id == 10 or type_id == 11 or type_id == 15 or type_id == 16 or type_id == 17 or type_id == 19 or type_id == 20 or type_id == 21 or type_id == 22 or type_id == 33:
+            if type_id in [ 1, 5, 6, 7, 9, 10, 11, 15, 16, 17,
+                            19, 20 , 21 , 22 , 30]:
                 # pprint(type_id)
 
                 return CertificateModelOneCreateSerializer
@@ -310,15 +321,19 @@ class CertificateModelViewSet(ModelViewSet):
                 return CertificateModelSeventhCreateSerializer
             elif type_id == 23 or type_id == 28:
                 return CertificateModelAutoConstrucaoCreateSerializer
-            elif type_id == 29 or type_id == 31:
+            elif type_id == 29 or type_id == 32:
                 return CertificateModelLicencaBuffetCreateSerializer
-            elif type_id == 24 or type_id == 30:
+            elif type_id == 24:
                 return CertificateModelCertCompraCovalCreateSerializer
             elif type_id == 25:
                 return CertificateModelAutoModCovalCreateSerializer
+            elif type_id == 26:
+                return "Registo do enterramento de cadável"
             elif type_id == 27:
                 return CertificateModelLicBarracaCreateSerializer
-            elif type_id == 32:
+            elif type_id == 31:
+                return "Licenças Para Transladação"
+            elif type_id == 33:
                 # pprint(self.request.method)
                 # pprint(type_id)
                 return CertificateModelEnterroCreateSerializer

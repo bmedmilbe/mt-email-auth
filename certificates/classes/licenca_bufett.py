@@ -21,9 +21,9 @@ class LicencaBufett(Document):
             StringHelper, simple_days.order_by("date__year", "date__month", "date__day"))
 
         final = ""
-        if data.type2.id == 29:
+        if data.type2.id in [ 29]:
             final = f"para que nos termos da Legislação Vigente, passa a explorar {simple_days_text}{StringHelper.street_address(StringHelper, data.data['street'])}, {data.data['infra']}"
-        elif data.type2.id == 31:
+        elif data.type2.id == 32:
             final = f", deste Estado para proceder {data.data['infra']} {StringHelper.street_address(StringHelper, data.data['street'])}, de {StringHelper.NumeroEmExtenso(data.data['metros'])} metros quarados{simple_days_text[:-2]}"
 
         self.text = f"Por esta Câmara se faz Constar as autoridades e mais pessoas a quem o conhecimento desta competir que foi concedida a  Licença {StringHelper.oa4(StringHelper,data.bi1.gender)} senhor{StringHelper.oa2(StringHelper,data.bi1.gender)}{StringHelper.text_bi(StringHelper, data.type2,data.bi1,data.bi2,data.data)} residente em {StringHelper.house_address(StringHelper, data.bi1.address)} {final}."

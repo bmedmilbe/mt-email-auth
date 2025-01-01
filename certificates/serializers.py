@@ -1042,7 +1042,7 @@ class CertificateModelEnterroCreateSerializer(ModelSerializer):
             "id",
             "main_person",
             "secondary_person",
-            "house",
+            # "house",
             "cemiterio",
             "died_date",
             "entero_date",
@@ -1249,14 +1249,17 @@ class CertificateModelCertCompraCovalCreateSerializer(ModelSerializer):
 
     def validate_coval(self, coval):
         if not coval:
-            raise serializers.ValidationError({'coval': "Select coval"})
+            raise serializers.ValidationError("Select coval")
         elif not Coval.objects.filter(id=coval).exists():
             raise serializers.ValidationError(
-                {'coval': "This coval is not valid"})
+                "This coval is not valid")
 
-        elif not Coval.objects.filter(id=coval).first().date_of_deth == None:
+        elif Coval.objects.filter(id=coval).first().date_of_deth == None:
             raise serializers.ValidationError(
-                {'coval': "Empty coval"})
+                "Empty coval")
+        elif CovalSalles.objects.filter(coval__id=coval).exists():
+            raise serializers.ValidationError(
+                "Coval is selled")
         return coval
 
     @atomic()
@@ -2098,7 +2101,7 @@ class CertificateModelLicencaBuffetCreateSerializer(ModelSerializer):
 
         validate_data["text"] = text
         validate_data["file_name"] = f"/media/certificates/{file_name}.pdf"
-        pprint(validate_data["file_name"])
+        # pprint(validate_data["file_name"])
 
         Certificate.objects.filter(pk=certificate.id).update(
             text=validate_data["text"], status="P")

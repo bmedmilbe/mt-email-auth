@@ -77,7 +77,7 @@ class PDF():
         elif type2.id == 25:
             self.conta_details = self.conta(
                 type1, type2, gerado.number, self.data['change'].price)
-        elif type2.id == 29:
+        elif type2.id in [29,32]:
             if not self.data['metros']:  # metros none
                 value = 250 * self.data['dates'].count()
             else:
@@ -90,7 +90,7 @@ class PDF():
                 value = (value) + 10
 
             self.conta_details = self.conta(type1, type2, gerado.number, value)
-        elif type2.id == 32:
+        elif type2.id == 31:
 
             value = type2.type_price + 10
 
@@ -148,13 +148,13 @@ class PDF():
         pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), response)
         
         file_path = self.certificate.number
-        folder= f"/certificates/{self.type2.id}-{self.type1.slug}-de-{self.type2.slug}/"
+        folder= f"/certificates/{self.type2.id}-{self.type1.slug}-de-{self.type2.slug[10:]}/"
         
         if not os.path.exists(f"{str(settings.MEDIA_ROOT)}{folder}"):
             os.mkdir(f"{str(settings.MEDIA_ROOT)}{folder}")
 
         file_path = f"{folder}/{file_path}.pdf"
-        folder_online = f"{self.type2.id}-{self.type1.slug}-de-{self.type2.slug}/{self.certificate.number}.pdf"
+        folder_online = f"{self.type2.id}-{self.type1.slug}-de-{self.type2.slug[10:]}/{self.certificate.number}.pdf"
         
     
         try:

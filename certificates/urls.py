@@ -31,7 +31,9 @@ router.register("persons", views.PersonViewSet, basename="persons")
 router.register("birthadddress", views.PersonBirthAddressViewSet,
                 basename="birthadddress")
 router.register("house", views.HouseViewSet, basename="house")
+router.register("covals", views.CovalsViewSet, basename="covals")
 router.register("covalsetup", views.CovalSetUpViewSet, basename="covalsetup")
+
 router.register("parents", views.ParentViewSet, basename="parents")
 
 
