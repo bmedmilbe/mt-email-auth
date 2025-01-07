@@ -377,7 +377,6 @@ class CertificatePersonsViewSet(ModelViewSet):
         type_id = int(self.kwargs.get('title_pk'))
         if type_id == 12:
             return CertificateSimplePerson.objects.filter(type_id=type_id)
-            return CertificateSimplePerson.objects.filter(type_id=type_id, user_id=self.request.user.id)
 
     def get_serializer_class(self):
         # pprint(self.kwargs)
@@ -537,6 +536,8 @@ class CountysViewSet(ModelViewSet):
 
     def get_serializer_class(self):
         return CountySerializer
+    
+    pagination_class = Pagination300
 
 
 class UniversitysViewSet(ModelViewSet):

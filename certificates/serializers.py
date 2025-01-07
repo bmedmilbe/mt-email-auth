@@ -334,7 +334,7 @@ class PersonCreateOrUpdateSerializer(ModelSerializer):
 
     def update(self, instance, validate_data):
 
-        pprint(self.context)
+        # pprint(self.context)
         person = Person.objects.filter(
 
             id=self.context['id']

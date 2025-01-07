@@ -152,6 +152,7 @@ class PostSerializer(serializers.ModelSerializer):
         return timeago.format(post.date, now)
 
     def get_beginnig(self, post: Post):
+        return ""
         url = post.text_file.url
         # url = "http://127.0.0.1:8000/media/camaramz/posts/documents/text_cecab_rubish_1.docx"
         docx = BytesIO(requests.get(url).content)
@@ -166,7 +167,7 @@ class PostSerializer(serializers.ModelSerializer):
             return result.value.replace('\n', '').strip()  # The raw text
 
     def get_text(self, post: Post):
-
+        return ''
         url = post.text_file.url
         # url = "http://127.0.0.1:8000/media/camaramz/posts/documents/text_cecab_rubish_1.docx"
 

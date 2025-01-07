@@ -102,7 +102,8 @@ class PDF():
         ifen = Ifen.objects.get(name="data")
         dash = ifen.size * " -"
 
-        self.date = f"- - - Câmara Distrital de {self.bi.address.street.town.county.name}, na Cidade da {self.bi.address.street.town.name}, aos {self.date}."
+        self.date = f"- - - Câmara Distrital de {self.bi.address.street.town.county.name}, na Cidade da Trindade, aos {self.date}."
+        # self.date = f"- - - Câmara Distrital de {self.bi.address.street.town.county.name}, na Cidade da {self.bi.address.street.town.name}, aos {self.date}."
 
         # size = Ifen.objects.filter(name='DATA').first().size
 
