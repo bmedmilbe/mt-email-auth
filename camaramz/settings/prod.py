@@ -72,6 +72,6 @@ AWS_SECRET_ACCESS_KEY = 'c2qIEzuaRKArLjVxQUa5LrDLy98k4NpOQFupfE8Y'
 AWS_STORAGE_BUCKET_NAME = 'bm-edmilbe-bucket'
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 # storages.backends.s3boto3.S3Boto3Storage
-# STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, STATICFILES_LOCATION)
-# MEDIA_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
+STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, STATICFILES_LOCATION)
+MEDIA_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
 
