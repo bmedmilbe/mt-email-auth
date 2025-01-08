@@ -70,9 +70,9 @@ EMAIL_USE_TLS = True
 AWS_ACCESS_KEY_ID = 'AKIA2QHYRZDKXSR7F2KK'
 AWS_SECRET_ACCESS_KEY = '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'
 AWS_STORAGE_BUCKET_NAME = 'bm-edmilbe-bucket'
-DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+# DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 # storages.backends.s3boto3.S3Boto3Storage
-# STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+STATICFILES_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 STATIC_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, STATICFILES_LOCATION)
 MEDIA_URL = "https://%s/%s/" % (AWS_S3_CUSTOM_DOMAIN, MEDIAFILES_LOCATION)
