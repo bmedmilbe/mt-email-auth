@@ -298,7 +298,7 @@ class CertificateModelViewSet(ModelViewSet):
         # pprint(self.request.method)
         if self.request.method in ["POST", "PUT",  "PATCH"]:
             if type_id in [ 1, 5, 6, 7, 9, 10, 11, 15, 16, 17,
-                            19, 20 , 21 , 22 , 30]:
+                            19, 20 , 21 , 22 , 30, 34]:
                 # pprint(type_id)
 
                 return CertificateModelOneCreateSerializer

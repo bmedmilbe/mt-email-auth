@@ -26,6 +26,10 @@ class AtestadoOne(Document):
         if data.type2.id == 30:
             fim = "Fins "
             tempo = ", é pobre"
+
+        if data.type2.id == 34:
+            fim = "Fins "
+            tempo = ", é pobre, não dispõe de meios para custear despesa com a sua viagem á República Portuguesa"
         
 
         self.text = f"Atesta para {fim} {data.type2.name} que, {StringHelper.text_bi(StringHelper, data.type2,data.bi1,data.bi2,data.data)} reside efetivamente {StringHelper.house_address(StringHelper, data.bi1.address)}, deste Estado{tempo}."
