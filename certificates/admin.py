@@ -14007,32 +14007,32 @@ class CertificateAdmin(admin.ModelAdmin):
 ]
 
            
-            # pprint(data)
-            for urls in data:
-                    item = models.Certificate.objects.filter(id=urls["id"])
-                    if item.exists() and item.first():
-                        item = item.first()
-                        if item.file == None:
-                            try:
-                                # Extract bucket name and key from S3 link (assuming format: s3://bucket_name/key)
-                                # bucket_name = urls.url.split('//')[1].split('/')[0]
-                                key = '/'.join(urls["url"].split('//')[1].split('/')[1:])
+            # # pprint(data)
+            # for urls in data:
+            #         item = models.Certificate.objects.filter(id=urls["id"])
+            #         if item.exists() and item.first():
+            #             item = item.first()
+            #             if item.file == None:
+            #                 try:
+            #                     # Extract bucket name and key from S3 link (assuming format: s3://bucket_name/key)
+            #                     # bucket_name = urls.url.split('//')[1].split('/')[0]
+            #                     key = '/'.join(urls["url"].split('//')[1].split('/')[1:])
 
-                                # Download the file from the S3 link (using requests)
-                                response = requests.get(urls["url"])
-                                # response.raise_for_status()  # Raise an exception for bad status codes
-                                file_response = ContentFile(response.content)
-                                # # Save the downloaded file to the instance's FileField
-                                item.file.save(key, file_response ) 
-                                item.save()
-                                # with open(file_response, 'rb') as file:
-                                #     item.file.save(key, file_response ) 
-                                #     item.save()
-                                # print(f"File uploaded successfully from {urls['url']} to {item}")
-                                pprint(item.id)
-                            except Exception as e:
-                                print(f"Error uploading file: {e}")
-                            # Handle exceptions appropriately (e.g., log, display error message)
+            #                     # Download the file from the S3 link (using requests)
+            #                     response = requests.get(urls["url"])
+            #                     # response.raise_for_status()  # Raise an exception for bad status codes
+            #                     file_response = ContentFile(response.content)
+            #                     # # Save the downloaded file to the instance's FileField
+            #                     item.file.save(key, file_response ) 
+            #                     item.save()
+            #                     # with open(file_response, 'rb') as file:
+            #                     #     item.file.save(key, file_response ) 
+            #                     #     item.save()
+            #                     # print(f"File uploaded successfully from {urls['url']} to {item}")
+            #                     pprint(item.id)
+            #                 except Exception as e:
+            #                     print(f"Error uploading file: {e}")
+            #                 # Handle exceptions appropriately (e.g., log, display error message)
 
 
         
