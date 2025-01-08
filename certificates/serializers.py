@@ -237,7 +237,7 @@ def get_number(current_year, certificates: Certificate, instance: Certificate = 
     last = certificates.last()
     
 
-    last = Certificate.objects.filter(type__certificate_type__id = last.type.certificate_type.id).last()
+    last = Certificate.objects.filter(type__certificate_type__id = last.certificate_type.id, date_issue__year=current_year).last()
     
 
     if last:
@@ -250,7 +250,7 @@ def set_number(current_year, type_id):
     last = CertificateTitle.objects.get(id=type_id)
     
 
-    last = Certificate.objects.filter(type__certificate_type__id = last.certificate_type.id).last()
+    last = Certificate.objects.filter(type__certificate_type__id = last.certificate_type.id, date_issue__year=current_year).last()
     
 
     if last:
