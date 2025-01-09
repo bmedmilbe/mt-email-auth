@@ -406,6 +406,7 @@ class PersonAdmin(admin.ModelAdmin):
     list_per_page = 10
     ordering = ["name", "surname"]
     list_filter = ["status", "gender"]
+    search_fields = ['name', 'surname', 'id_number']
 
 
 @admin.register(models.CertificateTypes)
@@ -14243,6 +14244,8 @@ class CertificateAdmin(admin.ModelAdmin):
     list_filter = ["type",
                    "status"
                    ]
+    search_fields = [ 'number']
+
 
 
 @admin.register(models.CertificateData)
