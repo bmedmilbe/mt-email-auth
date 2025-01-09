@@ -51,11 +51,10 @@ class TrushAdmin(admin.ModelAdmin):
             airline = None
             count = -1
             words = all_data.split(" ")
-            year = 2024
+            year = 2025
             for word in words:
                         
-                        if word == "@2025" or year == 2025:
-                             year = 2025 
+                        
                         count = count + 1
                         
                         if word in airlines:
