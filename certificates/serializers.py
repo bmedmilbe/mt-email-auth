@@ -337,10 +337,11 @@ class PersonCreateOrUpdateSerializer(ModelSerializer):
     def create(self, validate_data):
 
         person = Person.objects.filter(
-            nationality=validate_data['nationality'],
+            # nationality=validate_data['nationality'],
             id_type=validate_data['id_type'],
             id_number=validate_data['id_number']
         )
+
 
         if not validate_data['father_name'] and not validate_data['mother_name']:
             raise serializers.ValidationError(
