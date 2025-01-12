@@ -23,8 +23,19 @@ class StringHelper():
         return final_text
 
     def NumeroEmExtenso(number):
-        return num2words(number, lang='pt')
+        # pprint(number)
+        if '-' not in str(number):
+            return num2words(number, lang='pt')
+        text = ''
+        for item in str(number).split('-'):
+            if str(item).isnumeric():
+                text = f"{text}{num2words(item, lang='pt')} "
+            else:
+                text = f"{text} {item} "
 
+        return text[:-1]
+
+    
     def houseNumber(self, house_number):
         # implement Numero extenso
 
