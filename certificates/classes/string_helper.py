@@ -100,7 +100,7 @@ class StringHelper():
         return fathers
 
     def house_address(self, house: House):
-
+        
         return f"{self.houseNumber(self,house.house_number)} na localidade de {house.street.name}, Distrito de {house.street.town.county.name}"
 
     def street_address(self, street: Street):

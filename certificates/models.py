@@ -174,12 +174,18 @@ class PersonBirthAddress(models.Model):
 
     def __str__(self) -> str:
         address = ""
+            
         if self.birth_street:
             address = f"{self.birth_street.name}, "
         if self.birth_town:
             address = f"{address}{self.birth_town.name}, "
         if self.birth_county:
             address = f"distrito de {self.birth_county.name}, " if address == "" else f"{address} distrito de {self.birth_county.name}, "
+
+        if self.birth_street.name == self.birth_town and self.birth_town.name == self.birth_county.name:
+            return f"distrito de {self.birth_county.name}, "
+        if self.birth_street.name == self.birth_town:
+            return f"{self.birth_street.name} distrito de {self.birth_county.name}, "
 
         address = f"{address}{self.birth_country.name}"
 
