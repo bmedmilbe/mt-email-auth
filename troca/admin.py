@@ -1,11 +1,14 @@
 from django.contrib import admin
 
-from .models import Charge, Friend, Customer, Transaction
+from .models import Charge, Friend, Customer, FriendPayment, Transaction
 
 # Register your models here.
 @admin.register(Friend)
 class FriendAdmin(admin.ModelAdmin):
     list_display = ['name',]
+@admin.register(FriendPayment)
+class FriendPaymentAdmin(admin.ModelAdmin):
+    list_display = ['friend','value']
     
 
 @admin.register(Customer)
@@ -18,7 +21,8 @@ class ChargeAdmin(admin.ModelAdmin):
 
 @admin.register(Transaction)
 class TransactionAdmin(admin.ModelAdmin):
-    list_display = ['value','description', 'completed', 'friend_paid']
-    list_filter = ['completed', 'friend_paid']
+    list_display = ['value','description', 'completed', 'friend_paid', 'date']
+    list_filter = ['completed', 'friend_paid', 'is_charge','completed_by']
     list_editable = [ 'completed', 'friend_paid']
+    search_fields = ['description', 'value']
 
