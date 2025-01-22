@@ -47,8 +47,8 @@ class FriendSerializer(ModelSerializer):
 
 
 class TransactionSerializer(ModelSerializer):
-    boss = CustomerSerializer()
-    completed_by = CustomerSerializer()
+    # boss = CustomerSerializer()
+    # completed_by = CustomerSerializer()
     friend = FriendSerializer()
     class Meta:
         model = Transaction
@@ -130,6 +130,7 @@ class TransactionDeleteSerializer(ModelSerializer):
         return Transaction.objects.get(id=instance.id).delete()
 
 class TransactionCreateSerializer(ModelSerializer):
+    boss_id = serializers.IntegerField(read_only=True)
     class Meta:
         model = Transaction
         fields = [
@@ -138,7 +139,8 @@ class TransactionCreateSerializer(ModelSerializer):
             "value",
             "friend",
             "is_charge",
-            "completed_by"
+            "completed_by",
+            "boss_id"
         ]
     
     def create(self, validated_data):
@@ -237,6 +239,7 @@ class TransactionCompleteSerializer(ModelSerializer):
         validated_data['completed_by_id'] = self.context['customer_id'] 
         validated_data['completed'] = True
         validated_data['completed_date'] = datetime.now()
+        # pprint(validated_data)
         return super().update(instance, validated_data)
     
     

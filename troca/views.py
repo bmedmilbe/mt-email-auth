@@ -153,8 +153,10 @@ class TransactionViewSet(ModelViewSet):
 
         transaction = self.get_object()
         serializer = TransactionCompleteSerializer(data=request.data,context=context)
+        
         transaction = serializer.update(transaction,request.data)
-        return Response(TransactionSerializer(transaction).data)
+        # pprint(transaction.completed_by_id)
+        return Response(TransactionCreateSerializer(transaction).data)
     @action(detail=True, methods=['delete'], permission_classes=[IsAuthenticated])
     def delete(self, request, pk=None):
         customer = get_customer(self.request.user)
