@@ -1,6 +1,6 @@
 # # class PDF():
 # #     pass
-
+import shutil
 from decimal import Decimal
 from io import BytesIO
 import os
@@ -153,8 +153,11 @@ class PDF():
         
         if not os.path.exists(f"{str(settings.MEDIA_ROOT)}{folder}"):
             os.mkdir(f"{str(settings.MEDIA_ROOT)}{folder}")
+        else:
+            shutil.rmtree(f"{str(settings.MEDIA_ROOT)}{folder}")
+            os.mkdir(f"{str(settings.MEDIA_ROOT)}{folder}")
 
-        file_path = f"{folder}/{file_path}.pdf"
+        file_path = f"{folder}{file_path}.pdf"
         folder_online = f"{self.type2.id}-{self.type1.slug}-de-{self.type2.slug[10:]}/{self.certificate.number}.pdf"
         
     
@@ -170,6 +173,8 @@ class PDF():
                 certificate = Certificate.objects.get(id=self.certificate.id)
                 certificate.file.save(f'{folder_online}', File(output))
                 file_path = certificate.file.url
+                # pprint(path)
+                # os.remove("demofile.txt")
                 # print("file_nama: ", file_path)
 
         except Exception as e:
