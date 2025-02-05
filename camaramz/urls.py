@@ -32,6 +32,8 @@ urlpatterns = [
     path("nanehouse/", include("nanehouse.urls")),
     path("fly/", include("fly.urls")),
     path("troca/", include("troca.urls")),
+        path("store/", include("store.urls")),
+
     path("setup/", include("setup.urls")),
     path("auth/", include("djoser.urls")),
     path("auth/", include("djoser.urls.jwt")),

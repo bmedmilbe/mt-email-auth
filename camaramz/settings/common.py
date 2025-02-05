@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     "certificates",
     "cmz",
     "troca",
+    "store",
 
     # "blog",
     "ormed",
