@@ -201,8 +201,11 @@ class TransactionViewSet(ModelViewSet):
         enter = Transaction.objects.filter(completed_by_id=deliver_id,boss_id=boss_id, is_charge=True).aggregate(enter=Sum("value"))
         out = Transaction.objects.filter(completed_by_id=deliver_id,boss_id=boss_id, completed=True).aggregate(out=Sum("value"))
         trans = Transaction.objects.filter(completed_by_id=deliver_id,boss_id=boss_id, completed=True)
+        bom = list()
         for t in trans:
-            pprint({'value': t.value, 'id':t.id})
+            bom.append({'value': t.value, 'id':t.id})
+            # pprint({'value': t.value, 'id':t.id})
+        pprint(bom)
         return Response(enter | out)
     
     
