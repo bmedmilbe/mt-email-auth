@@ -198,8 +198,8 @@ class TransactionViewSet(ModelViewSet):
     def balance(self, request, pk=None):
         boss_id=request.query_params.get("boss")
         deliver_id=request.query_params.get("deliver")
-        enter = Transaction.objects.filter(Q(completed_by_id=deliver_id),Q(boss_id=boss_id), is_charge=True).aggregate(enter=Sum("value"))
-        out = Transaction.objects.filter(Q(completed_by_id=deliver_id),Q(boss_id=boss_id), completed=True).aggregate(out=Sum("value"))
+        enter = Transaction.objects.filter(completed_by_id=deliver_id,boss_id=boss_id, is_charge=True).aggregate(enter=Sum("value"))
+        out = Transaction.objects.filter(completed_by_id=deliver_id,boss_id=boss_id, completed=True).aggregate(out=Sum("value"))
 
     
         return Response(enter | out)
