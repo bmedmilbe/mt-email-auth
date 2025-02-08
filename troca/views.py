@@ -199,8 +199,8 @@ class TransactionViewSet(ModelViewSet):
         boss_id=request.query_params.get("boss")
         deliver_id=request.query_params.get("deliver")
         enter = Transaction.objects.filter(completed_by_id=deliver_id,boss_id=boss_id, is_charge=True).aggregate(enter=Sum("value"))
-        out = Transaction.objects.filter(completed_by_id=deliver_id,boss_id=boss_id, completed=True).aggregate(out=Sum("value"))
-        trans = Transaction.objects.filter(completed_by_id=deliver_id,boss_id=boss_id, completed=True)
+        out = Transaction.objects.filter(completed_by_id=deliver_id,boss_id=boss_id, completed=True, is_charge=False).aggregate(out=Sum("value"))
+        trans = Transaction.objects.filter(completed_by_id=deliver_id,boss_id=boss_id, completed=True, is_charge=False)
         bom = list()
         for t in trans:
             bom.append({'value': t.value, 'id':t.id})
