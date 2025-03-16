@@ -64,7 +64,7 @@ class Post(models.Model):
     text_file = models.FileField(upload_to='camaramz/posts/documents/', null=True)
     active = models.BooleanField(default=False)
     date = models.DateTimeField(auto_now_add=True)
-
+    featured = models.BooleanField(default=False)
     # post_images = models.CharField(max_length=255, null=True)
     # post_videos = models.CharField(max_length=255, null=True)
 

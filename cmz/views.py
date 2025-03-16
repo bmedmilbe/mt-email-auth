@@ -108,6 +108,17 @@ class PostViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
 
     lookup_field = 'slug'
 
+    @action(detail=False, methods=['GET'], http_method_names=['get'], permission_classes=[AllowAny])
+    def featured(self, request):
+
+        if request.method == 'GET':
+            # pprint(request.user.id)
+            posts = Post.objects.filter(featured=True).order_by("-date")
+            # pprint(images)
+            serializer = PostSerializer(posts, many=True)
+            # pprint(serializer.data)
+            return Response(serializer.data)
+        
 
 class PostViewViewSet(RetrieveModelMixin, GenericViewSet):
 

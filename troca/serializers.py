@@ -148,8 +148,7 @@ class TransactionCreateSerializer(ModelSerializer):
             raise ValidationError('You are not boss!')
         
         validated_data['boss_id'] = self.context['customer_id']
-        # if validated_data['is_charge']:
-        #     validated_data['completed'] = False
+        
         return super().create(validated_data)
     
     def destroy(self, instance, request):

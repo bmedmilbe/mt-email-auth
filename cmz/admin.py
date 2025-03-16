@@ -135,10 +135,10 @@ class InformationAdmin(admin.ModelAdmin):
 
 @admin.register(models.Post)
 class PostAdmin(admin.ModelAdmin):
-    list_display = ['title', 'active']
+    list_display = ['title', 'active', 'featured']
     prepopulated_fields = {'slug': ['title']}
     # list_filter = ['doctor']
-    list_editable = ['active']
+    list_editable = ['active', 'featured']
     search_fields = ['title']
 
     inlines = [

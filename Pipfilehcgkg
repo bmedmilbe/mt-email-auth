@@ -17,8 +17,6 @@ stripe = "*"
 awsebcli = "*"
 psycopg2 = "*"
 django-templated-mail = "*"
-num2words = "*"
-xhtml2pdf = "*"
 mammoth = "*"
 python-docx = "*"
 timeago = "*"
@@ -31,10 +29,8 @@ urllib3 = "*"
 docx2txt = "*"
 django-filter = "*"
 python-slugify = "*"
-openpyxl = "*"
-beautifulsoup4 = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.10"
+python_version = "3.9"
