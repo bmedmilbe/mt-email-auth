@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "3b5ef216c9825c47361d1b3f44038180669fe9d0b6a71d776e0d8cd66459a684"
+            "sha256": "7522feaa410c1af4ebb711ba0f76c96f27151aa8b9b0b57d90f60d7e9fe5cb2a"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -819,11 +819,11 @@
         },
         "pyhanko-certvalidator": {
             "hashes": [
-                "sha256:800f5a7744d23870a5203cb38007689902c79c44e7374dab0c9b02e1b1a89bd4",
-                "sha256:86a56df420bfb273ba881826b76245a53b2bd039fea7a7826231dbe76d761a8a"
+                "sha256:57c496cebfa5d5e4d3d300dbb4974c66e1a4d9ca4a7a978b20bc66fdeb9dbcdb",
+                "sha256:72a6872366fc7ceed0c7f5c61634e5ae5962ae75c169679b367aafcda9b9bdb9"
             ],
-            "markers": "python_version >= '3.7'",
-            "version": "==0.26.5"
+            "markers": "python_version >= '3.8'",
+            "version": "==0.26.8"
         },
         "pyjwt": {
             "hashes": [
@@ -835,11 +835,11 @@
         },
         "pypdf": {
             "hashes": [
-                "sha256:0b9b715252b3c60bacc052e6a780e8b742cee9b9a2135f6007bb018e22a5adad",
-                "sha256:20ea5b8686faad1b695fda054462b667d5e5f51e25fbbc092f12c5e0bb20d738"
+                "sha256:9af476a9dc30fcb137659b0dec747ea94aa954933c52cf02ee33e39a16fe9175",
+                "sha256:db994ab47cadc81057ea1591b90e5b543e2b7ef2d0e31ef41a9bfe763c119dab"
             ],
             "markers": "python_version >= '3.8'",
-            "version": "==5.3.1"
+            "version": "==5.4.0"
         },
         "python-bidi": {
             "hashes": [
@@ -1103,11 +1103,11 @@
         },
         "setuptools": {
             "hashes": [
-                "sha256:199466a166ff664970d0ee145839f5582cb9bca7a0a3a2e795b6a9cb2308e9c6",
-                "sha256:43b4ee60e10b0d0ee98ad11918e114c70701bc6051662a9a675a0496c1a158f4"
+                "sha256:34750dcb17d046929f545dec9b8349fe42bf4ba13ddffee78428aec422dbfb73",
+                "sha256:4959b9ad482ada2ba2320c8f1a8d8481d4d8d668908a7a1b84d987375cd7f5bd"
             ],
             "markers": "python_version >= '3.9'",
-            "version": "==76.0.0"
+            "version": "==76.1.0"
         },
         "six": {
             "hashes": [

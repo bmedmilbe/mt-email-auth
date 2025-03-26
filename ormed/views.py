@@ -5,7 +5,7 @@ from rest_framework import status
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, UpdateModelMixin, DestroyModelMixin, CreateModelMixin
 from .models import Area, Country, Doctor, Gallery, IdType, ImagesGallery, Law, Level, Messages, Post, PostDocument, PostFile, PostImages, Section, Team
-from .serializers import AreaSerializer, CountrySerializer, DoctorCreateSerializer, DoctorIDSerializer, DoctorImageSerializer, DoctorSerializer, DoctorUpdateSerializer, GallerySerializer, GalleryUpdateSerializer, IdTypeSerializer, ImagesGallerySerializer,  LawSerializer, LevelSerializer, DoctorSerializer, MessagesSerializer, GalleryCreateSerializer, PostCreateOrUpdateSerializer,  PostSerializer, SectionSerializer, TeamSerializer
+from .serializers import AreaCreateSerializer, AreaSerializer, CountryCreateSerializer, CountrySerializer, DoctorCreateSerializer, DoctorIDSerializer, DoctorImageSerializer, DoctorSerializer, DoctorUpdateSerializer, GallerySerializer, GalleryUpdateSerializer, IdTypeSerializer, ImagesGallerySerializer,  LawSerializer, LevelCreateSerializer, LevelSerializer, DoctorSerializer, MessagesSerializer, GalleryCreateSerializer, PostCreateOrUpdateSerializer,  PostSerializer, SectionSerializer, TeamSerializer
 from rest_framework.decorators import action
 from django.core.mail import send_mail, mail_admins, BadHeaderError, EmailMessage
 from templated_mail.mail import BaseEmailMessage
@@ -19,19 +19,31 @@ from rest_framework.permissions import (
 # Create your views here.
 
 
-class CountryViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
+class CountryViewSet(ModelViewSet):
     queryset = Country.objects.all().order_by("name")
-    serializer_class = CountrySerializer
+    # serializer_class = CountrySerializer
+    def get_serializer_class(self):
+        if self.request.method in [ 'POST']:
+            return CountryCreateSerializer
+        return CountrySerializer
 
 
-class LevelViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
+class LevelViewSet(ModelViewSet):
     queryset = Level.objects.all().order_by("title")
-    serializer_class = LevelSerializer
+    def get_serializer_class(self):
+        if self.request.method in [ 'POST']:
+            return LevelCreateSerializer
+        return LevelSerializer
 
 
-class AreaViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
+class AreaViewSet(ModelViewSet):
     queryset = Area.objects.all().order_by("title")
-    serializer_class = AreaSerializer
+    # serializer_class = AreaSerializer
+    def get_serializer_class(self):
+        if self.request.method in [ 'POST']:
+            return AreaCreateSerializer
+        return AreaSerializer
+
 
 
 class SectionViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
@@ -59,9 +71,10 @@ class DoctorViewSet(ListModelMixin, RetrieveModelMixin, UpdateModelMixin, Create
         return Doctor.objects.all()
 
     def get_serializer_class(self):
+        pprint(self.request.method)
         if self.request.method == 'POST':
             return DoctorCreateSerializer
-        elif self.request.method == 'PUT':
+        elif self.request.method == 'PATCH':
             return DoctorUpdateSerializer
         return DoctorSerializer
 
@@ -81,8 +94,8 @@ class DoctorViewSet(ListModelMixin, RetrieveModelMixin, UpdateModelMixin, Create
             doctor = Doctor.objects.filter(user_id=request.user.id).first()
 
             instance = get_object_or_404(Doctor, pk=doctor.id)
-            serializer = DoctorSerializer(instance, data=request.data)
-            pprint(request.data)
+            serializer = DoctorUpdateSerializer(instance, data=request.data)
+            # pprint(request.data)
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data)

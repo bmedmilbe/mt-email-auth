@@ -104,11 +104,43 @@ class CountrySerializer(serializers.ModelSerializer):
         model = Country
         fields = ['id', 'name']
 
+class CountryCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Country
+        fields = ['id', 'name']
+
+    def create(self, validated_data):
+        
+        name = validated_data['name']
+        name = str(name).title()
+        area = Country.objects.filter(name=name)
+        if area.exists():
+            return area.first()
+        
+        validated_data['name'] = name
+        return super().create(validated_data)
+
 
 class LevelSerializer(serializers.ModelSerializer):
     class Meta:
         model = Level
         fields = ['id', 'title']
+
+class LevelCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Level
+        fields = ['id', 'title']
+
+    def create(self, validated_data):
+        
+        title = validated_data['title']
+        title = title.title()
+        area = Level.objects.filter(title=title)
+        if area.exists():
+            return area.first()
+        
+        validated_data['title'] = title
+        return super().create(validated_data)
 
 
 class SectionSerializer(serializers.ModelSerializer):
@@ -122,6 +154,93 @@ class AreaSerializer(serializers.ModelSerializer):
         model = Area
         fields = ['id', 'title']
 
+def createArea(value):
+        
+        title = value.title()
+        area = Area.objects.filter(title=title)
+        if area.exists():
+            return area.first()
+        return Area.objects.create(title=title)
+
+def createLevel(value):
+        
+        title = value.title()
+        area = Level.objects.filter(title=title)
+        if area.exists():
+            return area.first()
+        return Level.objects.create(title=title)
+
+def createCountry(value):
+        
+        title = value.title()
+        area = Country.objects.filter(name=title)
+        if area.exists():
+            return area.first()
+        return Country.objects.create(name=title)
+
+class AreaCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Area
+        fields = ['id', 'title']
+
+    def create(self, validated_data):
+        
+        title = validated_data['title']
+        title = title.title()
+        area = Area.objects.filter(title=title)
+        if area.exists():
+            return area.first()
+        
+        validated_data['title'] = title
+        return super().create(validated_data)
+
+    # @atomic()
+    # def create(self, validated_data):
+    #     user = dict()
+    #     user['first_name'] = validated_data['first_name']
+    #     user['last_name'] = validated_data['last_name']
+    #     user['email'] = validated_data['email']
+    #     user['password'] = validated_data['password']
+    #     user['username'] = validated_data['username']
+    #     user['phone'] = validated_data['phone']
+
+
+    #     # UserModel = apps.get_model(app_label='core', model_name='user')
+
+    #     user_serializer = UserCreateSerializer(data=user)
+
+    #     if not user_serializer.is_valid():
+    #         raise serializers.ValidationError({'user': 'User not valid'})
+
+    #     user_new = user_serializer.save()
+
+    #     # pprint(self.context['user_id'])
+    #     # doctor = Doctor.objects.filter(
+    #     #     user_id=self.context['user_id']).first()
+
+    #     # if doctor:
+    #     #     pprint(doctor.id)
+    #     #     return super().update(doctor, validated_data)
+
+    #     # validated_data['user_id'] = self.context['user_id']
+    #     # pprint(user_new)
+    #     # pprint(validated_data)
+    #     validated_data['user_id'] = user_new.id
+    #     doctor_new = Doctor.objects.create(
+    #         country_id=validated_data['country'],
+    #         level_id=validated_data['level'],
+    #         area_id=validated_data['area'],
+    #         birth_date=validated_data['birth_date'],
+    #         bio=validated_data['bio'],
+    #         id_type_id=validated_data['id_type'],
+    #         id_number=validated_data['id_number'],
+    #         id_valid=validated_data['id_valid'],
+    #         user_id=user_new.id
+    #     )
+
+    #     return {'id': doctor_new.id, **validated_data}
+    
+
 
 class IdTypeSerializer(serializers.ModelSerializer):
     class Meta:
@@ -130,9 +249,9 @@ class IdTypeSerializer(serializers.ModelSerializer):
 
 
 class DoctorCreateSerializer(serializers.Serializer):
-    country = serializers.IntegerField()
-    level = serializers.IntegerField()
-    area = serializers.IntegerField()
+    country = serializers.CharField()
+    level = serializers.CharField()
+    area = serializers.CharField()
     birth_date = serializers.DateField()
     bio = serializers.CharField()
     id_type = serializers.IntegerField()
@@ -177,6 +296,13 @@ class DoctorCreateSerializer(serializers.Serializer):
         # validated_data['user_id'] = self.context['user_id']
         # pprint(user_new)
         # pprint(validated_data)
+
+        validated_data['country'] = createCountry(validated_data['country']).id
+        validated_data['level'] = createLevel(validated_data['level']).id
+        validated_data['area'] = createArea(validated_data['area']).id
+
+
+
         validated_data['user_id'] = user_new.id
         doctor_new = Doctor.objects.create(
             country_id=validated_data['country'],
@@ -231,7 +357,9 @@ class DoctorSerializer(serializers.ModelSerializer):
         method_name="get_first_name")
     last_name = serializers.SerializerMethodField(
         method_name="get_last_name")
-
+    area = AreaSerializer()
+    level = LevelSerializer()
+    country = CountrySerializer()
     class Meta:
         model = Doctor
         fields = ['id',
@@ -260,6 +388,10 @@ class DoctorSerializer(serializers.ModelSerializer):
 
 
 class DoctorUpdateSerializer(serializers.ModelSerializer):
+    country = serializers.CharField()
+    level = serializers.CharField()
+    area = serializers.CharField()
+   
     class Meta:
         model = Doctor
         fields = ['id',
@@ -273,6 +405,13 @@ class DoctorUpdateSerializer(serializers.ModelSerializer):
                   'id_number',
                   'id_valid',
                   ]
+    def update(self, instance, validated_data):
+        validated_data['country'] = createCountry(validated_data['country'])
+        validated_data['level'] = createLevel(validated_data['level'])
+        validated_data['area'] = createArea(validated_data['area'])
+
+        return super().update(instance, validated_data)
+        
 
 
 # class GalleryCreateSerializer(serializers.ModelSerializer):
