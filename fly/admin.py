@@ -52,6 +52,7 @@ class TrushAdmin(admin.ModelAdmin):
             count = -1
             words = all_data.split(" ")
             year = 2025
+            date = "2023-05-04"
             for word in words:
                         
                         
@@ -60,15 +61,16 @@ class TrushAdmin(admin.ModelAdmin):
                         if word in airlines:
                             airline = word
 
-                        if "/" in word:
+                        if "/" in word and len(word)>3:
                             date = word.split("/")
+                            # pprint(word)
                             
                             day = date[0] if int(date[0]) > 9 else f"0{date[0]}"
                             month = date[1] if int(date[1]) > 9 else f"0{date[1]}"
                             time = words[count+1]
                             date = f"{year}-{month}-{day} {time}"
                         
-                        if airline != None and word.startswith("€"):
+                        if airline != None and word.startswith("€") and date != "2023-05-04":
                             
                             price = (int(word.replace("€","").replace(",","")) + 15)
                             # price = (int(word.replace("€","").replace(",","")) + 70) * 27
