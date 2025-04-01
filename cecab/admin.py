@@ -52,7 +52,8 @@ class SpotAdmin(admin.ModelAdmin):
 class MessagesAdmin(admin.ModelAdmin):
     list_display = ['name', 'email', 'text', 'subject', 'date']
 
-
+class PostImagesInline(admin.TabularInline):
+    model = models.PostImages
 
 @admin.register(models.PostImages)
 class PostImagesAdmin(admin.ModelAdmin):
@@ -70,3 +71,10 @@ class PostAdmin(admin.ModelAdmin):
     # list_filter = ['doctor'] 
     list_editable = ['active']
     search_fields = ['title']
+
+    inlines = [
+        PostImagesInline
+        
+    ]
+
+

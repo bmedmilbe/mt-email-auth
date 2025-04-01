@@ -90,7 +90,7 @@ class Post(models.Model):
     picture = models.FileField(upload_to='cecab/blog/post_images')
 
     text_file = models.FileField(upload_to='cecab/blog/posts')
-    active = models.BooleanField(default=False)
+    active = models.BooleanField(default=True)
     date = models.DateTimeField(auto_now_add=True)
 
     def __str__(self) -> str:

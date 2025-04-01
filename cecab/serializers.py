@@ -11,13 +11,16 @@ from core.serializers import UserCreateSerializer
 from django.core.files import File
 import timeago
 from datetime import datetime, timezone
+from bs4 import BeautifulSoup
 from io import BytesIO
 import docx2txt
 import requests
 import re
+from docx import Document
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
 from django.core.mail import get_connection, send_mail
+
 
 def text_to_html_paragraphs(text):
     # First, replace multiple newlines with a single newline,
@@ -27,15 +30,58 @@ def text_to_html_paragraphs(text):
     # Split the text into lines
     lines = text.split('\n')
 
+    # for line in lines:
+    #     pprint(line)
+
     # Wrap each line in a <p> tag and join them
     return ''.join(f'<p>{line.strip()}</p>\n' for line in lines)
 
+def split_html_by_paragraphs(html_string):
+    """
+    Splits an HTML string into a list of strings, where each string
+    contains a paragraph element and its contents.
+
+    Args:
+        html_string: The HTML string to split.
+
+    Returns:
+        A list of strings, where each string is a paragraph element.
+    """
+    soup = BeautifulSoup(html_string, 'html.parser')
+    paragraphs = soup.find_all('p')
+    return [str(p) for p in paragraphs]
 
 def addPicures(post: Post, html_paragraphs):
-    # pprint(len(html_paragraphs.split("@image")))
+    full = split_html_by_paragraphs(html_paragraphs)
+    new_full = list()
+    for p in full:
+        temp = p
+        if "https://bm-edmilbe-bucket.s3" in p:
+            p=p.replace("<p>", '').replace("</p>", '')
+            temp = f"<img class='video-view' src='{p}' alt='{post.title}' />"
+
+        if "https://www.youtube.com" in p:
+            p=p.replace("<p>", '').replace("</p>", '')
+            # temp = f"<iframe width='560' height='315' src='{p}' title='YouTube video player' frameborder='0' allow='accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share' referrerpolicy='strict-origin-when-cross-origin' allowfullscreen></iframe>"
+
+            # temp = f"<div class='embed-responsive embed-responsive-16by9'><iframe class='embed-responsive-item' src='{p}?rel=0' allowfullscreen></iframe></div>"
+            temp = f"<div class='ratio ratio-16x9 video-view'><iframe src='{p}?rel=0' title='YouTube video' allowfullscreen></iframe></div>"
+        new_full.append(temp)
+
+        
+            
+            # pprint(''.join(new_full))
+    
+    return ''.join(new_full)
+        
+        
+
+    return ""
     text_with_images = ""
+
     count = 0
     images = post.post_images.all()
+
     for x in html_paragraphs.split("@image"):
         if len(html_paragraphs.split("@image")) > 1 and count < len(html_paragraphs.split("@image"))-1:
 
@@ -52,7 +98,28 @@ def addPicures(post: Post, html_paragraphs):
             text_with_images = f"{text_with_images}{x}"
 
     return text_with_images
+def extract_text_from_docx_bytesio(bytes_io_obj):
+        """
+        Extracts text from a .docx file stored in a BytesIO object.
 
+        Args:
+            bytes_io_obj: A BytesIO object containing the .docx file data.
+
+        Returns:
+            The extracted text as a string, or None if an error occurs.
+        """
+        try:
+            document = Document(bytes_io_obj)
+            full_text = []
+            for paragraph in document.paragraphs:
+                full_text.append(paragraph.text)
+            return "\n".join(full_text)  # Join paragraphs with newlines
+
+        except Exception as e:
+            print(f"Error extracting text: {e}")
+            return None
+        finally:
+            bytes_io_obj.seek(0) #reset the stream to the beginning.
 
 def addVideo(post: Post, html_paragraphs):
     # pprint(len(html_paragraphs.split("@image")))
@@ -73,6 +140,9 @@ def addVideo(post: Post, html_paragraphs):
             text_with_video = f"{text_with_video}{x}"
 
     return text_with_video
+
+
+# import html
 
 
 def embed(link):
@@ -275,7 +345,6 @@ class PostCreateOrUpdateSerializer(serializers.ModelSerializer):
                   'text_file',
                   ]
 
-
 class PostSerializer(serializers.ModelSerializer):
     # owner = serializers.SerializerMethodField(
     #     method_name="get_owner")
@@ -301,7 +370,8 @@ class PostSerializer(serializers.ModelSerializer):
                   'post_images',
                   'beginnig',
                   'text',
-                  'posted_at'
+                  'posted_at',
+                  'date',
                   ]
 
     def get_posted_at(self, post: Post):
@@ -309,50 +379,142 @@ class PostSerializer(serializers.ModelSerializer):
         return timeago.format(post.date, now)
 
     def get_beginnig(self, post: Post):
-        # path = post.text_file.path
-        # path = post.text_file.url
-
-
-        # with open(path, "rb") as docx_file:
-
-        #     result = mammoth.extract_raw_text(docx_file)
-        #     return result.value.replace('\n', '').strip()  # The raw text
-        
+        # return ""
         url = post.text_file.url
         # url = "http://127.0.0.1:8000/media/camaramz/posts/documents/text_cecab_rubish_1.docx"
         docx = BytesIO(requests.get(url).content)
 
         # extract text
-        text = docx2txt.process(docx)
+        text = docx2txt.process(docx).replace('\n','')
 
-        return f"{text}"
+        return f"{text[:100]}..."
+        with open(path.data, "rb") as docx_file:
 
-    # def get_text(self, post: Post):
-    #     # path = post.text_file.path
-    #     path = post.text_file.url
+            result = mammoth.extract_raw_text(docx_file)
+            return result.value.replace('\n', '').strip()  # The raw text
+    
 
-
-
-    #     with open(path, "rb") as docx_file:
-    #         result = mammoth.convert_to_html(docx_file)
-    #         text = result.value
-    #         return text
     def get_text(self, post: Post):
+        # pprint( post.text_file)
+        # try:
+        #     response = requests.get( post.text_file.url, stream=True)
+        #     response.raise_for_status() # Raise HTTPError for bad responses (4xx or 5xx)
 
+        #     bytes_io_obj = BytesIO(response.content)
+        #     document = Document(bytes_io_obj)
+        #     full_text = []
+        #     for paragraph in document.paragraphs:
+        #         full_text.append(paragraph.text)
+        #     return "\n".join(full_text)
+
+        # except requests.exceptions.RequestException as e:
+        #     print(f"Error fetching URL: {e}")
+        #     return None
+        # except Exception as e:
+        #     print(f"Error reading docx file: {e}")
+        #     return None
+        # finally:
+        #     if 'bytes_io_obj' in locals():
+        #         bytes_io_obj.seek(0) #reset the stream to the beginning.
+
+        # return ''
         url = post.text_file.url
+        # pprint(post)
+        # pprint(url)
         # url = "http://127.0.0.1:8000/media/camaramz/posts/documents/text_cecab_rubish_1.docx"
 
         docx = BytesIO(requests.get(url).content)
-
+        # pprint(docx)
         # extract text
         text = docx2txt.process(docx)
+        # text = extract_text_from_docx_bytesio(docx)
+        # pprint(text)
 
         html_paragraphs = text_to_html_paragraphs(text).replace("\n", "")
 
         text_with_media = f"{addPicures(post, html_paragraphs)}"
-        text_with_media = f"{addVideo(post, text_with_media)}"
+        # text_with_media = f"{addVideo(post, text_with_media)}"
 
         return text_with_media
+
+
+# class PostSerializer(serializers.ModelSerializer):
+#     # owner = serializers.SerializerMethodField(
+#     #     method_name="get_owner")
+#     beginnig = serializers.SerializerMethodField(
+#         method_name="get_beginnig")
+
+#     posted_at = serializers.SerializerMethodField(
+#         method_name="get_posted_at")
+
+#     text = serializers.SerializerMethodField(
+#         method_name="get_text")
+
+#     post_images = PostImagesSerializer(many=True)
+
+#     class Meta:
+#         model = Post
+#         fields = ['id',
+#                   'title',
+#                   'slug',
+#                   'picture',
+#                   #   'doctor',
+#                   'text_file',
+#                   'post_images',
+#                   'beginnig',
+#                   'text',
+#                   'posted_at'
+#                   ]
+
+#     def get_posted_at(self, post: Post):
+#         now = datetime.now(timezone.utc)
+#         return timeago.format(post.date, now)
+
+#     def get_beginnig(self, post: Post):
+#         # path = post.text_file.path
+#         # path = post.text_file.url
+
+
+#         # with open(path, "rb") as docx_file:
+
+#         #     result = mammoth.extract_raw_text(docx_file)
+#         #     return result.value.replace('\n', '').strip()  # The raw text
+        
+#         url = post.text_file.url
+#         # url = "http://127.0.0.1:8000/media/camaramz/posts/documents/text_cecab_rubish_1.docx"
+#         docx = BytesIO(requests.get(url).content)
+
+#         # extract text
+#         text = docx2txt.process(docx)
+
+#         return f"{text}"
+
+#     # def get_text(self, post: Post):
+#     #     # path = post.text_file.path
+#     #     path = post.text_file.url
+
+
+
+#     #     with open(path, "rb") as docx_file:
+#     #         result = mammoth.convert_to_html(docx_file)
+#     #         text = result.value
+#     #         return text
+#     def get_text(self, post: Post):
+
+#         url = post.text_file.url
+#         # url = "http://127.0.0.1:8000/media/camaramz/posts/documents/text_cecab_rubish_1.docx"
+
+#         docx = BytesIO(requests.get(url).content)
+
+#         # extract text
+#         text = docx2txt.process(docx)
+
+#         html_paragraphs = text_to_html_paragraphs(text).replace("\n", "")
+
+#         text_with_media = f"{addPicures(post, html_paragraphs)}"
+#         text_with_media = f"{addVideo(post, text_with_media)}"
+
+#         return text_with_media
 
 
 
