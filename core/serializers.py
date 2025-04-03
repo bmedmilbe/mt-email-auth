@@ -54,7 +54,7 @@ class UserSerializer(UserSerializer):
 
 
 
-class PasswordResetConfirmRetypeSerializer(ModelSerializer):
+class PasswordResetConfirmRetypeSerializer( PasswordResetConfirmRetypeSerializer):
     uid = serializers.CharField()
     token = serializers.UUIDField()
     new_password = serializers.CharField()
@@ -84,13 +84,13 @@ class PasswordResetConfirmRetypeSerializer(ModelSerializer):
         return validated_data
 
 
-class SetPasswordRetypeSerializer(ModelSerializer):
+class SetPasswordRetypeSerializer(SetPasswordRetypeSerializer):
     class Meta:
         model = User
         fields = ["id", "current_password", "new_password", "re_new_password"]
 
 
-class SetUsernameSerializer(ModelSerializer):
+class SetUsernameSerializer(SetUsernameSerializer):
     class Meta:
         model = User
         fields = ["id", "new_email", "re_new_email", "current_password"]

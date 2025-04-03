@@ -289,7 +289,8 @@ class CertificateModelViewSet(ModelViewSet):
     # permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        return Certificate.objects.filter(type_id=self.kwargs.get('title_pk')).all()
+        # return Certificate.objects.filter(type_id=self.kwargs.get('title_pk')).all()
+        return Certificate.objects.all()
 
     def get_serializer_class(self):
         # pprint(self.kwargs)
