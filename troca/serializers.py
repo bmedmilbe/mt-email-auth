@@ -131,6 +131,7 @@ class TransactionDeleteSerializer(ModelSerializer):
 
 class TransactionCreateSerializer(ModelSerializer):
     boss_id = serializers.IntegerField(read_only=True)
+    completed = serializers.BooleanField(read_only=True)
     class Meta:
         model = Transaction
         fields = [
@@ -140,7 +141,8 @@ class TransactionCreateSerializer(ModelSerializer):
             "friend",
             "is_charge",
             "completed_by",
-            "boss_id"
+            "boss_id",
+            "completed",
         ]
     
     def create(self, validated_data):

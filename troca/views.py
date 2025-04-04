@@ -155,7 +155,7 @@ class TransactionViewSet(ModelViewSet):
         serializer = TransactionCompleteSerializer(data=request.data,context=context)
         
         transaction = serializer.update(transaction,request.data)
-        # pprint(transaction.completed_by_id)
+        pprint(transaction.completed)
         return Response(TransactionCreateSerializer(transaction).data)
     @action(detail=True, methods=['delete'], permission_classes=[IsAuthenticated])
     def delete(self, request, pk=None):
