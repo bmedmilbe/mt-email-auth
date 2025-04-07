@@ -267,6 +267,7 @@ WEBSITES = ["CMZ", "ORMED", "CECAB", "NANEHOUSE"]
 EMAILS = {
     WEBSITES[0]: {
         "EMAIL": "edmilbe@gmail.com",
+        "TITLE": "CMZ",
         "PASSWORD":  "vpawkftfpryiqaly",
         "WEBSITE":  "https://camaramz-cc67c4aaa69f.herokuapp.com/",
         "LOGO":  "https://www.camaramezochi.st/files/stp/camara2.png",
@@ -274,6 +275,7 @@ EMAILS = {
     },
     WEBSITES[1]: {
         "EMAIL": "ormedstp@gmail.com",
+        "TITLE": "ORDMED-STP",
         "PASSWORD":  "tbsrqlvuphlkqkce",
         "WEBSITE":  "https://ormedstp.herokuapp.com/",
         "LOGO":  "https://ormedstp.herokuapp.com/images/logo-2.png",
@@ -281,6 +283,7 @@ EMAILS = {
     },
     WEBSITES[2]: {
         "EMAIL": "direcaocecab@gmail.com",
+        "TITLE": "CECAB-STP",
         "PASSWORD":  "pfyp czdj ihkz ghik",
         "WEBSITE":  "https://www.cecab.st/",
         "LOGO":  "https://www.cecab.st/images/logo.png",
@@ -288,6 +291,7 @@ EMAILS = {
     },
     WEBSITES[3]: {
         "EMAIL": EMAIL_HOST_USER,
+        "TITLE": "Edmilbe Ramos",
         "PASSWORD":  EMAIL_HOST_PASSWORD,
         "WEBSITE":  "https://www.edmilbe.pro/",
         "LOGO":  "https://edmilbe-fa58f9b99040.herokuapp.com/light/assets/imgs/header/profile.jpg",

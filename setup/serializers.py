@@ -123,11 +123,14 @@ class SendEmailResetSerializer(ModelSerializer):
         reset_instance = UserTokens.objects.create(email=email, token=uuid.uuid4())
         parthner = validated_data['parthner']
         auth = "auth/" if parthner == "CMZ" else ""
+        website = f"{settings.EMAILS[validated_data['parthner']]['WEBSITE']}{auth}reset-password/uid/{reset_instance.token}"
+        if parthner == "CECAB":
+            website = f"{settings.EMAILS[validated_data['parthner']]['WEBSITE']}reset/password/?token={reset_instance.token}"
 
         convert_to_html_content =  render_to_string(
                                     template_name='emails/email_restore.html',
                                     context={'username': email,'token': reset_instance.token, 'parthner':parthner
-                                             , 'website':f"{settings.EMAILS[validated_data['parthner']]['WEBSITE']}{auth}/reset-password/uid/{reset_instance.token}/"
+                                             , 'website':website
                                              , 'logo':f"{settings.EMAILS[validated_data['parthner']]['LOGO']}"
                                               }
                                     )
@@ -159,7 +162,7 @@ class SendEmailResetSerializer(ModelSerializer):
                             
             subject="Restaurar a conta",
             message=plain_message,
-            from_email=settings.EMAILS[validated_data['parthner']]['EMAIL'],
+            from_email=f'"{settings.EMAILS[validated_data["parthner"]]["TITLE"]}" <{settings.EMAILS[validated_data["parthner"]]["EMAIL"]}>', 
             recipient_list=[email],  
             html_message=convert_to_html_content,
             fail_silently=True,   # Optional
