@@ -248,7 +248,7 @@ class CertificateViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixin
 
     filter_backends = [filters.SearchFilter,
                        DjangoFilterBackend, filters.OrderingFilter]
-    search_fields = ['main_person__name', 'main_person__surname', 'number',
+    search_fields = ['main_person__name', 'main_person__surname', 'number__startswith',
                      "main_person__id_number", "main_person__birth_date"]
     # filterset_fields = ["status", "type__certificate_type"]
 
