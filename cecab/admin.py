@@ -55,14 +55,14 @@ class MessagesAdmin(admin.ModelAdmin):
 class PostImagesInline(admin.TabularInline):
     model = models.PostImages
 
-@admin.register(models.PostImages)
-class PostImagesAdmin(admin.ModelAdmin):
-    list_display = ['post', 'picture']
-    autocomplete_fields = ['post']
-@admin.register(models.PostVideos)
-class PostVideosAdmin(admin.ModelAdmin):
-    list_display = ['post', 'video']
-    autocomplete_fields = ['post']
+# @admin.register(models.PostImages)
+# class PostImagesAdmin(admin.ModelAdmin):
+#     list_display = ['post', 'picture']
+#     autocomplete_fields = ['post']
+# @admin.register(models.PostVideos)
+# class PostVideosAdmin(admin.ModelAdmin):
+#     list_display = ['post', 'video']
+#     autocomplete_fields = ['post']
 
 @admin.register(models.Post)
 class PostAdmin(admin.ModelAdmin):
