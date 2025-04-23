@@ -6,6 +6,8 @@ from datetime import datetime
 from .models import Client, Customer, Destine, Expense, Payment,Product,Sell
 from rest_framework import serializers
 from pprint import pprint
+from django.db.models import Q, Count, Sum
+
 class CustomerSerializer(ModelSerializer):
     first_name = SerializerMethodField(
         method_name="get_first_name")
@@ -41,16 +43,36 @@ class DestineSerializer(ModelSerializer):
             "id",
             "name"
         ]
+def get_date(item):
+    # You need to define how to access the date attribute
+    # based on the model of the 'item'
+    if isinstance(item, Sell):
+        return item.date  # Replace with the actual date field name in ModelA
+    elif isinstance(item, Payment):
+        return item.date  # Replace with the actual date field name in ModelB
+    elif isinstance(item, Expense):
+        return item.date  # Replace with the actual date field name in ModelB
+    return None  # Handle cases where there's no date
+
 
 class ClientSerializer(ModelSerializer):
-    
+    balance = SerializerMethodField(method_name="get_balance")
     class Meta:
         model = Client
         fields = [
             "id",
             "name",
-            "tel"
+            "tel",
+            "balance"
         ]
+    def get_balance(self, client: Client):
+        out = Sell.objects.filter(client_id=client.id).aggregate(out=Sum("price"))['out'] 
+        enter = Payment.objects.filter(client_id=client.id).aggregate(enter=Sum("value"))['enter']
+        enter = 0 if not enter else enter
+        out = 0 if not out else out
+
+        return enter-out
+    
 
 
 
