@@ -36,13 +36,23 @@ class ProductSerializer(ModelSerializer):
             "name"
         ]
 class DestineSerializer(ModelSerializer):
-    
+    balance = SerializerMethodField(method_name="get_balance")
+
     class Meta:
         model =Destine
         fields = [
             "id",
-            "name"
+            "name",
+            "balance"
         ]
+
+    def get_balance(self, destine: Client):
+        out = Expense.objects.filter(destine_id=destine.id).aggregate(out=Sum("value"))['out'] 
+        enter = Payment.objects.filter(from_destine_id=destine.id).aggregate(enter=Sum("value"))['enter']
+        enter = 0 if not enter else enter
+        out = 0 if not out else out
+
+        return enter-out
 def get_date(item):
     # You need to define how to access the date attribute
     # based on the model of the 'item'
