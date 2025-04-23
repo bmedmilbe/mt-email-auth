@@ -22,9 +22,6 @@ class FriendPayment(models.Model):
     boss = models.ForeignKey(Customer, related_name="friend_payments", on_delete=models.PROTECT)
     description = models.CharField(max_length=255, null=True, blank=True)
 
-
-
-
 class Transaction(models.Model):
     description = models.CharField(max_length=255)
     value = models.IntegerField()
@@ -46,4 +43,5 @@ class Charge(models.Model):
 
     boss = models.ForeignKey(Customer, related_name="boss_charges",on_delete=models.PROTECT)
     deliver = models.ForeignKey(Customer, related_name="deliver_charges", on_delete=models.PROTECT)
+
 

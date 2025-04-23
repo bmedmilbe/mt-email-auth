@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     "cecab",
     "nanehouse",
     "fly",
+    "ground",
     # "fund",
     "setup",
     "core",

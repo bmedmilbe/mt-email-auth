@@ -26,3 +26,5 @@ class TransactionAdmin(admin.ModelAdmin):
     list_editable = [ 'completed', 'friend_paid']
     search_fields = ['description', 'value']
 
+
+   
