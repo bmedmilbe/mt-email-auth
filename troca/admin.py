@@ -21,7 +21,7 @@ class ChargeAdmin(admin.ModelAdmin):
 
 @admin.register(Transaction)
 class TransactionAdmin(admin.ModelAdmin):
-    list_display = ['value','description', 'completed', 'friend_paid', 'date', 'is_charge']
+    list_display = ['value','description',  'completed_by','completed', 'friend_paid', 'date', 'is_charge']
     list_filter = ['completed', 'friend_paid', 'is_charge','completed_by', 'boss']
     list_editable = [ 'completed', 'friend_paid', 'completed_by']
     search_fields = ['description', 'value']
