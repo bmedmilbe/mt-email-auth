@@ -7,6 +7,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.permissions import BasePermission
 from rest_framework import status
+from rest_framework.pagination import PageNumberPagination
 
 from pprint import pprint
 from django.db.models import Q, Count, Sum
@@ -26,7 +27,8 @@ from rest_framework.decorators import action
 # Create your views here.
 
 from .models import Charge, Customer,  Friend, FriendPayment, Transaction
-
+class PaginationHundread(PageNumberPagination):
+    page_size = 100
 
 class IsBoss(BasePermission):
     
@@ -41,6 +43,9 @@ class FriendViewSet(ModelViewSet):
     queryset = Friend.objects.all()
     permission_classes = [IsBoss]
 
+    pagination_class = PaginationHundread
+
+
     @action(detail=False, methods=['get'], permission_classes=[IsBoss])
     def balance(self, request, pk=None):
         boss_id=request.query_params.get("boss")
@@ -50,6 +55,7 @@ class FriendViewSet(ModelViewSet):
 
     
         return Response(enter | out)
+    
 
 class FriendPaymentViewSet(ModelViewSet):
     # serializer_class = PaymentForFriendSerializer
