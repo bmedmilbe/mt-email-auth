@@ -1,1458 +1,275 @@
-Samsung Galaxy M34 5G
-Samsung Galaxy F54
-Samsung Galaxy A24 4G
-Samsung Galaxy F14
-Samsung Galaxy M54
-Samsung Galaxy A54
-Samsung Galaxy A34
-Samsung Galaxy M14
-Samsung Galaxy S23 Ultra
-Samsung Galaxy S23+
-Samsung Galaxy S23
-Samsung Galaxy A14
-Samsung Galaxy A14 5G
-Samsung Galaxy F04
-Samsung Galaxy M04
-Samsung Galaxy A04e
-Samsung Galaxy A04s
-Samsung Galaxy A04
-Samsung Galaxy Z Fold4
-Samsung Galaxy Z Flip4
-Samsung Galaxy A23 5G
-Samsung Galaxy M13 5G
-Samsung Galaxy M13 (India)
-Samsung Galaxy A13 (SM-A137)
-Samsung Galaxy XCover6 Pro
-Samsung Galaxy F13
-Samsung Galaxy M13
-Samsung Galaxy M53
-Samsung Galaxy S20 FE 2022
-Samsung Galaxy A73 5G
-Samsung Galaxy A53 5G
-Samsung Galaxy A33 5G
-Samsung Galaxy F23
-Samsung Galaxy M33
-Samsung Galaxy M23
-Samsung Galaxy A23
-Samsung Galaxy A13
-Samsung Galaxy S22 Ultra 5G
-Samsung Galaxy S22+ 5G
-Samsung Galaxy S22 5G
-Samsung Galaxy S25 Ultra
-Samsung Galaxy S25+
-Samsung Galaxy S25
-Samsung Galaxy Z Fold Special
-Samsung Galaxy A16
-Samsung Galaxy A16 5G
-Samsung Galaxy S24 FE
-Samsung Galaxy M55s
-Samsung Galaxy F05
-Samsung Galaxy M05
-Samsung Galaxy A06
-Samsung Galaxy F14 4G
-Samsung Galaxy Z Fold6
-Samsung Galaxy Z Flip6
-Samsung Galaxy M35
-Samsung Galaxy F55
-Samsung Galaxy C55
-Samsung Galaxy M55
-Samsung Galaxy A55
-Samsung Galaxy A35
-Samsung Galaxy M15
-Samsung Galaxy M14 4G
-Samsung Galaxy F15
-Samsung Galaxy S24 Ultra
-Samsung Galaxy S24+
-Samsung Galaxy S24
-Samsung Galaxy XCover7
-Samsung Galaxy A25
-Samsung Galaxy A15 5G
-Samsung Galaxy A15
-Samsung Galaxy S23 FE
-Samsung Galaxy A05s
-Samsung Galaxy A05
-Samsung Galaxy F34
-Samsung Galaxy Z Fold5
-Samsung Galaxy Z Flip5
-Samsung Galaxy S21 FE 5G
-Samsung Galaxy A13 5G
-Samsung Galaxy A03
-Samsung Galaxy A03 Core
-Samsung Galaxy F42 5G
-Samsung Galaxy M52 5G
-Samsung Galaxy M22
-Samsung Galaxy M32 5G
-Samsung Galaxy A03s
-Samsung Galaxy A52s 5G
-Samsung Galaxy Z Fold3 5G
-Samsung Galaxy Z Flip3 5G
-Samsung Galaxy A12 (India)
-Samsung Galaxy A12 Nacho
-Samsung Galaxy M21 2021
-Samsung Galaxy F22
-Samsung Galaxy M32
-Samsung Galaxy A22 5G
-Samsung Galaxy A22
-Samsung Galaxy F52 5G
-Samsung Galaxy M42 5G
-Samsung Galaxy M12
-Samsung Galaxy Quantum 2
-Samsung Galaxy F12
-Samsung Galaxy F02s
-Samsung Galaxy A72
-Samsung Galaxy A52 5G
-Samsung Galaxy A52
-Samsung Galaxy XCover 5
-Samsung Galaxy A32
-Samsung Galaxy M62
-Samsung Galaxy F62
-Samsung Galaxy M12 (India)
-Samsung Galaxy S21 Ultra 5G
-Samsung Galaxy S21+ 5G
-Samsung Galaxy S21 5G
-Samsung Galaxy A32 5G
-Samsung Galaxy M02s
-Samsung Galaxy A12
-Samsung Galaxy M02
-Samsung Galaxy A02
-Samsung Galaxy A02s
-Samsung Galaxy M21s
-Samsung Galaxy M31 Prime
-Samsung Galaxy F41
-Samsung Galaxy S20 FE 5G
-Samsung Galaxy S20 FE
-Samsung Galaxy A42 5G
-Samsung Galaxy M51
-Samsung Galaxy A51 5G UW
-Samsung Galaxy Z Fold2 5G
-Samsung Galaxy Note20 Ultra 5G
-Samsung Galaxy Note20 Ultra
-Samsung Galaxy Note20 5G
-Samsung Galaxy Note20
-Samsung Galaxy Z Flip 5G
-Samsung Galaxy M31s
-Samsung Galaxy M01s
-Samsung Galaxy M01 Core
-Samsung Galaxy A01 Core
-Samsung Galaxy A71 5G UW
-Samsung Galaxy M01
-Samsung Galaxy A21s
-Samsung Galaxy J2 Core (2020)
-Samsung Galaxy A Quantum
-Samsung Galaxy A71 5G
-Samsung Galaxy A51 5G
-Samsung Galaxy A21
-Samsung Galaxy M11
-Samsung Galaxy A31
-Samsung Galaxy A41
-Samsung Galaxy M21
-Samsung Galaxy A11
-Samsung Galaxy M31
-Samsung Galaxy S20 Ultra 5G
-Samsung Galaxy S20 Ultra
-Samsung Galaxy S20+ 5G
-Samsung Galaxy S20+
-Samsung Galaxy S20 5G UW
-Samsung Galaxy S20 5G
-Samsung Galaxy S20
-Samsung Galaxy Z Flip
-Samsung Galaxy XCover Pro
-Samsung Galaxy Note10 Lite
-Samsung Galaxy S10 Lite
-Samsung Galaxy A01
-Samsung Galaxy A71
-Samsung Galaxy A51
-Samsung Galaxy XCover FieldPro
-Samsung Galaxy A70s
-Samsung Galaxy A20s
-Samsung Galaxy M30s
-Samsung Galaxy M10s
-Samsung Galaxy Fold 5G
-Samsung Galaxy Fold
-Samsung Galaxy A90 5G
-Samsung Galaxy A30s
-Samsung Galaxy A50s
-Samsung Galaxy Note10+ 5G
-Samsung Galaxy Note10+
-Samsung Galaxy Note10 5G
-Samsung Galaxy Note10
-Samsung Galaxy A10s
-Samsung Galaxy A10e
-Samsung Galaxy XCover 4s
-Samsung Galaxy A2 Core
-Samsung Galaxy S10 5G
-Samsung Galaxy S10+
-Samsung Galaxy S10
-Samsung Galaxy S10e
-Samsung Galaxy M40
-Samsung Galaxy M30
-Samsung Galaxy M20
-Samsung Galaxy M10
-Samsung Galaxy A80
-Samsung Galaxy A70
-Samsung Galaxy A60
-Samsung Galaxy A50
-Samsung Galaxy A40
-Samsung Galaxy A30
-Samsung Galaxy A20e
-Samsung Galaxy A20
-Samsung Galaxy A10
-Samsung Galaxy J3 Emerge
-Samsung Galaxy C7 Pro
-Samsung Galaxy A7 (2017)
-Samsung Galaxy A5 (2017)
-Samsung Galaxy A3 (2017)
-Samsung Galaxy Grand Prime Plus
-Samsung Galaxy J2 Prime
-Samsung Galaxy C9 Pro
-Samsung Galaxy A8 (2016)
-Samsung Galaxy On8
-Samsung Galaxy On7 (2016)
-Samsung Galaxy J5 Prime
-Samsung Galaxy J7 Prime
-Samsung Galaxy Note7 (USA)
-Samsung Galaxy Note7
-Samsung Galaxy On7 Pro
-Samsung Galaxy On5 Pro
-Samsung Galaxy J Max
-Samsung Galaxy J2 Pro (2016)
-Samsung Galaxy J2 (2016)
-Samsung Galaxy Xcover 3 G389F
-Samsung Galaxy S7 active
-Samsung Galaxy J3 Pro
-Samsung Galaxy C7
-Samsung Galaxy C5
-Samsung Galaxy A9 Pro (2016)
-Samsung Galaxy J7 (2016)
-Samsung Galaxy J5 (2016)
-Samsung Galaxy S7
-Samsung Galaxy S7 edge
-Samsung Galaxy S7 edge (USA)
-Samsung Galaxy S7 (USA)
-Samsung Galaxy J1 Nxt
-Samsung Galaxy J1 (2016)
-Samsung Galaxy A9 (2016)
-Samsung Galaxy A7 (2016)
-Samsung Galaxy A5 (2016)
-Samsung Galaxy A3 (2016)
-Samsung Galaxy Express Prime
-Samsung Galaxy J3 (2016)
-Samsung Galaxy On7
-Samsung Galaxy On5
-Samsung Galaxy J1 Ace
-Samsung Galaxy Note5 (USA)
-Samsung Galaxy Note5
-Samsung Galaxy Note5 Duos
-Samsung Galaxy S6 edge+ (USA)
-Samsung Galaxy S6 edge+
-Samsung Galaxy S6 edge+ Duos
-Samsung Galaxy S5 Neo
-Samsung Galaxy S4 mini I9195I
-Samsung Galaxy Folder
-Samsung Galaxy A8 Duos
-Samsung Galaxy A8
-Samsung Galaxy V Plus
-Samsung Galaxy J7 Nxt
-Samsung Galaxy J7
-Samsung Galaxy J5
-Samsung Galaxy S6 active
-Samsung Galaxy XCover 3
-Samsung Galaxy S6 edge (USA)
-Samsung Galaxy S6 (USA)
-Samsung Galaxy S6 edge
-Samsung Galaxy S6 Duos
-Samsung Galaxy S6
-Samsung Galaxy J1 4G
-Samsung Galaxy J2
-Samsung Galaxy J1
-Samsung Galaxy A7 Duos
-Samsung Galaxy A7
-Samsung Galaxy Grand Max
-Samsung Galaxy E7
-Samsung Galaxy E5
-Samsung Galaxy Core Prime
-Samsung Galaxy A5 Duos
-Samsung Galaxy A5
-Samsung Galaxy A3 Duos
-Samsung Galaxy A3
-Samsung Galaxy S5 Plus
-Samsung Galaxy Pocket 2
-Samsung Galaxy V
-Samsung Galaxy Grand Prime Duos TV
-Samsung Galaxy Grand Prime
-Samsung Galaxy Ace Style LTE G357
-Samsung Galaxy Note Edge
-Samsung Galaxy Note 4 Duos
-Samsung Galaxy Note 4 (USA)
-Samsung Galaxy Note 4
-Samsung Galaxy Mega 2
-Samsung Galaxy S5 LTE-A G901F
-Samsung Galaxy Alpha (S801)
-Samsung Galaxy Alpha
-Samsung Galaxy S5 mini Duos
-Samsung Galaxy Avant
-Samsung Galaxy S Duos 3
-Samsung Galaxy Ace NXT
-Samsung Galaxy Star 2 Plus
-Samsung Galaxy S5 mini
-Samsung Galaxy Ace 4 LTE G313
-Samsung Galaxy Ace 4
-Samsung Galaxy Young 2
-Samsung Galaxy Star 2
-Samsung Galaxy Core II
-Samsung Galaxy S5 Sport
-Samsung Galaxy S5 LTE-A G906S
-Samsung Galaxy Core Lite LTE
-Samsung I9301I Galaxy S3 Neo
-Samsung Galaxy W
-Samsung Galaxy S5 Active
-Samsung Galaxy K zoom
-Samsung Galaxy Beam2
-Samsung I9300I Galaxy S3 Neo
-Samsung Galaxy Ace Style
-Samsung G3812B Galaxy S3 Slim
-Samsung I8200 Galaxy S III mini VE
-Samsung Galaxy S5 Duos
-Samsung Galaxy S5 (octa-core)
-Samsung Galaxy S5 (USA)
-Samsung Galaxy S5
-Samsung Galaxy Core LTE G386W
-Samsung Galaxy Core LTE
-Samsung Galaxy Star Trios S5283
-Samsung Galaxy Note 3 Neo Duos
-Samsung Galaxy Note 3 Neo
-Samsung Galaxy Grand Neo
-Samsung Galaxy Camera 2 GC200
-Samsung Galaxy Core Advance
-Samsung Galaxy S4 Active LTE-A
-Samsung Galaxy J
-Samsung Galaxy Win Pro G3812
-Samsung Galaxy S Duos 2 S7582
-Samsung Galaxy Grand 2
-Alcatel 1B (2022)
-Alcatel 1L Pro (2021)
-Alcatel 1 (2021)
-Alcatel 3L (2021)
-Alcatel 1S (2021)
-Alcatel 1L (2021)
-Alcatel 1V (2021)
-Alcatel 1SE (2020)
-Alcatel 3X (2020)
-Alcatel 3L (2020)
-Alcatel 1S (2020)
-Alcatel 1V (2020)
-Alcatel 1B (2020)
-Alcatel 3v (2019)
-Alcatel 3x (2019)
-Alcatel 1v (2019)
-Alcatel 3L
-Alcatel 3 (2019)
-Alcatel 1s
-Alcatel 1x (2019)
-Alcatel Tetra
-Alcatel 7
-Alcatel 5v
-Alcatel 5
-Alcatel 3v
-Alcatel 3x (2018)
-Alcatel 3
-Alcatel 1x
-Alcatel 3c
-Alcatel Idol 5s
-Alcatel Idol 5
-Alcatel A7 XL
-Alcatel A7
-Alcatel U5 HD
-Alcatel Pulsemix
-Alcatel Idol 5s (USA)
-Alcatel Flash (2017)
-Alcatel U5
-Alcatel A5 LED
-Alcatel A3
-Alcatel A3 XL
-Alcatel Shine Lite
-Alcatel Pixi 4 Plus Power
-Alcatel Fierce 4
-Alcatel X1
-Alcatel Pixi 4 (5)
-Alcatel Flash Plus 2
-Alcatel Pop 4S
-Alcatel Pop 4+
-Alcatel Pop 4
-Alcatel Idol 4s
-Alcatel Idol 4
-Alcatel Pixi 4 (6) 3G
-Alcatel Pixi 4 (6)
-Alcatel Pixi 4 (4)
-Alcatel Pixi 4 (3.5)
-Alcatel Pop 3 (5.5)
-Alcatel Pop 3 (5)
-Alcatel Fierce XL
-Alcatel Flash 2
-Alcatel Idol 3C
-Alcatel Pixi First
-Alcatel Pop Up
-Alcatel Pop Star LTE
-Alcatel Pop Star
-Alcatel Go Play
-Alcatel Flash Plus
-Alcatel Pop Astro
-Alcatel Flash
-Alcatel Idol 3 (5.5)
-Alcatel Idol 3 (4.7)
-Alcatel Pixi 3 (5.5) LTE
-Alcatel Pixi 3 (5.5)
-Honor X8c
-Honor Magic7 Lite
-Honor Magic7 RSR Porsche Design
-Honor GT
-Honor 300 Ultra
-Honor 300 Pro
-Honor 300
-Honor X9c Smart
-Honor Play9C
-Honor Play9T
-Honor X9c
-Honor Magic7 Pro
-Honor Magic7
-Honor X5b Plus
-Honor X5b
-Honor X7c
-Honor X60 Pro
-Honor X60
-Honor 200 Smart
-Honor X60i
-Honor Magic Vs3
-Honor Magic V3
-Honor Play 60 Plus
-Honor X7b 5G (50 MP)
-Honor Magic V Flip
-Honor X6b
-Honor 200 Pro
-Honor 200
-Honor 200 Lite
-Honor 90 Smart
-Honor X7b 5G
-Honor Magic6 RSR Porsche Design
-Honor Magic6 Ultimate
-Honor Magic V2 RSR Porsche Design
-Honor Magic6 Pro
-Honor Magic6
-Honor X50 GT
-Honor X50 Pro
-Honor 90 GT
-Honor X8b
-Honor Magic6 Lite
-Honor X7b
-Honor 100 Pro
-Honor 100
-Honor X50i+
-Honor X5 Plus
-Honor X9b
-Honor Play 8T
-Honor Magic Vs2
-Honor Play 50 Plus
-Honor V Purse
-Honor X40 GT Racing
-Honor X6a
-Honor Magic V2
-Honor X50
-Honor Play 40
-Honor X50i
-Honor 90 Lite
-Honor 90 Pro
-Honor 90
-Honor Play7T Pro
-Honor Play7T
-Honor 70 Lite
-Honor Magic5 Ultimate
-Honor Magic5 Pro
-Honor Magic5
-Honor Magic5 Lite
-Honor X8a
-Honor X5
-Honor X9a
-Honor X7a
-Honor 80 Pro Flat
-Honor 80 GT
-Honor 80 Pro
-Honor 80
-Honor 80 SE
-Honor Magic Vs Ultimate
-Honor Magic Vs
-Honor Play 40 Plus
-Honor X40 GT
-Honor Play6C
-Honor X6
-Honor X40
-Honor X8 5G
-Honor X40i
-Honor 70 Pro+
-Honor 70 Pro
-Honor 70
-Honor Play 30
-Honor Play6T Pro
-Honor Play6T
-Honor Magic4 Lite
-Honor X7
-Honor X9
-Honor X9 5G
-Honor Magic4 Ultimate
-Honor X8
-Honor Magic4 Pro
-Honor Magic4
-Honor 60 SE
-Honor Magic V
-Honor X30
-Honor Play 30 Plus
-Honor 60 Pro
-Honor 60
-Honor X30 Max
-Honor X30i
-Honor 50 Lite
-Honor Play5 Youth
-Honor X20
-Honor Magic3 Pro+
-Honor Magic3 Pro
-Honor Magic3
-Honor Play 5T Pro
-Honor X20 SE
-Honor 50 Pro
-Honor 50
-Honor 50 SE
-Honor Play5 5G
-Honor Play 20
-Honor Play 5T Youth
-Honor V40 Lite
-Honor View40
-Honor V40 5G
-Honor 10X Lite
-Honor 30i
-Honor X10 Max 5G
-Honor 30 Youth
-Honor 8S 2020
-Honor Play4
-Honor Play4 Pro
-Honor X10 5G
-Honor 9A
-Honor 9C
-Honor 9S
-Honor 9X Lite
-Honor 30 Pro+
-Honor 30 Pro
-Honor 30
-Honor 20e
-Honor Play 4T Pro
-Honor Play 4T
-Honor 8A 2020
-Honor 8A Prime
-Honor 30S
-Honor Play 9A
-Honor View30 Pro
-Honor View30
-Honor V30 Pro
-Honor V30
-Honor 9X
-Honor 20 lite (China)
-Honor Play 3e
-Honor Play 3
-Honor 20S
-Honor 9X Pro
-Honor 9X (China)
-Honor 8S
-Honor 20 Pro
-Honor 20
-Honor 20 lite
-Honor 20i
-Honor 8A Pro
-Honor View 20
-Honor Magic 2 3D
-Honor Magic 2
-Honor Play 8A
-Honor 10 Lite
-Honor 8C
-Honor 8X
-Honor 8X Max
-Honor Note 10
-Honor 9N (9i)
-Honor Play
-Honor 7S
-Honor 10
-Honor 7A
-Honor 7C
-Honor 9 Lite
-Honor View 10
-Honor 7X
-Honor 6C Pro
-Honor 9
-Honor 6A (Pro)
-Honor 8 Pro
-Honor Magic
-Honor V8
-Honor 6X
-Honor Holly 3
-Honor Note 8
-Honor 8
-Honor 5A
-Honor 5c
-Honor Holly 2 Plus
-Honor 5X
-Honor 7i
-Honor 7
-Honor Bee
-Honor 4C
-Honor 6 Plus
-Honor 4X
-Honor Holly
-Honor 4 Play
-Honor 3C Play
-Honor 6
-Honor 3X Pro
-Honor 3C 4G
-Honor 3X G750
-Honor 3C
-Honor 3
-Honor 2
-Honor U8860
-Lenovo Legion Y70
-Lenovo Legion Y90
-Lenovo K14 Plus
-Lenovo K13 Pro
-Lenovo K13
-Lenovo K13 Note
-Lenovo Legion 2 Pro
-Lenovo Legion Duel 2
-Lenovo K12 Pro
-Lenovo K12 (China)
-Lenovo A8 2020
-Lenovo Legion Duel
-Lenovo Legion Pro
-Lenovo A7
-Lenovo K10 Plus
-Lenovo K10 Note
-Lenovo A6 Note
-Lenovo Z6
-Lenovo Z6 Pro 5G
-Lenovo Z6 Youth
-Lenovo Z6 Pro
-Lenovo K6 Enjoy
-Lenovo S5 Pro GT
-Lenovo Z5s
-Lenovo Z5 Pro GT
-Lenovo Z5 Pro
-Lenovo S5 Pro
-Lenovo K5 Pro
-Lenovo K9
-Lenovo Z5
-Lenovo K5 Note (2018)
-Lenovo A5
-Lenovo K5 play
-Lenovo K5
-Lenovo S5
-Lenovo K320t
-Lenovo K8 Plus
-Lenovo K8
-Lenovo K8 Note
-Lenovo ZUK Edge
-Lenovo A6600 Plus
-Lenovo A6600
-Lenovo B
-Lenovo A Plus
-Lenovo P2
-Lenovo K6 Note
-Lenovo K6 Power
-Lenovo K6
-Lenovo Vibe A
-Lenovo C2 Power
-Lenovo C2
-Lenovo Phab2 Plus
-Lenovo Phab2
-Lenovo Phab2 Pro
-Lenovo ZUK Z2
-Lenovo Vibe C
-Lenovo ZUK Z2 Pro
-Lenovo Vibe K5 Plus
-Lenovo Vibe K5
-Lenovo A7000 Turbo
-Lenovo Vibe P1 Turbo
-Lenovo K5 Note
-Lenovo Lemon 3
-Lenovo Vibe S1 Lite
-Lenovo Vibe K4 Note
-Lenovo Vibe X3 c78
-Lenovo Vibe X3
-Lenovo A3690
-Lenovo A1000
-Lenovo Phab
-Lenovo Phab Plus
-Lenovo Vibe P1
-Lenovo A6010 Plus
-Lenovo A6010
-Lenovo Vibe P1m
-Lenovo Vibe S1
-Lenovo ZUK Z1
-Lenovo A2010
-Lenovo A616
-Lenovo A3900
-Lenovo K80
-Lenovo S60
-Lenovo A6000 Plus
-Lenovo A1900
-Lenovo K3 Note
-Lenovo Vibe Shot
-Lenovo A7000 Plus
-Lenovo A7000
-Lenovo A5000
-Lenovo P70
-Lenovo A6000
-Lenovo P90
-LG W41 Pro
-LG W41+
-LG W41
-LG W31+
-LG W31
-LG W11
-LG K92 5G
-LG K62
-LG Q52
-LG K52
-LG K42
-LG K71
-LG Wing 5G
-LG K22
-LG Q92 5G
-LG Q31
-LG K31
-LG Velvet 5G UW
-LG Q61
-LG Stylo 6
-LG Velvet
-LG Velvet 5G
-LG V60 ThinQ 5G UW
-LG V60 ThinQ 5G
-LG Q51
-LG W10 Alpha
-LG K61
-LG K51S
-LG K41S
-LG V50S ThinQ 5G
-LG G8X ThinQ
-LG Q70
-LG K30 (2019)
-LG K20 (2019)
-LG K40S
-LG K50S
-LG W30 Pro
-LG W30
-LG W10
-LG Stylo 5
-LG V50 ThinQ 5G
-LG G8S ThinQ
-LG G8 ThinQ
-LG Q60
-LG K50
-LG K40
-LG Q9
-LG V40 ThinQ
-LG Tribute Empire
-LG Candy
-LG G7 Fit
-LG G7 One
-LG Q8 (2018)
-LG K11 Plus
-LG Q Stylo 4
-LG Q Stylus
-LG V35 ThinQ
-LG Q7
-LG G7 ThinQ
-LG V30S ThinQ
-LG Zone 4
-LG X power 3
-LG K30
-LG K10 (2018)
-LG K8 (2018)
-LG Aristo 2
-LG X4+
-LG V30
-LG Q8 (2017)
-LG Q6
-LG X venture
-LG G6
-LG X power2
-LG Stylo 3 Plus
-LG Stylus 3
-LG Harmony
-LG K20 plus
-LG K10 (2017)
-LG K8 (2017)
-LG K7 (2017)
-LG K4 (2017)
-LG K3 (2017)
-LG U
-LG V20
-LG X Skin
-LG X5
-LG X max
-LG X mach
-LG X power
-LG X style
-LG Stylus 2 Plus
-LG Stylo 2
-LG K5
-LG K3
-LG G5 SE
-LG G5
-LG X cam
-LG X screen
-LG K8
-LG Stylus 2
-LG K10
-LG K7
-LG K4
-LG Ray
-LG G Vista 2
-LG V10
-LG Nexus 5X
-LG Zero
-LG Wine Smart
-LG Tribute 2
-LG Bello II
-LG G4 Beat
-LG G4c
-LG G4 Dual
-LG G4
-LG G Stylo
-LG G4 Stylus
-LG AKA
-LG Magna
-LG Spirit
-LG Leon
-LG Joy
-LG G Flex2
-LG Tribute
-LG L Prime
-LG G2 Lite
-LG G3 Dual-LTE
-LG G3 Screen
-LG F60
-LG L60
-Xiaomi Redmi Note 14 Pro+ 5G (Global)
-Xiaomi Redmi Note 14 Pro 5G (Global)
-Xiaomi Redmi Note 14 Pro 4G (Global)
-Xiaomi Redmi Note 14 5G (Global)
-Xiaomi Redmi Note 14 4G (Global)
-Xiaomi Poco X7 Pro
-Xiaomi Poco X7
-Xiaomi Redmi 14C 5G
-Xiaomi Redmi 14C (China)
-Xiaomi Redmi Turbo 4
-Xiaomi Poco M7 Pro 5G
-Xiaomi Poco C75 5G
-Xiaomi Redmi Note 14
-Xiaomi Redmi Note 14 Pro
-Xiaomi Redmi Note 14 Pro+
-Xiaomi Redmi K80 Pro
-Xiaomi Redmi K80
-Xiaomi 15 Pro
-Xiaomi 15
-Xiaomi Poco C75
-Xiaomi Redmi A4
-Xiaomi Redmi A3 Pro
-Xiaomi 14T Pro
-Xiaomi 14T
-Xiaomi Redmi Note 14 (China)
-Xiaomi Redmi 14R
-Xiaomi Redmi 14C
-Xiaomi Poco M6 Plus
-Xiaomi Mix Flip
-Xiaomi Redmi K70 Ultra
-Xiaomi Mix Fold 4
-Xiaomi Redmi 13 5G
-Xiaomi Poco M6 4G
-Xiaomi 14 Civi
-Xiaomi Redmi 13
-Xiaomi Redmi A3x
-Xiaomi Poco F6 Pro
-Xiaomi Poco F6
-Xiaomi Redmi Note 13R
-Xiaomi Redmi Turbo 3
-Xiaomi Poco C61
-Xiaomi Civi 4 Pro
-Xiaomi Poco X6 Neo
-Xiaomi 14
-Xiaomi 14 Ultra
-Xiaomi Redmi A3
-Xiaomi Redmi Note 13 Pro 4G
-Xiaomi Redmi Note 13 4G
-Xiaomi Redmi Note 13 Pro+
-Xiaomi Redmi Note 13 Pro
-Xiaomi Redmi Note 13
-Xiaomi Poco X6 Pro
-Xiaomi Poco X6
-Xiaomi Poco M6 Pro
-Xiaomi Poco M6
-Xiaomi Redmi 13R
-Xiaomi Redmi 13C 5G
-Xiaomi Redmi K70 Pro
-Xiaomi Redmi K70
-Xiaomi Redmi K70E
-Xiaomi Redmi Note 13R Pro
-Xiaomi Redmi 13C
-Xiaomi Poco C65
-Xiaomi 14 Pro
-Xiaomi 13T Pro
-Xiaomi 13T
-Xiaomi Redmi Note 13 (China)
-Xiaomi Redmi K60 Ultra
-Xiaomi Mix Fold 3
-Xiaomi Poco M6 Pro 5G
-Xiaomi Redmi 12 5G
-Xiaomi Redmi Note 12R
-Xiaomi Redmi Note 12R Pro
-Xiaomi Redmi 12
-Xiaomi Redmi Note 12T Pro
-Xiaomi Civi 3
-Xiaomi Poco F5 Pro
-Xiaomi Poco F5
-Xiaomi 13 Ultra
-Xiaomi Poco C51
-Xiaomi Redmi Note 12S
-Xiaomi Redmi Note 12 Pro 4G
-Xiaomi Redmi Note 12 Turbo
-Xiaomi Redmi A2+
-Xiaomi Redmi A2
-Xiaomi Redmi Note 12 4G
-Xiaomi 13 Pro
-Xiaomi 13
-Xiaomi 13 Lite
-Xiaomi Poco C55
-Xiaomi Poco X5 Pro
-Xiaomi Poco X5
-Xiaomi Redmi Note 12
-Xiaomi Poco C50
-Xiaomi Redmi Note 12 Pro Speed
-Xiaomi Redmi K60 Pro
-Xiaomi Redmi K60E
-Xiaomi Redmi K60
-Xiaomi Redmi 12C
-Xiaomi Redmi Note 12 Discovery
-Xiaomi Redmi Note 12 Pro+
-Xiaomi Redmi Note 12 Pro
-Xiaomi Redmi Note 12 (China)
-Xiaomi 12T Pro
-Xiaomi 12T
-Xiaomi Redmi Note 11R
-Xiaomi Redmi A1+
-Xiaomi Civi 2
-Xiaomi Redmi 11 Prime
-Xiaomi Redmi 11 Prime 5G
-Xiaomi Redmi A1
-Xiaomi Poco M5s
-Xiaomi Poco M5
-Xiaomi Poco M5 (India)
-Xiaomi Redmi Note 11 SE (India)
-Xiaomi Poco M4 5G
-Xiaomi Redmi K50 Ultra
-Xiaomi Mix Fold 2
-Xiaomi Redmi K50i
-Xiaomi 12 Lite
-Xiaomi 12S Ultra
-Xiaomi 12S Pro
-Xiaomi 12S
-Xiaomi 12 Pro (Dimensity)
-Xiaomi Poco F4
-Xiaomi Poco X4 GT
-Xiaomi Poco C40
-Xiaomi Redmi Note 11T Pro+
-Xiaomi Redmi Note 11T Pro
-Xiaomi Redmi Note 11SE
-Xiaomi Redmi 10 Prime 2022
-Xiaomi Poco M4 5G (India)
-Xiaomi Poco F4 GT
-Xiaomi Civi 1S
-Xiaomi Redmi 10 Power
-Xiaomi Black Shark 5 Pro
-Xiaomi Black Shark 5
-Xiaomi Black Shark 5 RS
-Xiaomi Redmi 10A
-Xiaomi Redmi Note 11S 5G
-Xiaomi Redmi 10 5G
-Xiaomi Redmi Note 11 Pro+ 5G
-Xiaomi Redmi K50 Pro
-Xiaomi Redmi K50
-Xiaomi Redmi K40S
-Xiaomi 12 Pro
-Xiaomi 12
-Xiaomi 12X
-Xiaomi Redmi 10 (India)
-Xiaomi Redmi 10C
-Xiaomi Redmi Note 11 Pro+ 5G (India)
-Xiaomi Redmi Note 11E Pro
-Xiaomi Redmi Note 11E
-Xiaomi Poco X4 Pro 5G
-Xiaomi Poco M4 Pro
-Xiaomi Redmi K50 Gaming
-Xiaomi Redmi 10 2022
-Xiaomi Redmi Note 11 Pro 5G
-Xiaomi Redmi Note 11 Pro
-Xiaomi Redmi Note 11S
-Xiaomi Redmi Note 11
-Xiaomi 11i HyperCharge 5G
-Xiaomi 11i
-Xiaomi Redmi Note 11T 5G
-Xiaomi Redmi Note 11 4G
-Xiaomi Poco M4 Pro 5G
-Xiaomi Redmi Note 11 Pro (China)
-Xiaomi Redmi Note 11 (China)
-Xiaomi Black Shark 4S Pro
-Xiaomi Black Shark 4S
-Xiaomi Redmi Note 10 Lite
-Xiaomi Civi
-Xiaomi Redmi 9i Sport
-Xiaomi Redmi 9A Sport
-Xiaomi Poco C31
-Xiaomi Redmi 9 Activ
-Xiaomi 11T Pro
-Xiaomi 11T
-Xiaomi 11 Lite 5G NE
-Xiaomi Redmi 10 Prime
-Xiaomi Redmi 10
-Xiaomi Mix 4
-Xiaomi Poco X3 GT
-Xiaomi Poco F3 GT
-Xiaomi Redmi Note 10T 5G
-Xiaomi Redmi Note 10 Pro (China)
-Xiaomi Redmi Note 8 2021
-Xiaomi Poco M3 Pro 5G
-Xiaomi Redmi K40 Gaming
-Xiaomi Mi 11X Pro
-Xiaomi Mi 11X
-Xiaomi Poco M2 Reloaded
-Xiaomi Mi Mix Fold
-Xiaomi Mi 11 Ultra
-Xiaomi Mi 11 Pro
-Xiaomi Mi 11i
-Xiaomi Mi 11 Lite 5G
-Xiaomi Mi 11 Lite
-Xiaomi Black Shark 4 Pro
-Xiaomi Black Shark 4
-Xiaomi Poco X3 Pro
-Xiaomi Poco F3
-Xiaomi Mi 10S
-Xiaomi Redmi Note 10 Pro
-Xiaomi Redmi Note 10 5G
-Xiaomi Redmi Note 10S
-Xiaomi Redmi Note 10
-Xiaomi Redmi Note 10 Pro Max
-Xiaomi Redmi Note 10 Pro (India)
-Xiaomi Redmi K40 Pro+
-Xiaomi Redmi K40 Pro
-Xiaomi Redmi K40
-Xiaomi Redmi Note 9T
-Xiaomi Redmi 9T
-Xiaomi Mi 10i 5G
-Xiaomi Mi 11
-Xiaomi Redmi 9 Power
-Xiaomi Redmi Note 9 Pro 5G
-Xiaomi Redmi Note 9 5G
-Xiaomi Redmi Note 9 4G
-Xiaomi Poco M3
-Xiaomi Redmi K30S
-Xiaomi Poco C3
-Xiaomi Mi 10T Pro 5G
-Xiaomi Mi 10T 5G
-Xiaomi Mi 10T Lite 5G
-Xiaomi Redmi 9AT
-Xiaomi Redmi 9i
-Xiaomi Poco M2
-Xiaomi Poco X3
-Xiaomi Poco X3 NFC
-Xiaomi Redmi 9 (India)
-Xiaomi Mi 10 Ultra
-Xiaomi Redmi K30 Ultra
-Xiaomi Redmi 9 Prime
-Xiaomi Black Shark 3S
-Xiaomi Poco M2 Pro
-Xiaomi Redmi 9A
-Xiaomi Redmi 9C NFC
-Xiaomi Redmi 9C
-Xiaomi Redmi 9
-Xiaomi Redmi 10X Pro 5G
-Xiaomi Redmi 10X 5G
-Xiaomi Redmi 10X 4G
-Xiaomi Redmi K30i 5G
-Xiaomi Poco F2 Pro
-Xiaomi Redmi K30 5G Racing
-Xiaomi Redmi Note 9 Pro
-Xiaomi Redmi Note 9
-Xiaomi Mi Note 10 Lite
-Xiaomi Mi 10 Youth 5G
-Xiaomi Mi 10 Lite 5G
-Xiaomi Redmi K30 Pro Zoom
-Xiaomi Redmi K30 Pro
-Xiaomi Redmi Note 9S
-Xiaomi Redmi Note 9 Pro Max
-Xiaomi Redmi Note 9 Pro (India)
-Xiaomi Black Shark 3 Pro
-Xiaomi Black Shark 3
-Xiaomi Mi 10 Pro 5G
-Xiaomi Mi 10 5G
-Xiaomi Redmi 8A Pro
-Xiaomi Redmi 8A Dual
-Xiaomi Poco X2
-Xiaomi Redmi K30
-Xiaomi Redmi K30 5G
-Xiaomi Redmi Note 8T
-Xiaomi Mi Note 10 Pro
-Xiaomi Mi Note 10
-Xiaomi Mi CC9 Pro
-Xiaomi Redmi 8
-Xiaomi Redmi 8A
-Xiaomi Mi Mix Alpha
-Xiaomi Mi 9 Pro 5G
-Xiaomi Mi 9 Pro
-Xiaomi Redmi K20 Pro Premium
-Xiaomi Mi 9 Lite
-Xiaomi Redmi Note 8 Pro
-Xiaomi Black Shark 2 Pro
-Xiaomi Mi A3
-Xiaomi Redmi 7A
-Xiaomi Mi CC9e
-Xiaomi Mi CC9
-Xiaomi Redmi Note 8
-Xiaomi Mi 9T Pro
-Xiaomi Mi 9T
-Xiaomi Redmi K20
-Xiaomi Redmi K20 Pro
-Xiaomi Redmi Note 7S
-Xiaomi Redmi Y3
-Xiaomi Black Shark 2
-Xiaomi Redmi 7
-Xiaomi Redmi Note 7 Pro
-Xiaomi Mi Mix 3 5G
-Xiaomi Mi 9 Explorer
-Xiaomi Mi 9 SE
-Xiaomi Mi 9
-Xiaomi Redmi Go
-Xiaomi Redmi Note 7
-Xiaomi Mi Play
-Xiaomi Black Shark Helo
-Xiaomi Mi Mix 3
-Xiaomi Redmi Note 6 Pro
-Xiaomi Mi 8 Pro
-Xiaomi Mi 8 Lite
-Xiaomi Pocophone F1
-Xiaomi Mi A2 (Mi 6X)
-Xiaomi Mi A2 Lite (Redmi 6 Pro)
-Xiaomi Mi Max 3
-Xiaomi Redmi 6
-Xiaomi Redmi 6A
-Xiaomi Mi 8 Explorer
-Xiaomi Mi 8
-Xiaomi Mi 8 SE
-Xiaomi Redmi S2 (Redmi Y2)
-Xiaomi Mi Mix 2S
-Xiaomi Redmi Note 5 AI Dual Camera
-Xiaomi Redmi Note 5 Pro
-Xiaomi Black Shark
-Xiaomi Redmi 5 Plus (Redmi Note 5)
-Xiaomi Redmi 5
-Xiaomi Redmi 5A
-Xiaomi Redmi Y1 (Note 5A)
-Xiaomi Redmi Y1 Lite
-Xiaomi Mi Note 3
-Xiaomi Mi Mix 2
-Xiaomi Mi A1 (Mi 5X)
-Xiaomi Mi Max 2
-Xiaomi Redmi 4 (4X)
-Xiaomi Mi 6
-Xiaomi Mi 5c
-Xiaomi Redmi Note 4X
-Xiaomi Redmi Note 4
-Xiaomi Redmi 4A
-Xiaomi Redmi 4 (China)
-Xiaomi Mi 6 Plus
-Xiaomi Redmi 4 Prime
-Xiaomi Mi Mix
-Xiaomi Mi Note 2
-Xiaomi Mi 5s Plus
-Xiaomi Mi 5s
-Xiaomi Redmi Note 4 (MediaTek)
-Xiaomi Redmi Pro
-Xiaomi Redmi 3x
-Xiaomi Redmi 3s Prime
-Xiaomi Redmi 3s
-Xiaomi Redmi 3 Pro
-Xiaomi Mi Max
-Xiaomi Mi 5
-Xiaomi Mi 4s
-Xiaomi Redmi Note 3
-Xiaomi Redmi 3
-Xiaomi Redmi Note Prime
-Xiaomi Redmi Note 3 (MediaTek)
-Oppo Reno13 F
-Oppo Reno13 F 4G
-Oppo A5 Pro
-Oppo Reno13 Pro
-Oppo Reno13
-Oppo Find X8 Pro
-Oppo Find X8
-Oppo K12 Plus
-Oppo A80
-Oppo F27
-Oppo A3 4G
-Oppo A3x 4G
-Oppo A3
-Oppo A3x
-Oppo A3x (China)
-Oppo K12x
-Oppo Reno12 F 4G
-Oppo A3 (China)
-Oppo Reno12 F
-Oppo A3 Pro
-Oppo Reno12 Pro
-Oppo Reno12
-Oppo F27 Pro+
-Oppo Reno12 Pro (China)
-Oppo Reno12 (China)
-Oppo K12x (China)
-Oppo A60
-Oppo K12
-Oppo A3 Pro (China)
-Oppo F25 Pro
-Oppo Reno11 F
-Oppo Reno11 Pro
-Oppo Reno11
-Oppo Find X7 Ultra
-Oppo Find X7
-Oppo A59
-Oppo Reno11 Pro (China)
-Oppo Reno11 (China)
-Oppo A2
-Oppo A79
-Oppo Find N3
-Oppo A2x
-Oppo A18
-Oppo A2 Pro
-Oppo A38
-Oppo Find N3 Flip
-Oppo A58 4G
-Oppo K11
-Oppo Reno10 Pro
-Oppo Reno10
-Oppo A78 4G
-Oppo K11x
-Oppo Reno10 Pro+
-Oppo Reno10 Pro (China)
-Oppo Reno10 (China)
-Oppo F23
-Oppo A98
-Oppo A1
-Oppo A1x
-Oppo Find X6 Pro
-Oppo Find X6
-Oppo Reno8 T
-Oppo Reno8 T 5G
-Oppo A78
-Oppo A56s
-Oppo Find N2 Flip
-Oppo Find N2
-Oppo A58x
-Oppo Reno9 Pro+
-Oppo Reno9 Pro
-Oppo Reno9
-Oppo A1 Pro
-Oppo A58 (China)
-Oppo A17k
-Oppo A77s
-Oppo A17
-Oppo K10x
-Oppo A57e
-Oppo A57s
-Oppo Reno8 4G
-Oppo Reno8 Z
-Oppo A77 4G
-Oppo Reno8 Pro
-Oppo Reno8
-Oppo A97
-Oppo Reno8 Lite
-Oppo K10 5G
-Oppo A77
-Oppo A57 4G
-Oppo Reno8 Pro+
-Oppo Reno8 Pro (China)
-Oppo Reno8 (China)
-Oppo K10 Pro
-Oppo K10 5G (China)
-Oppo A55s
-Oppo A57
-Oppo Reno7 Lite
-Oppo F21 Pro 5G
-Oppo F21 Pro
-Oppo Reno7
-Oppo K10
-Oppo A96
-Oppo A16e
-Oppo Reno7 Z 5G
-Oppo Find X5 Pro
-Oppo Find X5
-Oppo Find X5 Lite
-Oppo A76
-Oppo Reno7 5G
-Oppo Reno6 Lite
-Oppo A96 (China)
-Oppo A36
-Oppo A11s
-Oppo K9x
-Oppo Find N
-Oppo Reno7 Pro 5G
-Oppo Reno7 5G (China)
-Oppo Reno7 SE 5G
-Oppo A95
-Oppo A16K
-Oppo A54s
-Oppo A56 5G
-Oppo K9s
-Oppo A55
-Oppo F19s
-Oppo K9 Pro
-Oppo Reno6 Pro 5G (Snapdragon)
-Oppo Reno6
-Oppo Reno6 Z
-Oppo A16s
-Oppo A16
-Oppo Reno6 Pro+ 5G
-Oppo Reno6 Pro 5G
-Oppo Reno6 5G
-Oppo K9
-Oppo A53s 5G
-Oppo A95 5G
-Oppo A94 5G
-Oppo A35
-Oppo Reno5 Z
-Oppo A54 5G
-Oppo A74 5G
-Oppo A74
-Oppo F19
-Oppo A54
-Oppo Find X3 Pro
-Oppo Find X3
-Oppo Find X3 Neo
-Oppo Find X3 Lite
-Oppo F19 Pro+ 5G
-Oppo F19 Pro
-Oppo Reno5 Lite
-Oppo A94
-Oppo Reno5 F
-Oppo Reno5 K
-Oppo A55 5G
-Oppo A93s 5G
-Oppo A93 5G
-Oppo A15s
-Oppo Reno5 4G
-Oppo Reno5 Pro+ 5G
-Oppo A53 5G
-Oppo Reno5 Pro 5G
-Oppo Reno5 5G
-Oppo A73 5G
-Oppo Reno4 F
-Oppo A15
-Oppo A53s
-Oppo A73
-Oppo A93
-Oppo Reno4 Z 5G
-Oppo Reno4 Lite
-Oppo A33 (2020)
-Oppo Reno4 SE
-Oppo F17 Pro
-Oppo F17
-Oppo A32
-Oppo A53
-Oppo K7x
-Oppo Reno4 Pro
-Oppo Reno4
-Oppo A72 5G
-Oppo A12s
-Oppo Reno4 Pro 5G
-Oppo Reno4 5G
-Oppo A92
-Oppo Find X2 Neo
-Oppo A92s
-Oppo A72
-Oppo A52
-Oppo A11k
-Oppo A12
-Oppo K7 5G
-Oppo Find X2 Lite
-Oppo Ace2
-Oppo A12e
-Oppo Reno3
-Oppo Find X2 Pro
-Oppo Find X2
-Oppo Reno3 Pro
-Oppo A31
-Oppo F15
-Oppo Reno3 Pro 5G
-Oppo Reno3 Youth
-Oppo Reno3 5G
-Oppo A91
-Oppo A8
-Oppo A11
-Oppo K5
-Oppo Reno Ace
-Oppo Reno A
-Oppo A5 (2020)
-Oppo A9 (2020)
-Oppo Reno2
-Oppo Reno2 F
-Oppo Reno2 Z
-Oppo Reno Z
-Oppo K3
-Oppo A9x
-Oppo A9
-Oppo Reno 5G
-Oppo Reno 10x zoom
-Oppo Reno
-Oppo A1k
-Oppo A7n
-Oppo A5s (AX5s)
-Oppo F11
-Oppo F11 Pro
-Oppo A7
-Oppo R15x
-Oppo RX17 Neo
-Oppo K1
-Oppo A7x
-Oppo RX17 Pro
-Oppo R17
-Oppo F9 (F9 Pro)
-Google Pixel 9 Pro XL
-Google Pixel 9 Pro
-Google Pixel 9
-Google Pixel 9 Pro Fold
-Google Pixel 8a
-Google Pixel 8 Pro
-Google Pixel 8
-Google Pixel Fold
-Google Pixel 7a
-Google Pixel 7 Pro
-Google Pixel 7
-Google Pixel 6a
-Google Pixel 6 Pro
-Google Pixel 6
-Google Pixel 5a 5G
-Google Pixel 5
-Google Pixel 4a 5G
-Google Pixel 4a
-Google Pixel 4 XL
-Google Pixel 4
-Google Pixel 3a XL
-Google Pixel 3a
-Google Pixel 3 XL
-Google Pixel 3
-Google Pixel 2
-Google Pixel 2 XL
-Google Pixel XL
-Google Pixel
-
-
+29
+Abril
+Bilhete Celso
+15,579
+15,329
+29
+Abril
+Leticia
+-135
+15,194
+29
+Abril
+Faustina
+-15,444
+-250
+30
+Abril
+Sandra Ramos de Quintilhano
+-2,500
+-2,750
+30
+Abril
+Janeiker de Sousa de Claudio
+-500
+-3,250
+30
+Abril
+Francisca Rosa
+-3,500
+-6,750
+30
+Abril
+Jucilina Vaz
+1,500
+-6,750
+30
+Abril
+Recebeu de Bilhete Carvalho
+32,886
+26,136
+30
+Abril
+Leticia
+540
+26,136
+30
+Abril
+Mama Lurdes 1.250,00 Dobras +239 9903980
+-1,250
+24,886
+30
+Abril
+De Nuna para Celma Soares 140€ (3,500 dbs)
+-3,500
+21,386
+30
+Abril
+Impressao de Bilhete
+-10
+21,376
+30
+Abril
+Lidy cambio 1198 euros
+-32,346
+-10,970
+30
+Abril
+5 € para Elves 125
+-125
+-11,095
+30
+Abril
+Ailton para Layse
+-500
+-11,595
+01
+Maio
+Entrega Natália
+-500
+-12,095
+01
+Maio
+Helena Silva para Bá polícia
+1,442
+-12,095
+01
+Maio
+Silvana Fofinha para Diolinda
+-1,500
+-13,595
+01
+Maio
+Carla para Toto
+-2,750
+-16,345
+01
+Maio
+Natália
+-250
+-16,595
+01
+Maio
+Flávio Eusébio
+-200
+-16,795
+01
+Maio
+Flávio Eusébio
+-400
+-17,195
+01
+Maio
+Flávio Eusébio
+-600
+-17,795
+01
+Maio
+Amarilio Pires Neto
+-3,500
+-21,295
+01
+Maio
+Vasquinho \=Júlia
+-3,000
+-24,295
+02
+Maio
+Lucas
+-5,750
+-30,045
+02
+Maio
+Wilma/\Vive Santos
+-3,750
+-33,795
+02
+Maio
+Ludmila reis \/Aby
+-825
+-34,620
+02
+Maio
+Carlos António de Oliveira/\ Carlinho
+1,000
+-34,620
+02
+Maio
+Gemy costa para Beldinilsa Fernandes
+1,550
+-34,620
+02
+Maio
+Clinton para Rosiner
+-5,500
+-40,120
+02
+Maio
+Josimar lima para Alda
+2,500
+-40,120
+02
+Maio
+Para Yolanda da cruz Boa Morte
+-2,500
+-42,620
+02
+Maio
+Elyane Domingo
+750
+-42,620
+02
+Maio
+Para Ossilandia nogueira
+-500
+-43,120
+02
+Maio
+Jercimila para Carmerita
+-3,000
+-46,120
+02
+Maio
+Danilson neto
+-2,000
+-48,120
+02
+Maio
+Danilson neto
+-50
+-48,170
+02
+Maio
+Silvana para Elsa
+-500
+-48,670
+02
+Maio
+Alcino Simão
+-500
+-49,170
+02
+Maio
+Nadzel Silva
+-500
+-49,670
+02
+Maio
+Sandra Lucas
+-3,000
+-52,670
+02
+Maio
+Chico
+750
+-52,670
+02
+Maio
+Cravid Dias
+1,000
+-52,670
+03
+Maio
+Entrada
+3,000
+-49,670
+03
+Maio
+Clinton para Mau
+1,250
+-49,670
+03
+Maio
+Altalziro para Anorina
+-8,500
+-58,170
+03
+Maio
+Rangel para Herinque dos Santos
+-7,875
+-66,045
+03
+Maio
+Ronaldo Monteiro
+-650
+-66,695
+03
+Maio
+Mafalda para Geralda
+-2,500
+-69,195
+03
+Maio
+Mamu para Admaike
+-1,500
+-70,695
+03
+Maio
+Atalziro para Auria
+-750
+-71,445
+03
+Maio
+Evelize Maiza
+-10,000
+-81,445
+03
+Maio
+Mila reis para Aby
+-3,250
+-84,695
+04
+Maio
+Escurinho/Chico Pardal
+175
+-84,695

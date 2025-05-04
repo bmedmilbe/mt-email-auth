@@ -2,20 +2,17 @@ from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.mixins import ListModelMixin, CreateModelMixin, DestroyModelMixin, UpdateModelMixin, RetrieveModelMixin
-from rest_framework.permissions import IsAuthenticated
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
-from rest_framework.permissions import BasePermission
-from rest_framework import status
+from rest_framework.permissions import BasePermission, IsAuthenticated
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import status, filters, mixins, serializers
+from rest_framework.decorators import action
 from pprint import pprint
 from django.db.models import Q, Count, Sum
 from .helpers import get_customer
 from itertools import chain
-from .serializers import (
- 
-                          CustomerSerializer,
+from .serializers import (CustomerSerializer,
                           DestineSerializer,
                           ExpendCreateSerializer,
                           ExpendPaymentCreateSerializer,
@@ -26,10 +23,8 @@ from .serializers import (
                           SellSerializer,
                           SellCreateSerializer,
                           PaymentCreateSerializer,
-                          PaymentSerializer
+                          PaymentSerializer)
 
-                          )
-from rest_framework.decorators import action
 # Create your views here.
 
 from .models import Client, Customer, Destine, Expense,  Product, Sell,Payment, SellPaymentExpense
@@ -76,6 +71,7 @@ class ClientsViewSet(ModelViewSet):
         enter = Payment.objects.filter(client_id=client_id).aggregate(enter=Sum("value"))
         
         return Response(enter | out)
+    
 
    
 
@@ -206,9 +202,6 @@ class SellsPaymentsExpensesViewSet(ModelViewSet):
 
     @action(detail=False, methods=['get'], permission_classes=[IsAuthenticated])
     def balance(self, request, pk=None):
-
-       
-        
         out = Expense.objects.all().aggregate(out=Sum("value"))
         enter = Payment.objects.all().aggregate(enter=Sum("value"))
 
@@ -307,17 +300,3 @@ class ExpensePaymentsViewSet(ModelViewSet):
 
     permission_classes = [IsAuthenticated]
     pagination_class = PageNumberPagination
-
-
-    
-    
-
-
-    
-    
-    
-
-        
-    
-    
-    
