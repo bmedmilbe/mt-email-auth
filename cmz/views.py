@@ -11,6 +11,8 @@ from templated_mail.mail import BaseEmailMessage
 from rest_framework.permissions import (
     AllowAny,
 )
+from django_filters.rest_framework import DjangoFilterBackend, OrderingFilter
+from rest_framework import status, filters, mixins, serializers
 # Create your views here.
 
 
@@ -108,6 +110,13 @@ class PostViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
 
     lookup_field = 'slug'
 
+    filter_backends = [filters.SearchFilter,DjangoFilterBackend, filters.OrderingFilter]
+    filterset_fields = {
+        'is_cmz_service': ['exact'],
+        'is_social_service': ['exact'],
+    }
+
+
     @action(detail=False, methods=['GET'], http_method_names=['get'], permission_classes=[AllowAny])
     def featured(self, request):
 
@@ -124,7 +133,10 @@ class PostViewViewSet(RetrieveModelMixin, GenericViewSet):
 
     def get_queryset(self):
         return Post.objects.select_related('file').all().order_by("-date")
+# 'is_cmz_service',
+#                   'is_social_service',
 
+    
     lookup_field = 'slug'
 
     def get_serializer_class(self):

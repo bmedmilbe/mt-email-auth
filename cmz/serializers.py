@@ -208,9 +208,11 @@ class PostSerializer(serializers.ModelSerializer):
                   'beginnig',
                   'text',
                   'posted_at',
+                  'is_cmz_service',
+                  'is_social_service',
                   'date',
                   ]
-
+ 
     def get_posted_at(self, post: Post):
         now = datetime.now(timezone.utc)
         return timeago.format(post.date, now)

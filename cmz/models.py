@@ -67,6 +67,8 @@ class Post(models.Model):
     featured = models.BooleanField(default=False)
     # post_images = models.CharField(max_length=255, null=True)
     # post_videos = models.CharField(max_length=255, null=True)
+    is_cmz_service = models.BooleanField(default=False)
+    is_social_service = models.BooleanField(default=False)
 
     def __str__(self) -> str:
         return f'{self.title}'
