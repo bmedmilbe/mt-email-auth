@@ -33,7 +33,8 @@ urlpatterns = [
     path("fly/", include("fly.urls")),
     path("troca/", include("troca.urls")),
     path("ground/", include("ground.urls")),
-        path("store/", include("store.urls")),
+    path("store/", include("store.urls")),
+    path("boleia/", include("boleia.urls")),
 
     path("setup/", include("setup.urls")),
     path("auth/", include("djoser.urls")),

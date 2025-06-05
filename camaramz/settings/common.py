@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     "fly",
     "ground",
     # "fund",
+    "boleia",
     "setup",
     "core",
 ]
@@ -64,7 +65,7 @@ MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.middleware.common.CommonMiddleware",
-    "django.middleware.csrf.CsrfViewMiddleware",
+    # "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
@@ -190,8 +191,36 @@ SIMPLE_JWT = {
 
 APPEND_SLASH = True
 # ALLOWED_HOSTS = ['127.0.0.1']
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOW_HEADERS = ["*"]
+
+# django-cors-headers = "4.7.0" (This is a comment, not a setting)
+
+# Do NOT set CORS_ALLOW_ALL_ORIGINS = True if you want to restrict origins.
+# CORS_ALLOW_ALL_ORIGINS = True # <-- REMOVE OR SET TO False
+
+# If you want to use CORS_ALLOWED_ORIGINS, you should NOT set CORS_ALLOW_ALL_ORIGINS = True.
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    # Add any other specific development server origins here, e.g.:
+    # "http://your-dev-server-ip:port",
+]
+
+# CORS_ALLOWED_ORIGIN_REGEXES is typically used for more complex patterns.
+# For exact matches, CORS_ALLOWED_ORIGINS is usually sufficient.
+# If you want to match "localhost" and "127.0.0.1" for any port, you might use regexes,
+# but for specific ports as you have, CORS_ALLOWED_ORIGINS is clearer.
+# If you decide to use regexes, ensure they are actual regex patterns.
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    # Example for matching any port on localhost, though CORS_ALLOWED_ORIGINS is generally preferred
+    # for specific ports.
+    # r"^http:\/\/localhost:\d+$",
+    # r"^http:\/\/127\.0\.0\.1:\d+$",
+]
+
+
+CORS_ALLOW_HEADERS = ["*"] # This allows all headers
 CORS_ALLOW_METHODS = [
     "DELETE",
     "GET",
@@ -200,19 +229,25 @@ CORS_ALLOW_METHODS = [
     "POST",
     "PUT",
 ]
-# CORS_ALLOWED_ORIGINS = ["http://localhost:3000","http://127.0.0.1:3000"]
-# If this is used then `CORS_ALLOWED_ORIGINS` will not have any effect
-CORS_ALLOW_ALL_ORIGINS = True
-# If this is used, then not need to use `CORS_ALLOW_ALL_ORIGINS = True`
-CORS_ALLOWED_ORIGINS = ["http://localhost:3000", "http://127.0.0.1:3000", "http://localhost:5173", "http://127.0.0.1:5173"]
-CORS_ALLOWED_ORIGIN_REGEXES = [
-    "http://localhost:3000", "http://127.0.0.1:3000", "http://localhost:5173", "http://127.0.0.1:5173"]
-CSRF_TRUSTED_ORIGINS  = [
-    "http://localhost:3000", "http://127.0.0.1:3000", "http://localhost:5173", "http://127.0.0.1:5173"]
 
-CSRF_COOKIE_SECURE = False
+# CSRF_TRUSTED_ORIGINS should also list the origins from which your frontend
+# will send CSRF tokens.
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+]
+
+# These settings are generally good for development.
+CSRF_COOKIE_SECURE = False  # Set to True in production (requires HTTPS)
 CSRF_COOKIE_HTTPONLY = True
-SESSION_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = False # Set to True in production (requires HTTPS)
+
+# This is a deprecated synonym for CORS_ALLOW_ALL_ORIGINS. Remove it or set to False.
+# CORS_ORIGIN_ALLOW_ALL = True # <-- REMOVE OR SET TO False
+
+CSRF_COOKIE_DOMAIN = None # Leave as None for development unless you have a specific subdomain setup.
 
 LOGGING = {
     "version": 1,
