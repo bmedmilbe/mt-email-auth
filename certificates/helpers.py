@@ -3,7 +3,7 @@ from django.conf import settings
 from .models import Customer
 from datetime import datetime
 from pprint import pprint
-
+import re
 
 def get_customer(user: settings.AUTH_USER_MODEL):
     # pprint(list(Customer.objects.all()))
@@ -50,3 +50,11 @@ def shipping_status(status):
             return shipping_status[1]
 
     return "Unknown"
+
+
+def slugify(s):
+    s = s.lower().strip()
+    s = re.sub(r'[^\w\s-]', '', s)
+    s = re.sub(r'[\s_-]+', '-', s)
+    s = re.sub(r'^-+|-+$', '', s)
+    return s

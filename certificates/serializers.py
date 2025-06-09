@@ -68,6 +68,7 @@ class CustomerSerializer(ModelSerializer):
     first_name = serializers.SerializerMethodField(
         method_name="get_first_name")
     last_name = serializers.SerializerMethodField(method_name="get_last_name")
+    back_staff = serializers.SerializerMethodField(method_name="get_back_staff")
 
     class Meta:
         model = Customer
@@ -76,17 +77,52 @@ class CustomerSerializer(ModelSerializer):
             "user",
             "first_name",
             "last_name",
+            "back_staff",
             "level",
 
         ]
 
     def get_first_name(self, customer: Customer):
         return customer.user.first_name
+    
+    def get_back_staff(self, customer: Customer):
+        return customer.user.backstaff
 
     def get_last_name(self, customer: Customer):
         return customer.user.last_name
 
 
+class CountryCreateSerializer(ModelSerializer):
+    class Meta:
+        model = Country
+        fields = [
+            "id",
+            "name",
+            "code",
+        ]
+
+    def create(self, validate_data):
+
+        name = validate_data.get('name')
+        validate_data['slug'] = helpers.slugify(validate_data.get('name'))
+        
+        country = Country.objects.filter(name=name)
+
+        if not country:
+            return super().create(validate_data)
+        return country.first()
+    
+    def update(self, instance, validate_data):
+        name = validate_data.get('name')
+        slug = validate_data['slug'] = helpers.slugify(name)
+        code = validate_data['code']
+
+        object = Country.objects.filter(slug=slug, code=code)
+        if not object:
+            return super().update(instance, validate_data)
+        return object.first()
+
+    
 class CountrySerializer(ModelSerializer):
     class Meta:
         model = Country
@@ -96,7 +132,42 @@ class CountrySerializer(ModelSerializer):
             "code",
         ]
 
+    
 
+
+class CountyCreateSerializer(ModelSerializer):
+
+    class Meta:
+        model = County
+        fields = [
+            "id",
+            "name",
+            "country",
+        ]
+
+    def create(self, validate_data):
+        name = validate_data.get('name')
+        object_list = County.objects.filter(name=name)
+        if object_list:
+            return object_list.first()
+            
+        validate_data['slug'] = helpers.slugify(validate_data.get('name'))
+        return super().create(validate_data)
+        
+    def update(self, instance, validate_data):
+        name = validate_data.get('name')
+        slug = validate_data['slug'] = helpers.slugify(name)
+        country = validate_data['country']
+
+        object = County.objects.filter(slug=slug, country=country)
+        if not object:
+            return super().update(instance, validate_data)
+        return object.first()  
+        
+        
+
+        
+        
 class CountySerializer(ModelSerializer):
     country = CountrySerializer()
 
@@ -110,6 +181,22 @@ class CountySerializer(ModelSerializer):
         ]
 
 
+class UniversityCreateSerializer(ModelSerializer):
+
+    class Meta:
+        model = University
+        fields = [
+            "id",
+            "name",
+
+        ]
+    def create(self, validate_data):
+        name = validate_data.get('name')
+        object_list = University.objects.filter(name=name)
+        if object_list:
+            return object_list.first()
+            
+        return super().create(validate_data)
 class UniversitySerializer(ModelSerializer):
 
     class Meta:
@@ -133,6 +220,37 @@ class BiuldingTypeSerializer(ModelSerializer):
         ]
 
 
+class TownCreateSerializer(ModelSerializer):
+
+    class Meta:
+        model = Town
+        fields = [
+            "id",
+            "name",
+            "county",
+           
+        ]
+
+    def create(self, validate_data):
+        name = validate_data.get('name')
+        object_list = Town.objects.filter(name=name)
+        if object_list:
+            return object_list.first()
+            
+        validate_data['slug'] = helpers.slugify(validate_data.get('name'))
+        return super().create(validate_data)
+    
+    def update(self, instance, validate_data):
+        name = validate_data.get('name')
+        slug = validate_data['slug'] = helpers.slugify(name)
+        county = validate_data['county']
+
+        object = Town.objects.filter(slug=slug, county=county)
+        if not object:
+            return super().update(instance, validate_data)
+        return object.first()  
+
+
 class TownSerializer(ModelSerializer):
     county = CountySerializer()
     country = serializers.SerializerMethodField(method_name="get_country")
@@ -151,10 +269,8 @@ class TownSerializer(ModelSerializer):
         return f"{town.county.country.name}"
 
 
-class StreetSerializer(ModelSerializer):
-    town = serializers.SerializerMethodField(method_name="get_town")
-    county = serializers.SerializerMethodField(method_name="get_county")
-    country = serializers.SerializerMethodField(method_name="get_country")
+class StreetCreateSerializer(ModelSerializer):
+    
 
     class Meta:
         model = Street
@@ -162,18 +278,43 @@ class StreetSerializer(ModelSerializer):
             "id",
             "name",
             "town",
-            "county",
-            "country",
         ]
 
-    def get_town(self, street):
-        return f"{street.town.name if street.town != None else '' }"
+    def create(self, validate_data):
+        name = validate_data.get('name')
+        county = validate_data.get('county')
+        object_list = Street.objects.filter(name=name, county=county)
+        if object_list:
+            return object_list.first()
+            
+        return super().create(validate_data)
 
-    def get_county(self, street):
-        return f"{street.town.county.name if street.town != None else ''}"
+class StreetSerializer(ModelSerializer):
+    # town = serializers.SerializerMethodField(method_name="get_town")
+    # county = serializers.SerializerMethodField(method_name="get_county")
+    # country = serializers.SerializerMethodField(method_name="get_country")
+    town = TownSerializer()
+    
 
-    def get_country(self, street):
-        return f"{street.town.county.country.name if street.town != None else ''}"
+
+    class Meta:
+        model = Street
+        fields = [
+            "id",
+            "name",
+            "town",
+            # "county",
+            # "country",
+        ]
+
+    # def get_town(self, street):
+    #     return f"{street.town.name if street.town != None else '' }"
+
+    # def get_county(self, street):
+    #     return f"{street.town.county.name if street.town != None else ''}"
+
+    # def get_country(self, street):
+    #     return f"{street.town.county.country.name if street.town != None else ''}"
 
 
 class HouseSerializer(ModelSerializer):
@@ -436,6 +577,21 @@ class IDTypeSerializer(ModelSerializer):
         ]
 
 
+class InstituitionCreateSerializer(ModelSerializer):
+
+    class Meta:
+        model = Instituition
+        fields = [
+            "id",
+            "name",
+        ]
+    def create(self, validate_data):
+        name = validate_data.get('name')
+        object_list = Instituition.objects.filter(name=name)
+        if object_list:
+            return object_list.first()
+            
+        return super().create(validate_data)
 class InstituitionSerializer(ModelSerializer):
 
     class Meta:
@@ -444,6 +600,8 @@ class InstituitionSerializer(ModelSerializer):
             "id",
             "name",
         ]
+
+    
 
 
 class PersonSerializer(ModelSerializer):

@@ -27,10 +27,12 @@ def send(request):
             subject = f'Viagem {airport}'
             
             message = f'Solicitada uma viagem de/para {airport}. Contacto: {phone}.'
-            from_email = 'edmilbe@gmail.com'  # Replace with your email address
+            from_email = 'edmilbe@gmail.com'  
+            # Replace with your email address
             send_mail(subject, message, from_email, recipient_list)
-
+            
             print(f"Airport: {airport}, Phone: {phone}")
+
 
             # Example response
             return JsonResponse({'message': 'Data received successfully!', 'airport': airport, 'phone': phone})

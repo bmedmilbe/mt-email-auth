@@ -20,7 +20,7 @@ class Customer(models.Model):
 
 
 class Country(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(max_length=255)
     code = models.IntegerField(null=True)
     # stp

@@ -13,7 +13,7 @@ from django.db.models import Q
 from django.shortcuts import render
 
 import certificates
-from certificates.serializers import BiuldingTypeSerializer, CemiterioSerializer, CertificateCommentSerializer, CertificateDateSerializer, CertificateModelAutoConstrucaoCreateSerializer, CertificateModelAutoConstrucaoSerializer, CertificateModelAutoModCovalCreateSerializer, CertificateModelAutoModCovalSerializer, CertificateModelCertCompraCovalCreateSerializer, CertificateModelCertCompraCovalSerializer, CertificateModelEnterroCreateSerializer, CertificateModelEnterroSerializer, CertificateModelFifthCreateSerializer, CertificateModelFifthSerializer, CertificateModelLicBarracaCreateSerializer, CertificateModelLicBarracaSerializer, CertificateModelLicencaBuffetCreateSerializer, CertificateModelLicencaBuffetSerializer, CertificateModelOneCreateSerializer, CertificateModelOneSerializer, CertificateModelSeventhCreateSerializer, CertificateModelSeventhSerializer, CertificateModelThreeCreateSerializer, CertificateModelThreeSerializer, CertificateModelTwoCreateSerializer, CertificateModelTwoSerializer, CertificateSerializer, CertificateSimpleParentSerializer, CertificateSimplePersonReadOnlySerializer, CertificateSimplePersonSerializer, CertificateSinglePersonSerializer, CertificateTitleSerializer, CertificateUpdateSerializer, ChangeSerializer, CountrySerializer, CountySerializer, CovalSerializer, CovalSetUpSerializer, CustomerSerializer, HouseCreateSerializer, HouseSerializer, IDTypeSerializer, InstituitionSerializer, ParentSerializer, PersonBirthAddressCreateSerializer, PersonBirthAddressSerializer, PersonCreateOrUpdateSerializer, PersonSerializer, StreetSerializer, TownSerializer, UniversitySerializer
+from certificates.serializers import BiuldingTypeSerializer, CemiterioSerializer, CertificateCommentSerializer, CertificateDateSerializer, CertificateModelAutoConstrucaoCreateSerializer, CertificateModelAutoConstrucaoSerializer, CertificateModelAutoModCovalCreateSerializer, CertificateModelAutoModCovalSerializer, CertificateModelCertCompraCovalCreateSerializer, CertificateModelCertCompraCovalSerializer, CertificateModelEnterroCreateSerializer, CertificateModelEnterroSerializer, CertificateModelFifthCreateSerializer, CertificateModelFifthSerializer, CertificateModelLicBarracaCreateSerializer, CertificateModelLicBarracaSerializer, CertificateModelLicencaBuffetCreateSerializer, CertificateModelLicencaBuffetSerializer, CertificateModelOneCreateSerializer, CertificateModelOneSerializer, CertificateModelSeventhCreateSerializer, CertificateModelSeventhSerializer, CertificateModelThreeCreateSerializer, CertificateModelThreeSerializer, CertificateModelTwoCreateSerializer, CertificateModelTwoSerializer, CertificateSerializer, CertificateSimpleParentSerializer, CertificateSimplePersonReadOnlySerializer, CertificateSimplePersonSerializer, CertificateSinglePersonSerializer, CertificateTitleSerializer, CertificateUpdateSerializer, ChangeSerializer, CountryCreateSerializer, CountrySerializer, CountyCreateSerializer, CountySerializer, CovalSerializer, CovalSetUpSerializer, CustomerSerializer, HouseCreateSerializer, HouseSerializer, IDTypeSerializer, InstituitionCreateSerializer, InstituitionSerializer, ParentSerializer, PersonBirthAddressCreateSerializer, PersonBirthAddressSerializer, PersonCreateOrUpdateSerializer, PersonSerializer, StreetCreateSerializer, StreetSerializer, TownCreateSerializer, TownSerializer, UniversityCreateSerializer, UniversitySerializer
 
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import APIView, Response
@@ -109,15 +109,16 @@ class StandardResultsSetPagination(PageNumberPagination):
     max_page_size = 1000
 
 
-class CountrysViewSet(
-    mixins.ListModelMixin,
-    mixins.RetrieveModelMixin,
-    GenericViewSet,
-):
+class CountrysViewSet(ModelViewSet):
     queryset = Country.objects.all().order_by("name")
 
-    serializer_class = CountrySerializer
+    def get_serializer_class(self):
+        if self.request.method in ["POST", "PUT", "PATCH"]:
+            return CountryCreateSerializer
+        return CountrySerializer
     pagination_class = Pagination300
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
 
 class CovalsViewSet(
     mixins.ListModelMixin,
@@ -152,15 +153,23 @@ class ChangesViewSet(
     pagination_class = Pagination300
 
 
-class UniversitysViewSet(
-    mixins.ListModelMixin,
-    mixins.RetrieveModelMixin,
-    GenericViewSet,
-):
+class UniversitysViewSet(ModelViewSet):
+#     permission_classes = [IsAuthenticatedOrReadOnly]
+
+
     queryset = University.objects.all().order_by("name")
 
-    serializer_class = UniversitySerializer
+    def get_queryset(self):
+        return (University.objects.all().order_by("name"))
+
+    
+    
+    def get_serializer_class(self):
+        if self.request.method  in ["POST", "PUT", "PATCH"]:
+            return UniversityCreateSerializer
+        return UniversitySerializer
     pagination_class = Pagination300
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 
 class IdTypeViewSet(mixins.ListModelMixin,
@@ -178,21 +187,31 @@ class BiuldingTypeViewSet(mixins.ListModelMixin,
 
 
 class StreetsViewSet(ModelViewSet):
-    serializer_class = StreetSerializer
-
+    def get_serializer_class(self):
+        if self.request.method in ["POST","PUT", "PATCH"]:
+            return StreetCreateSerializer
+        return StreetSerializer
     def get_queryset(self):
         return Street.objects.all().order_by("name")
 
     pagination_class = Pagination300
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
 
 
 class InstituitionsViewSet(ModelViewSet):
-    serializer_class = InstituitionSerializer
 
+    def get_serializer_class(self):
+        if self.request.method in ["POST","PUT", "PATCH"]:
+            return InstituitionCreateSerializer
+        return InstituitionSerializer
+    
     def get_queryset(self):
         return Instituition.objects.all().order_by("name")
 
     pagination_class = Pagination300
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
 
 
 class CustomerViewSet(
@@ -200,7 +219,8 @@ class CustomerViewSet(
     mixins.RetrieveModelMixin,
     GenericViewSet,
 ):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
 
     def get_queryset(self):
         return Customer.objects.filter(user_id=self.request.user)
@@ -217,7 +237,8 @@ class CustomerViewSet(
 
 class CovalSetUpViewSet(ModelViewSet):
 
-    # permission_classes = [IsAuthenticated]
+#     permission_classes = [IsAuthenticatedOrReadOnly]
+
 
     queryset = Coval.objects.all().order_by("square", "-number")
     permission_classes = [IsStaff]
@@ -230,7 +251,8 @@ class CovalSetUpViewSet(ModelViewSet):
 
 class CertificateViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin, GenericViewSet):
 
-    # permission_classes = [IsAuthenticated]
+#     permission_classes = [IsAuthenticatedOrReadOnly]
+
 
     # paginator = PageNumberPagination()
     queryset = Certificate.objects.select_related(
@@ -272,7 +294,8 @@ class CertificateCommentViewSet(mixins.UpdateModelMixin,  GenericViewSet):
 
 class CertificateTitleViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, GenericViewSet):
 
-    # permission_classes = [IsAuthenticated]
+#     permission_classes = [IsAuthenticatedOrReadOnly]
+
 
     queryset = CertificateTitle.objects.order_by("name").all()
 
@@ -287,7 +310,8 @@ class CertificateTitleViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, 
 
 
 class CertificateModelViewSet(ModelViewSet):
-    # permission_classes = [IsAuthenticated]
+#     permission_classes = [IsAuthenticatedOrReadOnly]
+
 
     def get_queryset(self):
         # return Certificate.objects.filter(type_id=self.kwargs.get('title_pk')).all()
@@ -373,7 +397,8 @@ class CertificateModelViewSet(ModelViewSet):
 
 
 class CertificatePersonsViewSet(ModelViewSet):
-    # permission_classes = [IsAuthenticated]
+#     permission_classes = [IsAuthenticatedOrReadOnly]
+
 
     def get_queryset(self):
         type_id = int(self.kwargs.get('title_pk'))
@@ -401,7 +426,8 @@ class CertificatePersonsViewSet(ModelViewSet):
 
 
 class CertificateSimpleParentsViewSet(ModelViewSet):
-    # permission_classes = [IsAuthenticated]
+#     permission_classes = [IsAuthenticatedOrReadOnly]
+
 
     def get_queryset(self):
         type_id = int(self.kwargs.get('title_pk'))
@@ -420,7 +446,8 @@ class CertificateSimpleParentsViewSet(ModelViewSet):
 
 
 class ParentViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, GenericViewSet):
-    # permission_classes = [IsAuthenticated]
+#     permission_classes = [IsAuthenticatedOrReadOnly]
+
 
     def get_queryset(self):
         return Parent.objects.all().order_by("id")
@@ -431,7 +458,8 @@ class ParentViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, GenericVie
 
 
 class CertificateSinglePersonsViewSet(ModelViewSet):
-    # permission_classes = [IsAuthenticated]
+#     permission_classes = [IsAuthenticatedOrReadOnly]
+
 
     def get_queryset(self):
         type_id = int(self.kwargs.get('title_pk'))
@@ -458,7 +486,8 @@ class CertificateSinglePersonsViewSet(ModelViewSet):
 
 
 class CertificateDatesViewSet(ModelViewSet):
-    # permission_classes = [IsAuthenticated]
+#     permission_classes = [IsAuthenticatedOrReadOnly]
+
 
     def get_queryset(self):
         type_id = int(self.kwargs.get('title_pk'))
@@ -476,7 +505,8 @@ class CertificateDatesViewSet(ModelViewSet):
 
 
 class CertificateModelTwoViewSet(ModelViewSet):
-    # permission_classes = [IsAuthenticated]
+#     permission_classes = [IsAuthenticatedOrReadOnly]
+
 
     queryset = Certificate.objects.all()
 
@@ -502,7 +532,8 @@ class CertificateModelTwoViewSet(ModelViewSet):
 
 
 class PersonBirthAddressViewSet(ModelViewSet):
-    # permission_classes = [IsAuthenticated]
+#     permission_classes = [IsAuthenticatedOrReadOnly]
+
 
     queryset = PersonBirthAddress.objects.all()
 
@@ -515,7 +546,8 @@ class PersonBirthAddressViewSet(ModelViewSet):
         return PersonBirthAddressSerializer
 
 # class PersonBirthAddressViewSet(ModelViewSet):
-#     # permission_classes = [IsAuthenticated]
+  #     permission_classes = [IsAuthenticatedOrReadOnly]
+
 
 #     queryset = PersonBirthAddress.objects.all()
 
@@ -529,45 +561,53 @@ class PersonBirthAddressViewSet(ModelViewSet):
 #         return PersonBirthAddressSerializer
 
 class CountysViewSet(ModelViewSet):
-    # permission_classes = [IsAuthenticated]
+#     permission_classes = [IsAuthenticatedOrReadOnly]
+
 
     queryset = County.objects.all().order_by("name")
 
     def get_queryset(self):
         return (County.objects.all().order_by("name"))
 
+    
+    
     def get_serializer_class(self):
+        if self.request.method in ["POST", "PUT", "PATCH"]:
+            return CountyCreateSerializer
         return CountySerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
     
     pagination_class = Pagination300
 
 
-class UniversitysViewSet(ModelViewSet):
-    # permission_classes = [IsAuthenticated]
 
-    queryset = University.objects.all().order_by("name")
-
-    def get_queryset(self):
-        return (University.objects.all().order_by("name"))
-
-    def get_serializer_class(self):
-        return UniversitySerializer
 
 
 class TownViewSet(ModelViewSet):
-    # permission_classes = [IsAuthenticated]
+#     permission_classes = [IsAuthenticatedOrReadOnly]
+
 
     queryset = Town.objects.all().order_by("name")
 
     def get_queryset(self):
         return (Town.objects.all().order_by("name"))
 
+    
+
     def get_serializer_class(self):
+        if self.request.method in ["POST", "PUT", "PATCH"]:
+            return TownCreateSerializer
         return TownSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]
+
+
+
 
 
 class HouseViewSet(ModelViewSet):
-    # permission_classes = [IsAuthenticated]
+#     permission_classes = [IsAuthenticatedOrReadOnly]
+
 
     queryset = House.objects.all().order_by("street__name", "house_number")
 
@@ -578,7 +618,8 @@ class HouseViewSet(ModelViewSet):
 
 
 class PersonViewSet(ModelViewSet):
-    # permission_classes = [IsAuthenticated]
+#     permission_classes = [IsAuthenticatedOrReadOnly]
+
 
 
 
