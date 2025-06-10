@@ -10,6 +10,8 @@ router.register("universities", views.UniversitysViewSet,
                 basename="universities")
 router.register("customers", views.CustomerViewSet,
                 basename="customers")
+router.register("ifens", views.IfenViewSet,
+                basename="ifens")
 router.register("buildings", views.BiuldingTypeViewSet,
                 basename="buildings")
 

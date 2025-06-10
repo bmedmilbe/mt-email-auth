@@ -48,6 +48,7 @@ from .models import (
     CovalSalles,
     House,
     IDType,
+    Ifen,
     Instituition,
     Messages,
     Parent,
@@ -249,7 +250,28 @@ class TownCreateSerializer(ModelSerializer):
         if not object:
             return super().update(instance, validate_data)
         return object.first()  
+    
 
+class IfenSerializer(ModelSerializer):
+
+    class Meta:
+        model = Ifen
+        fields = [
+            "id",
+            "name",
+            "size",
+        ]
+
+class IfenUpdateSerializer(ModelSerializer):
+
+    class Meta:
+        model = Ifen
+        fields = [
+            "id",
+            "size",
+        ]
+    
+  
 
 class TownSerializer(ModelSerializer):
     county = CountySerializer()
@@ -282,8 +304,8 @@ class StreetCreateSerializer(ModelSerializer):
 
     def create(self, validate_data):
         name = validate_data.get('name')
-        county = validate_data.get('county')
-        object_list = Street.objects.filter(name=name, county=county)
+        town = validate_data.get('town')
+        object_list = Street.objects.filter(name=name, town=town)
         if object_list:
             return object_list.first()
             

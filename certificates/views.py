@@ -13,7 +13,7 @@ from django.db.models import Q
 from django.shortcuts import render
 
 import certificates
-from certificates.serializers import BiuldingTypeSerializer, CemiterioSerializer, CertificateCommentSerializer, CertificateDateSerializer, CertificateModelAutoConstrucaoCreateSerializer, CertificateModelAutoConstrucaoSerializer, CertificateModelAutoModCovalCreateSerializer, CertificateModelAutoModCovalSerializer, CertificateModelCertCompraCovalCreateSerializer, CertificateModelCertCompraCovalSerializer, CertificateModelEnterroCreateSerializer, CertificateModelEnterroSerializer, CertificateModelFifthCreateSerializer, CertificateModelFifthSerializer, CertificateModelLicBarracaCreateSerializer, CertificateModelLicBarracaSerializer, CertificateModelLicencaBuffetCreateSerializer, CertificateModelLicencaBuffetSerializer, CertificateModelOneCreateSerializer, CertificateModelOneSerializer, CertificateModelSeventhCreateSerializer, CertificateModelSeventhSerializer, CertificateModelThreeCreateSerializer, CertificateModelThreeSerializer, CertificateModelTwoCreateSerializer, CertificateModelTwoSerializer, CertificateSerializer, CertificateSimpleParentSerializer, CertificateSimplePersonReadOnlySerializer, CertificateSimplePersonSerializer, CertificateSinglePersonSerializer, CertificateTitleSerializer, CertificateUpdateSerializer, ChangeSerializer, CountryCreateSerializer, CountrySerializer, CountyCreateSerializer, CountySerializer, CovalSerializer, CovalSetUpSerializer, CustomerSerializer, HouseCreateSerializer, HouseSerializer, IDTypeSerializer, InstituitionCreateSerializer, InstituitionSerializer, ParentSerializer, PersonBirthAddressCreateSerializer, PersonBirthAddressSerializer, PersonCreateOrUpdateSerializer, PersonSerializer, StreetCreateSerializer, StreetSerializer, TownCreateSerializer, TownSerializer, UniversityCreateSerializer, UniversitySerializer
+from certificates.serializers import BiuldingTypeSerializer, CemiterioSerializer, CertificateCommentSerializer, CertificateDateSerializer, CertificateModelAutoConstrucaoCreateSerializer, CertificateModelAutoConstrucaoSerializer, CertificateModelAutoModCovalCreateSerializer, CertificateModelAutoModCovalSerializer, CertificateModelCertCompraCovalCreateSerializer, CertificateModelCertCompraCovalSerializer, CertificateModelEnterroCreateSerializer, CertificateModelEnterroSerializer, CertificateModelFifthCreateSerializer, CertificateModelFifthSerializer, CertificateModelLicBarracaCreateSerializer, CertificateModelLicBarracaSerializer, CertificateModelLicencaBuffetCreateSerializer, CertificateModelLicencaBuffetSerializer, CertificateModelOneCreateSerializer, CertificateModelOneSerializer, CertificateModelSeventhCreateSerializer, CertificateModelSeventhSerializer, CertificateModelThreeCreateSerializer, CertificateModelThreeSerializer, CertificateModelTwoCreateSerializer, CertificateModelTwoSerializer, CertificateSerializer, CertificateSimpleParentSerializer, CertificateSimplePersonReadOnlySerializer, CertificateSimplePersonSerializer, CertificateSinglePersonSerializer, CertificateTitleSerializer, CertificateUpdateSerializer, ChangeSerializer, CountryCreateSerializer, CountrySerializer, CountyCreateSerializer, CountySerializer, CovalSerializer, CovalSetUpSerializer, CustomerSerializer, HouseCreateSerializer, HouseSerializer, IDTypeSerializer, IfenSerializer, IfenUpdateSerializer, InstituitionCreateSerializer, InstituitionSerializer, ParentSerializer, PersonBirthAddressCreateSerializer, PersonBirthAddressSerializer, PersonCreateOrUpdateSerializer, PersonSerializer, StreetCreateSerializer, StreetSerializer, TownCreateSerializer, TownSerializer, UniversityCreateSerializer, UniversitySerializer
 
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import APIView, Response
@@ -79,6 +79,7 @@ from .models import (
     Customer,
     House,
     IDType,
+    Ifen,
     Instituition,
 
     Messages,
@@ -195,6 +196,15 @@ class StreetsViewSet(ModelViewSet):
         return Street.objects.all().order_by("name")
 
     pagination_class = Pagination300
+    permission_classes = [IsAuthenticatedOrReadOnly]
+class IfenViewSet(ModelViewSet):
+    def get_serializer_class(self):
+        if self.request.method in ["PUT", "PATCH"]:
+            return IfenUpdateSerializer
+        return IfenSerializer
+    def get_queryset(self):
+        return Ifen.objects.all()
+
     permission_classes = [IsAuthenticatedOrReadOnly]
 
 
