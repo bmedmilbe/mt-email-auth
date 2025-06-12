@@ -4,6 +4,7 @@ from . import views  # CustomersViewSet, OrdersViewSet, OrderItemsViewSet
 router = routers.DefaultRouter()
 
 router.register("posts", views.PostViewSet, basename="posts")
+router.register("fronts", views.FrontViewSet, basename="fronts")
 
 router.register("postview", views.PostViewViewSet, basename="postview")
 router.register("sections", views.SectionViewSet, basename="sections")

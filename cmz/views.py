@@ -3,8 +3,8 @@ from django.db.models.aggregates import Count
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, UpdateModelMixin, CreateModelMixin
-from .models import  Service, Tour, ImagesTour, Messages, Post, Section, Team
-from .serializers import InformationSerializer, ServiceSerializer, TourSerializer, ImagesTourSerializer,MessagesSerializer, PostSerializer, SectionSerializer, TeamSerializer
+from .models import  Front, Service, Tour, ImagesTour, Messages, Post, Section, Team
+from .serializers import FrontSerializer, InformationSerializer, ServiceSerializer, TourSerializer, ImagesTourSerializer,MessagesSerializer, PostSerializer, SectionSerializer, TeamSerializer
 from rest_framework.decorators import action
 from django.core.mail import BadHeaderError
 from templated_mail.mail import BaseEmailMessage
@@ -141,6 +141,15 @@ class PostViewViewSet(RetrieveModelMixin, GenericViewSet):
 
     def get_serializer_class(self):
         return PostSerializer
+
+class FrontViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
+
+    def get_queryset(self):
+        return Front.objects.all()
+
+
+    def get_serializer_class(self):
+        return FrontSerializer
 
 
 

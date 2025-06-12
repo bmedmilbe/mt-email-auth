@@ -72,6 +72,14 @@ class Post(models.Model):
 
     def __str__(self) -> str:
         return f'{self.title}'
+class Front(models.Model):
+    title = models.CharField(max_length=255)
+    slug = models.SlugField(max_length=255, null=True)
+    picture = models.FileField(upload_to='camaramz/front/images/')
+    
+
+    def __str__(self) -> str:
+        return f'{self.title}'
     
 class PostDocument(models.Model):
     post = models.ForeignKey(

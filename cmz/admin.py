@@ -144,3 +144,11 @@ class PostAdmin(admin.ModelAdmin):
     inlines = [
         PostImagesInline,PostVideosInline
     ]
+@admin.register(models.Front)
+class FrontAdmin(admin.ModelAdmin):
+    list_display = ['title']
+    prepopulated_fields = {'slug': ['title']}
+    # list_filter = ['doctor']
+    search_fields = ['title']
+
+   
