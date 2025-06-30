@@ -14,6 +14,7 @@ router.register("messages", views.MessagesViewSet, basename="messages")
 
 # router.register("postimage", views.PostImagesViewSet, basename="postimages")
 router.register("teams", views.TeamViewSet, basename="team")
+router.register("assemblys", views.AssemblyViewSet, basename="assembly")
 
 # posts_router = routers.NestedSimpleRouter(router, r"posts", lookup="post")
 # posts_router.register(

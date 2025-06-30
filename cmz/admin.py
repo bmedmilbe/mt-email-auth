@@ -79,6 +79,9 @@ class RoleAdmin(admin.ModelAdmin):
 class TeamAdmin(admin.ModelAdmin):
     list_display = ['name', 'role']
     autocomplete_fields = [ 'role']
+@admin.register(models.Assembly)
+class AssemblyAdmin(admin.ModelAdmin):
+    list_display = ['name', 'role']
 
 
 @admin.register(models.Messages)

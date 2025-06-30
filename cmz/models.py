@@ -139,3 +139,12 @@ class Team(models.Model):
 
     def __str__(self) -> str:
         return f'{self.name} - {self.role.title}'
+class Assembly(models.Model):
+    name = models.CharField(max_length=255)  
+    image = models.FileField(upload_to='camaramz/team/images/', null=True)  
+    role = models.CharField(max_length=255)  
+    class Meta():
+        unique_together = ['name', 'role']
+
+    def __str__(self) -> str:
+        return f'{self.name} - {self.role}'

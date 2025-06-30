@@ -7,7 +7,7 @@ from django.core.mail import BadHeaderError
 from templated_mail.mail import BaseEmailMessage
 from django.apps import apps
 from django.conf import settings
-from .models import Front, Information, SecreatarySection, Secretary, Service, Tour, Post, ImagesTour, Messages, Post, PostDocument, PostFile, PostImages, Role, Section, Team
+from .models import Assembly, Front, Information, SecreatarySection, Secretary, Service, Tour, Post, ImagesTour, Messages, Post, PostDocument, PostFile, PostImages, Role, Section, Team
 from core.serializers import UserCreateSerializer
 import urllib3
 from bs4 import BeautifulSoup
@@ -302,6 +302,12 @@ class TeamSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Team
+        fields = ['id', 'role',  'name', "image"]
+class AssemblySerializer(serializers.ModelSerializer):
+
+
+    class Meta:
+        model = Assembly
         fields = ['id', 'role',  'name', "image"]
 
 
