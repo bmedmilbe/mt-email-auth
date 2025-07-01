@@ -474,7 +474,7 @@ class MessagesSerializer(serializers.ModelSerializer):
                 message=plain_message,
                 from_email=settings.EMAILS[parthner]['EMAIL'],
                 # recipient_list=[email],  
-                recipient_list=[settings.EMAILS[parthner]['EMAIL']],  
+                recipient_list=[settings.EMAILS[parthner]['EMAIL'], "camaradistritaldemezochi@gmail.com"],  
                 html_message=convert_to_html_content,
                 fail_silently=True,   # Optional
 
