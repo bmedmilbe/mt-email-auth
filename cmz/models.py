@@ -72,6 +72,49 @@ class Post(models.Model):
 
     def __str__(self) -> str:
         return f'{self.title}'
+
+class ExtraDoc(models.Model):
+    title = models.CharField(max_length=255)
+    slug = models.SlugField(max_length=255, null=True)
+    picture = models.FileField(upload_to='camaramz/posts/images/', null=True)
+
+    text_file = models.FileField(upload_to='camaramz/posts/documents/')
+    active = models.BooleanField(default=False)
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self) -> str:
+        return f'{self.title}'
+
+
+class Budget(models.Model):
+    title = models.CharField(max_length=255)
+    slug = models.SlugField(max_length=255, null=True)
+    
+
+    text_file = models.FileField(upload_to='camaramz/docs/documents/')
+    
+    date = models.DateTimeField(auto_now_add=True)
+    year = models.IntegerField(null=True, blank=True)
+
+    
+
+    TYPE_BUDGET = "B"
+    TYPE_REPORT = "R"
+    TYPE_LAW = "L"
+    STATUS_CHOICES = [
+        (TYPE_BUDGET, "Budget"),
+        (TYPE_REPORT, "Report"),
+        (TYPE_LAW, "Law"),
+    ]
+
+    type = models.CharField(
+        max_length=1, choices=STATUS_CHOICES
+    )
+
+    def __str__(self) -> str:
+        return f'{self.title}'
+
+    
 class Front(models.Model):
     title = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255, null=True)
@@ -91,6 +134,11 @@ class PostImages(models.Model):
     picture = models.FileField(upload_to='camaramz/posts/images/')
     post = models.ForeignKey(
         Post, on_delete=models.CASCADE, related_name="post_images")
+
+class ExtraImages(models.Model):
+    picture = models.FileField(upload_to='camaramz/extras/images/')
+    extra_doc = models.ForeignKey(
+        ExtraDoc, on_delete=models.CASCADE, related_name="extra_images")
 class PostVideos(models.Model):
     video = models.URLField()
     post = models.ForeignKey(

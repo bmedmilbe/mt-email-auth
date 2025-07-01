@@ -3,8 +3,8 @@ from django.db.models.aggregates import Count
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
 from rest_framework.mixins import ListModelMixin, RetrieveModelMixin, UpdateModelMixin, CreateModelMixin
-from .models import  Assembly, Front, Service, Tour, ImagesTour, Messages, Post, Section, Team
-from .serializers import AssemblySerializer, FrontSerializer, InformationSerializer, ServiceSerializer, TourSerializer, ImagesTourSerializer,MessagesSerializer, PostSerializer, SectionSerializer, TeamSerializer
+from .models import  Assembly, Budget, ExtraDoc, Front, Service, Tour, ImagesTour, Messages, Post, Section, Team
+from .serializers import AssemblySerializer, BudgetSerializer, ExtraSerializer, FrontSerializer, InformationSerializer, ServiceSerializer, TourSerializer, ImagesTourSerializer,MessagesSerializer, PostSerializer, SectionSerializer, TeamSerializer
 from rest_framework.decorators import action
 from django.core.mail import BadHeaderError
 from templated_mail.mail import BaseEmailMessage
@@ -130,6 +130,33 @@ class PostViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
             serializer = PostSerializer(posts, many=True)
             # pprint(serializer.data)
             return Response(serializer.data)
+class ExtraViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
+
+    def get_queryset(self):
+        return ExtraDoc.objects.all()
+
+    def get_serializer_class(self):
+        return ExtraSerializer
+        
+    lookup_field = 'slug'
+
+    filter_backends = [filters.SearchFilter,DjangoFilterBackend, filters.OrderingFilter]
+    
+class BudgetViewSet(ListModelMixin, RetrieveModelMixin, GenericViewSet):
+
+    def get_queryset(self):
+        return Budget.objects.order_by("-year")
+
+    def get_serializer_class(self):
+        return BudgetSerializer
+        
+    lookup_field = 'slug'
+
+    filter_backends = [filters.SearchFilter,DjangoFilterBackend, filters.OrderingFilter]
+    
+
+
+
         
 
 class PostViewViewSet(RetrieveModelMixin, GenericViewSet):

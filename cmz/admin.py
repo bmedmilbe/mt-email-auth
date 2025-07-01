@@ -16,6 +16,8 @@ class InformationInline(admin.TabularInline):
 
 class PostImagesInline(admin.TabularInline):
     model = models.PostImages
+class ExtraImagesInline(admin.TabularInline):
+    model = models.ExtraImages
 
 class PostVideosInline(admin.TabularInline):
     model = models.PostVideos
@@ -147,6 +149,39 @@ class PostAdmin(admin.ModelAdmin):
     inlines = [
         PostImagesInline,PostVideosInline
     ]
+
+@admin.register(models.ExtraDoc)
+class ExtraAdmin(admin.ModelAdmin):
+    list_display = ['title', 'active']
+    prepopulated_fields = {'slug': ['title']}
+    # list_filter = ['doctor']
+    list_editable = ['active', ]
+    search_fields = ['title']
+
+    inlines = [
+        ExtraImagesInline
+    ]
+@admin.register(models.Budget)
+class BudgetAdmin(admin.ModelAdmin):
+    list_display = ['title', 'type', 'year']
+    prepopulated_fields = {'slug': ['title']}
+    # list_filter = ['doctor']
+    list_editable = [ 'year', 'type']
+    search_fields = ['title']
+
+   
+# @admin.register(models.Post)
+# class PostAdmin(admin.ModelAdmin):
+#     list_display = ['title', 'active', 'featured']
+#     prepopulated_fields = {'slug': ['title']}
+#     # list_filter = ['doctor']
+#     list_editable = ['active', 'featured']
+#     search_fields = ['title']
+
+#     inlines = [
+#         PostImagesInline,PostVideosInline
+#     ]
+
 @admin.register(models.Front)
 class FrontAdmin(admin.ModelAdmin):
     list_display = ['title']

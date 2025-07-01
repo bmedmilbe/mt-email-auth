@@ -7,7 +7,7 @@ from django.core.mail import BadHeaderError
 from templated_mail.mail import BaseEmailMessage
 from django.apps import apps
 from django.conf import settings
-from .models import Assembly, Front, Information, SecreatarySection, Secretary, Service, Tour, Post, ImagesTour, Messages, Post, PostDocument, PostFile, PostImages, Role, Section, Team
+from .models import Assembly, Budget, ExtraDoc, ExtraImages, Front, Information, SecreatarySection, Secretary, Service, Tour, Post, ImagesTour, Messages, Post, PostDocument, PostFile, PostImages, Role, Section, Team
 from core.serializers import UserCreateSerializer
 import urllib3
 from bs4 import BeautifulSoup
@@ -180,6 +180,15 @@ class PostImagesSerializer(serializers.ModelSerializer):
         post_image = validated_data
         post_image['post_id'] = self.context["post_id"]
         return super().create(post_image)
+class ExtraImagesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ExtraImages
+        fields = ["id", "picture"]
+
+    def create(self, validated_data):
+        post_image = validated_data
+        post_image['extra_doc_id'] = self.context["extra_doc_id"]
+        return super().create(post_image)
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -276,6 +285,98 @@ class PostSerializer(serializers.ModelSerializer):
 
         return text_with_media
 
+class ExtraSerializer(serializers.ModelSerializer):
+    # owner = serializers.SerializerMethodField(
+    #     method_name="get_owner")
+    beginnig = serializers.SerializerMethodField(
+        method_name="get_beginnig")
+
+    posted_at = serializers.SerializerMethodField(
+        method_name="get_posted_at")
+
+    text = serializers.SerializerMethodField(
+        method_name="get_text")
+
+    extra_images = ExtraImagesSerializer(many=True)
+
+    class Meta:
+        model = ExtraDoc
+        fields = ['id',
+                  'title',
+                  'slug',
+                  'picture',
+                  #   'doctor',
+                  'text_file',
+                  'extra_images',
+                  'beginnig',
+                  'text',
+                  'posted_at',
+                  'date',
+                  ]
+ 
+    def get_posted_at(self, post: Post):
+        now = datetime.now(timezone.utc)
+        return timeago.format(post.date, now)
+
+    def get_beginnig(self, post: Post):
+        # return ""
+        url = post.text_file.url
+        # url = "http://127.0.0.1:8000/media/camaramz/posts/documents/text_cecab_rubish_1.docx"
+        docx = BytesIO(requests.get(url).content)
+
+        # extract text
+        text = docx2txt.process(docx).replace('\n','')
+
+        return f"{text[:100]}..."
+        with open(path.data, "rb") as docx_file:
+
+            result = mammoth.extract_raw_text(docx_file)
+            return result.value.replace('\n', '').strip()  # The raw text
+    
+
+    def get_text(self, post: Post):
+        # pprint( post.text_file)
+        # try:
+        #     response = requests.get( post.text_file.url, stream=True)
+        #     response.raise_for_status() # Raise HTTPError for bad responses (4xx or 5xx)
+
+        #     bytes_io_obj = BytesIO(response.content)
+        #     document = Document(bytes_io_obj)
+        #     full_text = []
+        #     for paragraph in document.paragraphs:
+        #         full_text.append(paragraph.text)
+        #     return "\n".join(full_text)
+
+        # except requests.exceptions.RequestException as e:
+        #     print(f"Error fetching URL: {e}")
+        #     return None
+        # except Exception as e:
+        #     print(f"Error reading docx file: {e}")
+        #     return None
+        # finally:
+        #     if 'bytes_io_obj' in locals():
+        #         bytes_io_obj.seek(0) #reset the stream to the beginning.
+
+        # return ''
+        url = post.text_file.url
+        # pprint(post)
+        # pprint(url)
+        # url = "http://127.0.0.1:8000/media/camaramz/posts/documents/text_cecab_rubish_1.docx"
+
+        docx = BytesIO(requests.get(url).content)
+        # pprint(docx)
+        # extract text
+        text = docx2txt.process(docx)
+        # text = extract_text_from_docx_bytesio(docx)
+        # pprint(text)
+
+        html_paragraphs = text_to_html_paragraphs(text).replace("\n", "")
+
+        text_with_media = f"{addPicures(post, html_paragraphs)}"
+        # text_with_media = f"{addVideo(post, text_with_media)}"
+
+        return text_with_media
+
 class FrontSerializer(serializers.ModelSerializer):
     
 
@@ -287,7 +388,21 @@ class FrontSerializer(serializers.ModelSerializer):
                   'picture',
               
                   ]
- 
+class BudgetSerializer(serializers.ModelSerializer):
+    
+
+    class Meta:
+        model = Budget
+        fields = ['id',
+                  'title',
+                  'slug',
+                  'text_file',
+                  'date',
+                  'year',
+                  'type',
+                 
+                  ]
+
     
 
 class RoleSerializer(serializers.ModelSerializer):
@@ -358,7 +473,8 @@ class MessagesSerializer(serializers.ModelSerializer):
                 subject=validated_data['subject'],
                 message=plain_message,
                 from_email=settings.EMAILS[parthner]['EMAIL'],
-                recipient_list=[email],  
+                # recipient_list=[email],  
+                recipient_list=[settings.EMAILS[parthner]['EMAIL']],  
                 html_message=convert_to_html_content,
                 fail_silently=True,   # Optional
 
