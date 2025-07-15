@@ -36,6 +36,7 @@ from .models import (
     Certificate,
     CertificateData,
     CertificateDate,
+    CertificateRange,
     CertificateSimpleParent,
     CertificateSimplePerson,
     CertificateSinglePerson,
@@ -1805,6 +1806,8 @@ class CertificateModelLicBarracaCreateSerializer(ModelSerializer):
     object = serializers.CharField()
     street = serializers.IntegerField()
     file = serializers.FileField(read_only=True)
+    range = serializers.CharField()
+    
 
     class Meta:
         model = Certificate
@@ -1814,7 +1817,8 @@ class CertificateModelLicBarracaCreateSerializer(ModelSerializer):
             "secondary_person",
             "object",
             "street",
-            "file"
+            "file",
+            "range",
         ]
 
     def validate_object(self, object):
@@ -1850,12 +1854,18 @@ class CertificateModelLicBarracaCreateSerializer(ModelSerializer):
 
         del new_validate_data["object"]
         del new_validate_data["street"]
+        del new_validate_data["range"]
 
         pprint(validated_data)
         certificate = super().update(instance, new_validate_data)
         object = validated_data["object"]
         validated_data["street"] = street = Street.objects.filter(
             id=validated_data["street"]).first()
+        
+        if validated_data["type_id"] == 27:
+            # del new_validated_data["range"]
+
+            validated_data["range"] = CertificateRange.objects.get(type=validated_data["range"])
 
         model = AutoModCovalAndLicBarraca(DocumentData(
             validated_data["main_person"], validated_data, certificate, validated_data["secondary_person"]))
@@ -1900,6 +1910,7 @@ class CertificateModelLicBarracaCreateSerializer(ModelSerializer):
 
         del new_validate_data["object"]
         del new_validate_data["street"]
+        del new_validate_data["range"]
 
         certificate = super().create(new_validate_data)
         # pprint(validate_data)
@@ -1908,6 +1919,11 @@ class CertificateModelLicBarracaCreateSerializer(ModelSerializer):
         object = validate_data["object"]
         validate_data["street"] = street = Street.objects.filter(
             id=validate_data["street"]).first()
+        
+        if validate_data["type_id"] == 27:
+            # del new_validate_data["range"]
+
+            validate_data["range"] = CertificateRange.objects.get(type=validate_data["range"])
 
         model = AutoModCovalAndLicBarraca(DocumentData(
             validate_data["main_person"], validate_data, certificate, validate_data["secondary_person"]))

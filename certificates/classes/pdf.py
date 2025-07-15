@@ -77,6 +77,14 @@ class PDF():
         elif type2.id == 25:
             self.conta_details = self.conta(
                 type1, type2, gerado.number, self.data['change'].price)
+            
+        
+        elif type2.id == 27:
+
+            self.conta_details = self.conta(
+                type1, type2, gerado.number, self.data['range'].price)
+            
+
         elif type2.id in [29,32]:
             if not self.data['metros']:  # metros none
                 value = 250 * self.data['dates'].count()
@@ -204,6 +212,9 @@ class PDF():
             Rasa = 100
             value = autoV
             Total = Total + Rasa
+        elif type2.id == 27:
+            value = autoV
+            Total = Rasa = 5
         elif type2.id == 32:
             value = autoV
             Total = Rasa + 20

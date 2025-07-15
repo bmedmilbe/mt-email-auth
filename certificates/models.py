@@ -438,6 +438,28 @@ class CertificateSinglePerson(models.Model):
 
     def __str__(self) -> str:
         return f"{self.name}"
+    
+class CertificateRange(models.Model):
+
+    
+    TYPE_BASIC = "B"
+    TYPE_MEDIUM = "M"
+    TYPE_ADVENCED = "C"
+    GENDER_CHOICES = [
+        (TYPE_BASIC, "Basic"),
+        (TYPE_MEDIUM, "Medium"),
+        (TYPE_ADVENCED, "Average"),
+    ]
+    
+    type = models.CharField(
+        max_length=1, choices=GENDER_CHOICES, unique=True
+    )
+    price = models.DecimalField(max_digits=8, decimal_places=2)
+
+    
+
+    
+    
 
 
 class CertificateDate(models.Model):

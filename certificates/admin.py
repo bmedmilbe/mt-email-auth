@@ -96,6 +96,13 @@ class ParentsAdmin(admin.ModelAdmin):
     list_per_page = 10
 
 
+@admin.register(models.CertificateRange)
+class CertificateRangesAdmin(admin.ModelAdmin):
+
+    list_display = ["type", "price"]
+    list_editable = ["price"]
+
+
 @admin.register(models.Coval)
 class CovalsAdmin(admin.ModelAdmin):
 
