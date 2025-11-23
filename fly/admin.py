@@ -44,15 +44,20 @@ class TrushAdmin(admin.ModelAdmin):
         city_from = obj.city_from.id
         city_to = obj.city_to.id
         airlines = ["TAP", "TAAG", "EuroAtlantic", "Royal", "Qatar", "LAM"]
+        # pprint(obj.file.url)
+
         if obj.file.url != None:
             txt_obj = BytesIO(requests.get(obj.file.url).content)
+            # pprint(txt_obj)
             all_data = f"{docx2txt.process(txt_obj)}".replace("\r"," ").replace("\n"," ").replace("  ", " ")
             Flight.objects.filter(city_id=city_from, city_to_id=city_to).delete()
+            
             airline = None
             count = -1
             words = all_data.split(" ")
             year = 2025
             date = "2023-05-04"
+            pprint(words)
             for word in words:
                         
                         
@@ -100,13 +105,16 @@ class TrushAdmin(admin.ModelAdmin):
                                         
                                          flight.save()
                                     else:
-                                        Flight.objects.create(
+                                        created = Flight.objects.create(
                                             final_price=price,
                                             airline_id=airline_id,
-                                            date=date,city_id=city_from, 
+                                            date=date,
+                                            city_id=city_from, 
                                             city_to_id=city_to,
+                                            route_id = obj.id,
                                             base_price = int(word.replace("€","").replace(",",""))
-                                            )  
+                                            ) 
+                                        # pprint(created) 
                             airline = None
                         # print(word)
                 # ... read the file ...
@@ -178,13 +186,16 @@ class TrushAdmin(admin.ModelAdmin):
             #     # ... read the file ...
             #     file.close()
 
+@admin.register(models.Country)
+class AirlineAdmin(admin.ModelAdmin):
+    list_display = ["id","name"]  
 @admin.register(models.Airline)
 class AirlineAdmin(admin.ModelAdmin):
     list_display = ["id","name"]  
 
 @admin.register(models.City)
 class CityAdmin(admin.ModelAdmin):
-    list_display = ["id","name"] 
+    list_display = ["id","name", "country"] 
 
 @admin.register(models.Flight)
 class FlightAdmin(admin.ModelAdmin):

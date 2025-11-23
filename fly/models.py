@@ -4,10 +4,16 @@ from django.db import models
 
 
     
+class Country(models.Model):
+    name = models.CharField(max_length=255, null=True, blank=True)
+    
+    def __str__(self) -> str:
+        return f'{self.name}' 
+    
 
 class City(models.Model):
     name = models.CharField(max_length=255, null=True, blank=True)
-    
+    country = models.ForeignKey(Country, on_delete=models.CASCADE, null=True, blank=True, related_name="country_to_trush")
     def __str__(self) -> str:
         return f'{self.name}' 
     
@@ -18,6 +24,7 @@ class Trush(models.Model):
     text = models.TextField(null=True)
     city_from = models.ForeignKey(City, on_delete=models.CASCADE, null=True, blank=True, related_name="city_from_trush")
     city_to = models.ForeignKey(City, on_delete=models.CASCADE, null=True, blank=True, related_name="city_to_trush")
+    inverse = models.IntegerField(null=True, blank=True)
 
 class Law(models.Model):
     current_law = models.FileField(upload_to='kandja/law', null=True)
@@ -42,6 +49,8 @@ class Flight(models.Model):
     base_price = models.IntegerField(blank=True, null=True) 
     final_price = models.IntegerField(blank=True, null=True) 
     airline =  models.ForeignKey(Airline, on_delete=models.CASCADE,  null=True, blank=True, related_name="arlines")
+    image_from = models.FileField(upload_to='fly/images', null=True)
+    route = models.ForeignKey(Trush, on_delete=models.PROTECT,  null=True, blank=True, related_name="trushs")
     
     class Meta():
         unique_together = ['airline', 'date', 'city', 'final_price']

@@ -356,6 +356,11 @@ class PostSerializer(serializers.ModelSerializer):
 
     text = serializers.SerializerMethodField(
         method_name="get_text")
+    
+    next = serializers.SerializerMethodField(
+        method_name="get_next")
+    prev = serializers.SerializerMethodField(
+        method_name="get_prev")
 
     post_images = PostImagesSerializer(many=True)
 
@@ -371,6 +376,9 @@ class PostSerializer(serializers.ModelSerializer):
                   'beginnig',
                   'text',
                   'posted_at',
+                  'date',
+                  'next',
+                  'prev',
                   'date',
                   ]
 
@@ -393,7 +401,20 @@ class PostSerializer(serializers.ModelSerializer):
             result = mammoth.extract_raw_text(docx_file)
             return result.value.replace('\n', '').strip()  # The raw text
     
-
+    def get_prev(self, post: Post):
+        obj = Post.objects.filter(id__lt=post.id)
+        if obj.exists():
+            return obj.order_by('id').last().slug
+        
+        return None
+    
+    def get_next(self, post: Post):
+        obj = Post.objects.filter(id__gt=post.id)
+        if obj.exists():
+            return obj.order_by('id').first().slug
+    
+        return None
+    
     def get_text(self, post: Post):
         # pprint( post.text_file)
         # try:

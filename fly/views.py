@@ -1,8 +1,11 @@
 from django.shortcuts import render
 
-from fly.models import Enquire, Flight
-from fly.serializers import EnquireCreateSerializer, EnquireSerializer, FlightSerializer
+from fly.models import Enquire, Flight, Trush
+from fly.serializers import EnquireCreateSerializer, EnquireSerializer, FlightSerializer, TrushSerializer
 from rest_framework.response import Response
+from django_filters.rest_framework import DjangoFilterBackend, OrderingFilter
+from rest_framework import status, filters, mixins, serializers
+
 from rest_framework import status
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.viewsets import ModelViewSet, GenericViewSet
@@ -38,9 +41,9 @@ class PaginationHundread(PageNumberPagination):
 
 class FlightsViewSet(ListModelMixin,  GenericViewSet):
     def get_queryset(self):
-        city = self.request.query_params.get("city", 1)
+        # city = self.request.query_params.get("city", 1)
 
-        return Flight.objects.filter(date__gt=datetime.now(), city_id=city).order_by("-date", "airline__name")
+        return Flight.objects.filter(date__gt=datetime.now()).order_by("-date", "airline__name")
         
 
 
@@ -49,6 +52,32 @@ class FlightsViewSet(ListModelMixin,  GenericViewSet):
     
     serializer_class = FlightSerializer
     pagination_class = PaginationHundread
+
+    filter_backends = [filters.SearchFilter,
+                       DjangoFilterBackend, filters.OrderingFilter]
+    filterset_fields = ['city__country','city_to__country', 'city','airline',]
+
+    ordering_fields = ["final_price","date"]
+
+class TrushsViewSet(ListModelMixin, RetrieveModelMixin,  GenericViewSet):
+    def get_queryset(self):
+
+        return Trush.objects.all()
+            
+    serializer_class = TrushSerializer
+    pagination_class = PaginationHundread
+
+    filter_backends = [filters.SearchFilter,
+                       DjangoFilterBackend, filters.OrderingFilter]
+    # filterset_fields = [
+    #                     'trushs__city__country',
+    #                     'trushs__city_to__country', 
+    #                     'trushs__city',
+    #                     'trushs__airline',
+    #                     ]
+
+    ordering_fields = ["trushs__final_price","trushs__date"]
+    
 
    
 

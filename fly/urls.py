@@ -5,6 +5,7 @@ router = routers.DefaultRouter()
 
 router.register("flights", views.FlightsViewSet, basename="flights")
 router.register("enquires", views.EnquireViewSet, basename="enquires")
+router.register("trushs", views.TrushsViewSet, basename="trushs")
 
 
 urlpatterns = (router.urls)
