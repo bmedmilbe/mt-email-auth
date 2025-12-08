@@ -173,11 +173,13 @@ class UniversitysViewSet(ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly]
 
 
+
 class IdTypeViewSet(mixins.ListModelMixin,
                     mixins.RetrieveModelMixin,
                     GenericViewSet):
     queryset = IDType.objects.all().order_by("name")
     serializer_class = IDTypeSerializer
+    pagination_class = Pagination300
 
 
 class BiuldingTypeViewSet(mixins.ListModelMixin,
@@ -185,6 +187,7 @@ class BiuldingTypeViewSet(mixins.ListModelMixin,
                           GenericViewSet):
     queryset = BiuldingType.objects.all().order_by("name")
     serializer_class = BiuldingTypeSerializer
+    pagination_class = Pagination300
 
 
 class StreetsViewSet(ModelViewSet):
@@ -257,6 +260,7 @@ class CovalSetUpViewSet(ModelViewSet):
         if self.request.method == "GET":
             return CovalSerializer
         return CovalSetUpSerializer
+    pagination_class = Pagination300
 
 
 class CertificateViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, mixins.UpdateModelMixin, mixins.DestroyModelMixin, GenericViewSet):
@@ -312,11 +316,14 @@ class CertificateTitleViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, 
     def get_serializer_class(self):
         return CertificateTitleSerializer
 
-    filter_backends = [DjangoFilterBackend]
+    filter_backends = [
+                       DjangoFilterBackend]
 
     filterset_fields = {
         'certificate_type': ['exact', 'gt', 'lt'],
     }
+    pagination_class = Pagination300
+
 
 
 class CertificateModelViewSet(ModelViewSet):
@@ -610,7 +617,7 @@ class TownViewSet(ModelViewSet):
             return TownCreateSerializer
         return TownSerializer
     permission_classes = [IsAuthenticatedOrReadOnly]
-
+    pagination_class = Pagination300
 
 
 

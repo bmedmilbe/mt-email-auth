@@ -183,10 +183,11 @@ class PersonBirthAddress(models.Model):
             address = f"distrito de {self.birth_county.name}, " if address == "" else f"{address} distrito de {self.birth_county.name}, "
 
         # pprint(address)
-        if self.birth_street.name == self.birth_town.name and self.birth_town.name == self.birth_county.name:
-            return f"distrito de {self.birth_county.name}, {self.birth_country.name}"
-        if self.birth_street.name == self.birth_town.name:
-            return f"{self.birth_street.name}, distrito de {self.birth_county.name}, {self.birth_country.name}"
+        if self.birth_street != None and self.birth_town != None:
+            if self.birth_street.name == self.birth_town.name and self.birth_town.name == self.birth_county.name:
+                return f"distrito de {self.birth_county.name}, {self.birth_country.name}"
+            if self.birth_street.name == self.birth_town.name:
+                return f"{self.birth_street.name}, distrito de {self.birth_county.name}, {self.birth_country.name}"
 
         address = f"{address}{self.birth_country.name}"
 

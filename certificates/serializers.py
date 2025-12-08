@@ -353,7 +353,7 @@ class HouseSerializer(ModelSerializer):
 
 
 class HouseCreateSerializer(ModelSerializer):
-
+    house_number = serializers.CharField(allow_blank=True, required=False)
     class Meta:
         model = House
         fields = [
@@ -372,7 +372,7 @@ class HouseCreateSerializer(ModelSerializer):
         )
 
         if not house:
-            validate_data["house_number"] = house_number if house_number != -1 else None
+            validate_data["house_number"] = house_number if (house_number != -1 or not house_number)  else None
             return super().create(validate_data)
         return house.first()
 
@@ -479,49 +479,110 @@ def set_number(current_year, type_id):
     return f"{1}-{current_year}"
 
 
+# class PersonBirthAddressCreateSerializer(ModelSerializer):
+#     birth_street = serializers.CharField( required=False)
+#     birth_town = serializers.CharField( required=False)
+#     birth_county = serializers.CharField( required=False)
+#     birth_country = serializers.CharField()
+#     # house_number = serializers.CharField(allow_blank=True, required=False)
+#     class Meta:
+#         model = PersonBirthAddress
+#         fields = [
+#             "id",
+#             "birth_street",
+#             "birth_town",
+#             "birth_county",
+#             "birth_country",
+#         ]
+
+#     def create(self, validate_data):
+#         # pprint(validate_data)
+#         street = Street.objects.filter(
+#             id=validate_data['birth_street']).first()
+#         town = Town.objects.filter(id=validate_data['birth_town']).first()
+#         county = County.objects.filter(
+#             id=validate_data['birth_county']).first()
+#         # print(street)
+
+#         del validate_data['birth_street']
+#         del validate_data['birth_town']
+#         del validate_data['birth_county']
+
+#         validate_data['birth_street'] = None if street == None else street.id
+#         validate_data['birth_town'] = None if town == None else town.id
+#         validate_data['birth_county'] = None if county == None else county.id
+
+#         # print(validate_data)
+
+#         address = PersonBirthAddress.objects.filter(
+#             birth_street=validate_data['birth_street'],
+#             birth_town=validate_data['birth_town'],
+#             birth_county=validate_data['birth_county'],
+#             birth_country=validate_data['birth_country'],
+#         )
+
+#         if not address:
+#             return super().create(validate_data)
+#         return address.first()
+    
+
 class PersonBirthAddressCreateSerializer(ModelSerializer):
-    birth_street_id = serializers.IntegerField()
-    birth_town_id = serializers.IntegerField()
-    birth_county_id = serializers.IntegerField()
+    
+    birth_street = serializers.PrimaryKeyRelatedField(
+        queryset=Street.objects.all(), 
+        required=False, 
+        allow_null=True
+    )
+    birth_town = serializers.PrimaryKeyRelatedField(
+        queryset=Town.objects.all(), 
+        required=False, 
+        allow_null=True
+    )
+    birth_county = serializers.PrimaryKeyRelatedField(
+        queryset=County.objects.all(), 
+        required=False, 
+        allow_null=True
+    )
+    
+    birth_country = serializers.PrimaryKeyRelatedField(
+        queryset=Country.objects.all(), 
+        required=True 
+    ) 
 
     class Meta:
         model = PersonBirthAddress
         fields = [
             "id",
-            "birth_street_id",
-            "birth_town_id",
-            "birth_county_id",
+            "birth_street",
+            "birth_town",
+            "birth_county",
             "birth_country",
         ]
 
     def create(self, validate_data):
-        # pprint(validate_data)
-        street = Street.objects.filter(
-            id=validate_data['birth_street_id']).first()
-        town = Town.objects.filter(id=validate_data['birth_town_id']).first()
-        county = County.objects.filter(
-            id=validate_data['birth_county_id']).first()
-        # print(street)
+        
 
-        del validate_data['birth_street_id']
-        del validate_data['birth_town_id']
-        del validate_data['birth_county_id']
+        street_instance = validate_data.get('birth_street', None)
+        town_instance = validate_data.get('birth_town', None)
+        county_instance = validate_data.get('birth_county', None)
+        country_instance = validate_data['birth_country'] 
 
-        validate_data['birth_street_id'] = None if street == None else street.id
-        validate_data['birth_town_id'] = None if town == None else town.id
-        validate_data['birth_county_id'] = None if county == None else county.id
-
-        # print(validate_data)
+        street_id = street_instance.id if street_instance else None
+        town_id = town_instance.id if town_instance else None
+        county_id = county_instance.id if county_instance else None
+        country_id = country_instance.id
 
         address = PersonBirthAddress.objects.filter(
-            birth_street_id=validate_data['birth_street_id'],
-            birth_town_id=validate_data['birth_town_id'],
-            birth_county_id=validate_data['birth_county_id'],
-            birth_country=validate_data['birth_country'],
+            birth_street=street_id,
+            birth_town=town_id,
+            birth_county=county_id,
+            birth_country=country_id,
         )
 
         if not address:
+           
             return super().create(validate_data)
+        
         return address.first()
 
 
@@ -632,6 +693,9 @@ class PersonSerializer(ModelSerializer):
     birth_address = PersonBirthAddressSerializer()
     address = HouseSerializer()
     id_type = IDTypeSerializer()
+    id_issue_local = InstituitionSerializer()
+    id_issue_country = CountrySerializer()
+    nationality = CountrySerializer()
 
     class Meta:
         model = Person

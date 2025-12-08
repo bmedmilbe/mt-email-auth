@@ -150,14 +150,7 @@ class SendEmailResetSerializer(ModelSerializer):
 
         # Send an email using the custom connection
         send_mail(
-            # 'Subject',
-            #        msg_plain,settings.EMAILS[validated_data['parthner']]['EMAIL'], 
-            #        [email],
-            #        html_message=msg_html,  
-            #     #    context={'username': 'John'},
-                  
-            #       connection=connection
-                  
+           
                   
                             
             subject="Restaurar a conta",
