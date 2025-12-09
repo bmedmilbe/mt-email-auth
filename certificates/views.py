@@ -421,6 +421,7 @@ class CertificatePersonsViewSet(ModelViewSet):
         type_id = int(self.kwargs.get('title_pk'))
         if type_id == 12:
             return CertificateSimplePerson.objects.filter(type_id=type_id)
+        return CertificateSimplePerson.objects.filter(type_id=-1)
 
     def get_serializer_class(self):
         # pprint(self.kwargs)
@@ -449,7 +450,6 @@ class CertificateSimpleParentsViewSet(ModelViewSet):
     def get_queryset(self):
         type_id = int(self.kwargs.get('title_pk'))
         return CertificateSimpleParent.objects.filter(type_id=type_id)
-        return CertificateSimpleParent.objects.filter(type_id=type_id, user_id=self.request.user.id)
 
     def get_serializer_class(self):
 
@@ -482,7 +482,7 @@ class CertificateSinglePersonsViewSet(ModelViewSet):
         type_id = int(self.kwargs.get('title_pk'))
         if type_id == 12:
             return CertificateSinglePerson.objects.filter(type_id=type_id).all()
-            return CertificateSinglePerson.objects.filter(type_id=type_id, user_id=self.request.user.id)
+        return CertificateSinglePerson.objects.filter(type_id=-1)
 
     def get_serializer_class(self):
         # pprint(self.kwargs)
