@@ -317,9 +317,9 @@ class CertificateTitle(models.Model):
         CertificateTypes, on_delete=models.CASCADE, null=True)
     type_price = models.DecimalField(
         max_digits=12, decimal_places=2, null=True)
-    goal = models.CharField(max_length=255, null=True)  # de/para fins de/
+    goal = models.CharField(max_length=255, null=True, blank=True)  # de/para fins de/
     # atestado de residencia
-    slug = models.SlugField(max_length=255, null=True)
+    slug = models.SlugField(max_length=255, null=True, blank=True)
 
     def __str__(self) -> str:
         return f"{self.certificate_type.name} {self.goal} {self.name}"

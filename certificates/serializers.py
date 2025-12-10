@@ -2572,33 +2572,11 @@ class CertificateSimplePersonReadOnlySerializer(ModelSerializer):
         return super().create(validate_data)
 
 
-# class CertificateSimplePersonSerializer(ModelSerializer):
 
-#     # user = serializers.IntegerField(read_only=True)
-#     type = CertificateTitleSerializer(read_only=True)
-
-#     class Meta:
-#         model = CertificateSimplePerson
-#         fields = [
-#             "id",
-#             "name",
-#             "birth_date",
-#             "gender",
-#             # "user",
-#             "type"
-#         ]
-
-#     def create(self, validate_data):
-
-#         # validate_data["user_id"] = self.context['user_id']
-#         validate_data["type_id"] = int(self.context['type_id'])
-
-#         return super().create(validate_data)
 
 
 class CertificateSimpleParentSerializer(ModelSerializer):
 
-    # user = serializers.IntegerField(read_only=True)
     type = CertificateTitleSerializer(read_only=True)
 
     class Meta:
