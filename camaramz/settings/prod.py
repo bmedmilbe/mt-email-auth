@@ -5,7 +5,7 @@ from .common import *
 # --- CORE SETTINGS ---
 DEBUG = False
 SECRET_KEY = os.environ["SECRET_KEY"]
-ALLOWED_HOSTS = [".railway.app", ".up.railway.app"]
+ALLOWED_HOSTS = ["camaramzapi-6cf2b687304f.herokuapp.com",".railway.app", ".up.railway.app"]
 
 DJANGO_SETTINGS_MODULE=os.environ["DJANGO_SETTINGS_MODULE"]
 
