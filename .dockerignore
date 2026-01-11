@@ -1,37 +1,30 @@
-# Ignore Git history (speeds up build significantly)
-.git
-.gitignore
+# --- Critical: Ignore everything in these folders regardless of where they are ---
+**/.git
+**/.venv
+**/venv
+**/env
+**/__pycache__
 
-# Ignore local Python files
-__pycache__
-*.pyc
-*.pyo
-*.pyd
-.Python
-env/
-venv/
-.venv/
-.pip-cache/
+# --- Django Specific: Use wildcards to catch subdirectories ---
+**/media/
+**/static/
+**/static_root/
+**/staticfiles/
+**/backups/
 
-# Ignore local configuration and secrets
+# --- Local Files & Database ---
+*.sqlite3
+*.log
 .env
-.dockerignore
 Dockerfile
 docker-compose.yml
 railway.json
 
-# Ignore IDE settings
-.vscode
-.idea
-
-# Ignore local database and media
-*.sqlite3
-media/
-static_root/
-
-# Ignore documentation and logs
-*.md
-*.log
+# --- System & IDE ---
+.vscode/
+.idea/
+**/.DS_Store
+**/*.Identifier
 
 backups/
 *.pyc
