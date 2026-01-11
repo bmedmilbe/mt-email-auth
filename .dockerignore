@@ -1,0 +1,41 @@
+# Ignore Git history (speeds up build significantly)
+.git
+.gitignore
+
+# Ignore local Python files
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+.pip-cache/
+
+# Ignore local configuration and secrets
+.env
+.dockerignore
+Dockerfile
+docker-compose.yml
+railway.json
+
+# Ignore IDE settings
+.vscode
+.idea
+
+# Ignore local database and media
+*.sqlite3
+media/
+static_root/
+
+# Ignore documentation and logs
+*.md
+*.log
+
+backups/
+*.pyc
+/static/
+dev.py
+general.log
+*:Zone.Identifier

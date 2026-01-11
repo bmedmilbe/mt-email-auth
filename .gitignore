@@ -3,5 +3,42 @@
 dev.py
 general.log
 *:Zone.Identifier
+backups/
+# --- Python/Django ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+db.sqlite3
+db.sqlite3-journal
+local_settings.py
 
+# --- Environments & Secrets ---
+.env
+.venv/
+env/
+venv/
+ENV/
+pip-log.txt
+pip-delete-this-directory.txt
 
+# --- Pipenv ---
+# We keep Pipfile and Pipfile.lock, but ignore the virtualenv
+.python-version
+
+# --- IDEs & OS ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# --- Django Media/Static ---
+media/
+static_root/
+staticfiles/
+
+# --- Build/Distribution ---
+*.bak
+*.swp
+*.log
