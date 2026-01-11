@@ -5,8 +5,7 @@ from .common import *
 # --- CORE SETTINGS ---
 DEBUG = False
 SECRET_KEY = os.environ["SECRET_KEY"]
-ALLOWED_HOSTS = ["camaramzapi-6cf2b687304f.herokuapp.com"]
-DJANGO_SETTINGS_MODULE = os.environ["DJANGO_SETTINGS_MODULE"]
+ALLOWED_HOSTS = [".railway.app", ".up.railway.app"]
 
 # --- CORS & CSRF CONFIGURATION ---
 CORS_ALLOW_ALL_ORIGINS = False
@@ -17,6 +16,11 @@ CORS_ALLOWED_ORIGINS = [
     "https://cecab.st",
     "https://www.cecab.st",
     "https://troca-4apd.vercel.app",
+]
+
+CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS + [
+    "https://*.railway.app",  
+    "https://*.up.railway.app"
 ]
 
 # Required for POST/PUT requests in production
@@ -47,7 +51,7 @@ AWS_S3_CUSTOM_DOMAIN = f"{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com"
 AWS_S3_FILE_OVERWRITE = False
 
 # --- EMAIL & DOMAIN ---
-DOMAIN = "camaramz-cc67c4aaa69f.herokuapp.com"
+DOMAIN = os.environ.get("RAILWAY_STATIC_URL", "www.cmz.st")
 EMAIL_HOST_PASSWORD = os.environ["EMAIL_HOST_PASSWORD"]
 MOVED = os.environ["MOVED"]
 
