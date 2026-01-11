@@ -42,3 +42,5 @@ staticfiles/
 *.bak
 *.swp
 *.log
+
+docker-compose.yml
