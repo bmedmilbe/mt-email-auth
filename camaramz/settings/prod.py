@@ -7,6 +7,8 @@ DEBUG = False
 SECRET_KEY = os.environ["SECRET_KEY"]
 ALLOWED_HOSTS = [".railway.app", ".up.railway.app"]
 
+DJANGO_SETTINGS_MODULE=os.environ["DJANGO_SETTINGS_MODULE"]
+
 # --- CORS & CSRF CONFIGURATION ---
 CORS_ALLOW_ALL_ORIGINS = False
 
