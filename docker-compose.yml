@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15
+    container_name: camaramz_db_container
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      - POSTGRES_DB=camaramz_db
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=belajoia16  # Fixed: Must match dev.py
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d camaramz_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  web:
+    build: .
+    command: >
+      sh -c "python manage.py migrate &&
+             python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - .:/app
+    ports:
+      - "8000:8000"
+    environment:
+      - DJANGO_SETTINGS_MODULE=camaramz.settings.dev
+      # Note: We use the service name 'db' as the host here
+      - DATABASE_URL=postgres://postgres:belajoia16@db:5432/camaramz_db
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
