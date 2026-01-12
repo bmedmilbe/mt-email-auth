@@ -6,7 +6,6 @@ from datetime import timedelta
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # --- CORE SETTINGS ---
-
 ROOT_URLCONF = "camaramz.urls"
 WSGI_APPLICATION = "camaramz.wsgi.application"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
@@ -45,7 +44,7 @@ MIDDLEWARE = [
     "corsheaders.middleware.CorsMiddleware",  
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
-    "whitenoise.middleware.WhiteNoiseMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware", # Handles local static files
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",  
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -87,21 +86,24 @@ USE_TZ = True
 
 # --- STATIC & MEDIA FILES ---
 STATIC_URL = "/static/"
-STATIC_ROOT = os.path.join(BASE_DIR, "static")
-MEDIA_URL = "media/"
-MEDIA_ROOT = os.path.join(BASE_DIR, "media")
-# common.py
-STATIC_ROOT = BASE_DIR / "staticfiles"  # Professional standard for Docker
+STATIC_ROOT = BASE_DIR / "staticfiles"  
 
+MEDIA_URL = "/media/"
 
-# --- STORAGE ---
+MEDIA_ROOT = BASE_DIR / "media" 
+
+# --- HYBRID STORAGE CONFIGURATION ---
+# This setup separates static and media 
 STORAGES = {
-    "default": {"BACKEND": "storages.backends.s3.S3Storage"},
-    "staticfiles": {"BACKEND": "storages.backends.s3.S3Storage"},
+    "default": {
+        "BACKEND": "storages.backends.s3.S3Storage", # User uploads -> S3
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage", # CSS/JS -> Local 
+    },
 }
 
-
-# WhiteNoise settings to prevent startup crashes on Railway
+# WhiteNoise settings
 WHITENOISE_KEEP_ONLY_HASHED_FILES = True
 WHITENOISE_IGNORE_MISSING_FILES = True
 
@@ -148,12 +150,12 @@ SIMPLE_JWT = {
 
 # --- EMAIL SETTINGS ---
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+EMAIL_HOST = "smtp.gmail.com"
 EMAIL_HOST_USER = "edmilbe@gmail.com"
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
 
 ADMINS = [("Ramos", "admin@hotmail.com")]
-
-
-
 
 # --- LOGGING ---
 LOGGING = {
@@ -180,8 +182,3 @@ LOGGING = {
         }
     },
 }
-
-EMAIL_HOST = "smtp.gmail.com"
-EMAIL_HOST_USER = "edmilbe@gmail.com"
-EMAIL_PORT = 587  # 25
-EMAIL_USE_TLS = True
