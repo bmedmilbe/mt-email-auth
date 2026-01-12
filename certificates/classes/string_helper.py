@@ -1,5 +1,5 @@
 
-from certificates.admin import CertificateTypesAdmin
+
 from certificates.classes.interfaces.document import Document
 from certificates.models import CertificateDate, CertificateTitle, CertificateTypes, Person, Street
 from certificates.models import House
