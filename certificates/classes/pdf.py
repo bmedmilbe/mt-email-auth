@@ -17,7 +17,9 @@ from certificates.classes.string_helper import StringHelper
 from certificates.models import Certificate, CertificateDate, CertificateTitle, CertificateTypes, Ifen, Person
 
 from datetime import date, timedelta
-import boto3
+from io import BytesIO
+from django.core.files.base import ContentFile
+
 
 
 from pprint import pprint
@@ -152,46 +154,36 @@ class PDF():
             'logo': 'https://bm-edmilbe-bucket.s3.eu-north-1.amazonaws.com/camaramz/extras/stp.41e0f117.png'
         }
 
+        # 1. Render HTML to PDF in memory
         html = template.render(context_dict)
-        response = BytesIO()
-        pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), response)
-        
-        file_path = self.certificate.number
-        folder= f"/certificates/{self.type2.id}-{self.type1.slug}-de-{self.type2.slug[10:]}/"
-        
-        if not os.path.exists(f"{str(settings.MEDIA_ROOT)}{folder}"):
-            os.mkdir(f"{str(settings.MEDIA_ROOT)}{folder}")
-        else:
-            shutil.rmtree(f"{str(settings.MEDIA_ROOT)}{folder}")
-            os.mkdir(f"{str(settings.MEDIA_ROOT)}{folder}")
+        pdf_buffer = BytesIO()
+        pisa_status = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), pdf_buffer)
 
-        file_path = f"{folder}{file_path}.pdf"
-        folder_online = f"{self.type2.id}-{self.type1.slug}-de-{self.type2.slug[10:]}/{self.certificate.number}.pdf"
-        
-    
-        try:
-            path = str(settings.MEDIA_ROOT) + \
-                f"{file_path}"
-            
-            # print("file_nama2: ", file_path)
-
-            with open(path, 'wb+') as output:
-                pdf = pisa.pisaDocument(BytesIO(html.encode("UTF-8")), output)
-                # pprint(path)
-                certificate = Certificate.objects.get(id=self.certificate.id)
-                certificate.file.save(f'{folder_online}', File(output))
-                file_path = certificate.file.url
-                # pprint(path)
-                # os.remove("demofile.txt")
-                # print("file_nama: ", file_path)
-
-        except Exception as e:
-            print("error", e)
-
-        if pdf.err:
+        if pisa_status.err:
             return '', False
 
-        return file_path, True
+        # 2. Define your paths (S3 likes forward slashes)
+        # This path is relative to your MEDIA_ROOT or S3 Bucket root
+        folder_name = f"certificates/{self.type2.id}-{self.type1.slug}-de-{self.type2.slug[10:]}"
+        file_name = f"{self.certificate.number}.pdf"
+        full_path = f"{folder_name}/{file_name}"
+
+        # 3. Save to Storage (S3 or Local)
+        # default_storage.save() automatically handles directory creation
+        pdf_content = ContentFile(pdf_buffer.getvalue())
+        
+        # Optional: Delete if it already exists to mimic your "shutil.rmtree" logic
+        if default_storage.exists(full_path):
+            default_storage.delete(full_path)
+
+        # 4. Update the Model
+        # We pass the ContentFile directly to the model field
+        certificate = Certificate.objects.get(id=self.certificate.id)
+        
+        # certificate.file.save() takes the relative path and the content
+        certificate.file.save(full_path, pdf_content)
+        
+        return certificate.file.url, True
 
     def conta(self, type1: CertificateTypes, type2: CertificateTitle, atestado_number, autoV=0, cplp=False):
 
