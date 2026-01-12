@@ -27,6 +27,10 @@ RUN pipenv install --deploy --system
 # 3. NOW copy the rest of your project code
 COPY . /app/
 
+
+# Set the settings INSIDE the Railway image
+ENV DJANGO_SETTINGS_MODULE=camaramz.settings.prod
+
 # 4. Create the folder and collect files 
 RUN mkdir -p /app/staticfiles
 RUN python manage.py collectstatic --noinput
