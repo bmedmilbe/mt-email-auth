@@ -90,12 +90,20 @@ STATIC_URL = "/static/"
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 MEDIA_URL = "media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+# common.py
+STATIC_ROOT = BASE_DIR / "staticfiles"  # Professional standard for Docker
+
 
 # --- STORAGE ---
 STORAGES = {
     "default": {"BACKEND": "storages.backends.s3.S3Storage"},
     "staticfiles": {"BACKEND": "storages.backends.s3.S3Storage"},
 }
+
+
+# WhiteNoise settings to prevent startup crashes on Railway
+WHITENOISE_KEEP_ONLY_HASHED_FILES = True
+WHITENOISE_IGNORE_MISSING_FILES = True
 
 CORS_ALLOW_METHODS = ["DELETE", "GET", "OPTIONS", "PATCH", "POST", "PUT"]
 CORS_ALLOW_HEADERS = ["*"]

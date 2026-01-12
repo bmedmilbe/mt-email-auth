@@ -8,26 +8,31 @@ ENV PYTHONUNBUFFERED=1
 # Set the working directory
 WORKDIR /app
 
-# Install pipenv and system dependencies for psycopg2/pillow
+# Install system dependencies for psycopg2/pillow
 RUN apt-get update && apt-get install -y \
     libpq-dev \
     gcc \
     python3-dev \
     libjpeg-dev \
     zlib1g-dev \
-    && pip install --no-cache-dir pipenv
+    && pip install --no-cache-dir pipenv \
+    && rm -rf /var/lib/apt/lists/*
 
-# Copy Pipfile and Pipfile.lock
+# 1. Copy only Pipfiles first (Better for build caching)
 COPY Pipfile Pipfile.lock /app/
 
-# Install dependencies using --system to avoid creating a second virtualenv
+# 2. Install dependencies
 RUN pipenv install --deploy --system
 
-# Copy the rest of the project
+# 3. NOW copy the rest of your project code
 COPY . /app/
+
+# 4. Create the folder and collect files 
+RUN mkdir -p /app/staticfiles
+RUN python manage.py collectstatic --noinput
 
 # Expose port 8000
 EXPOSE 8000
 
-# Start command (Make sure to replace camaramz with your actual project name)
+# Start command
 CMD ["gunicorn", "--bind", "0.0.0.0:8000", "camaramz.wsgi:application"]
