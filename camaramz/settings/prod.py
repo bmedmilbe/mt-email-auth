@@ -4,9 +4,9 @@ from .common import *
 
 # --- CORE SETTINGS ---
 DEBUG = False
-SECRET_KEY = os.environ["SECRET_KEY"]
-ALLOWED_HOSTS = ["camaramzapi-6cf2b687304f.herokuapp.com",".railway.app", ".up.railway.app"]
-
+# Use .get() with a fallback to prevent crashes during the Docker build phase
+SECRET_KEY = os.environ.get("SECRET_KEY", "temporary-secret-key-for-build")
+ALLOWED_HOSTS = ["camaramzapi-6cf2b687304f.herokuapp.com", ".railway.app", ".up.railway.app"]
 
 # --- CORS & CSRF CONFIGURATION ---
 CORS_ALLOW_ALL_ORIGINS = False
@@ -19,13 +19,11 @@ CORS_ALLOWED_ORIGINS = [
     "https://troca-4apd.vercel.app",
 ]
 
+# Required for POST/PUT requests in production
 CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS + [
     "https://*.railway.app",  
     "https://*.up.railway.app"
 ]
-
-# Required for POST/PUT requests in production
-CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS
 
 # HTTPS Security Headers
 CSRF_COOKIE_SECURE = True
@@ -42,9 +40,9 @@ DATABASES = {
 }
 
 # --- AWS STORAGE ---
-AWS_ACCESS_KEY_ID = os.environ["AWS_ACCESS_KEY_ID"]
-AWS_SECRET_ACCESS_KEY = os.environ["AWS_SECRET_ACCESS_KEY"]
-AWS_STORAGE_BUCKET_NAME = os.environ["AWS_STORAGE_BUCKET_NAME"]
+AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID", "")
+AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY", "")
+AWS_STORAGE_BUCKET_NAME = os.environ.get("AWS_STORAGE_BUCKET_NAME", "")
 AWS_S3_REGION_NAME = "eu-north-1"
 AWS_S3_SIGNATURE_VERSION = "s3v4"
 AWS_DEFAULT_ACL = None
@@ -53,15 +51,15 @@ AWS_S3_FILE_OVERWRITE = False
 
 # --- EMAIL & DOMAIN ---
 DOMAIN = os.environ.get("RAILWAY_STATIC_URL", "www.cmz.st")
-EMAIL_HOST_PASSWORD = os.environ["EMAIL_HOST_PASSWORD"]
-MOVED = os.environ["MOVED"]
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD", "")
+MOVED = os.environ.get("MOVED", "False")
 
 # --- MULTI-SITE EMAIL CONFIGURATION ---
 WEBSITES = ["CMZ", "ORMED", "CECAB", "NANEHOUSE"]
 
-CMZ_PASSWORD = os.environ["CMZ_PASSWORD"]
-ORDMEDSTP_PASSWORD = os.environ["ORDMEDSTP_PASSWORD"]
-CECABSTP_PASSWORD = os.environ["CECABSTP_PASSWORD"]
+CMZ_PASSWORD = os.environ.get("CMZ_PASSWORD", "")
+ORDMEDSTP_PASSWORD = os.environ.get("ORDMEDSTP_PASSWORD", "")
+CECABSTP_PASSWORD = os.environ.get("CECABSTP_PASSWORD", "")
 
 EMAILS = {
     WEBSITES[0]: {
