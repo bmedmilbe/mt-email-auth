@@ -2,8 +2,8 @@ name: Nightly Database Backup to S3
 
 on:
   schedule:
-    - cron: '0 0 * * *'  # Runs at 00:00 UTC every day
-  workflow_dispatch:      # Allows you to click a button and run it manually
+    - cron: '0 0 * * *'
+  workflow_dispatch:
 
 jobs:
   backup:
@@ -11,18 +11,20 @@ jobs:
     steps:
       - name: Install PostgreSQL 17 Client
         run: |
-          # Add the official PostgreSQL repo to get the latest version (17)
+          # 1. Add official PostgreSQL repository for version 17
           sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+          # 2. Add the repository GPG key
           wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+          # 3. Update and install only the version 17 client
           sudo apt-get update
           sudo apt-get install -y postgresql-client-17
 
       - name: Dump Database
         env:
-          # This URL comes from Railway Postgres "Variables" tab
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: |
-          pg_dump $DATABASE_URL > backup_$(date +%Y-%m-%d).sql
+          # Use the newly installed v17 client
+          pg_dump "$DATABASE_URL" > backup_$(date +%Y-%m-%d).sql
 
       - name: Upload to S3
         env:
