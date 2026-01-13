@@ -1,42 +1,52 @@
 # Multi-Tenant Email Auth Backend
 
-[![Python](https://img.shields.io/badge/python-3.9+-blue.svg)](https://www.python.org/)
-[![Django](https://img.shields.io/badge/django-4.2-green.svg)](https://www.djangoproject.com/)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-13+-336791.svg)](https://www.postgresql.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Python](https://img.shields.io/badge/Python-3.11+-blue.svg)](https://www.python.org/)
+[![Django](https://img.shields.io/badge/Django-5.0+-092e20.svg)](https://www.djangoproject.com/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-17-336791.svg)](https://www.postgresql.org/)
+[![AWS S3](https://img.shields.io/badge/AWS_S3-Managed-FF9900.svg)](https://aws.amazon.com/s3/)
+[![CI/CD](https://img.shields.io/badge/GitHub_Actions-Automated-2088FF.svg)](https://github.com/features/actions)
 
-A robust multi-tenant authentication system built with **Python**, **Django**, and **PostgreSQL**. This backend serves as a centralized hub for multiple web applications (tenants), providing secure, isolated data and authentication while sharing a single application instance.
-
-
+A robust, production-grade multi-tenant authentication system built with **Python**, **Django**, and **PostgreSQL 17**. This backend serves as a centralized hub for multiple web applications (tenants), providing secure data isolation and cloud-native scalability.
 
 ## 🚀 Active Tenants
-This backend currently orchestrates and serves data for:
-## 🚀 Active Tenants
-The system currently serves as the backend for:
+The system currently orchestrates and serves data for:
+* **Camara Mé-Zóchi:** Municipal government council for the Mé-Zóchi district, STP.
+* **CECAB-STP:** Organic Cocoa Export Cooperative (Fair-trade organization).
 
-* **Camara Mé-Zóchi:** The municipal government council for the Mé-Zóchi district of São Tomé and Príncipe.
-* **CECAB-STP:** The Organic Cocoa Export Cooperative, a leading fair-trade organization for organic cocoa farmers in São Tomé and Príncipe.
+---
 
-## 🏗 Architecture
-* **Framework:** Python / Django (REST Framework)
-* **Database:** PostgreSQL (Native multi-tenant isolation)
-* **Authentication:** JWT (JSON Web Tokens) for secure, stateless sessions
-* **Deployment:** Bare metal / VM deployment (Non-Dockerized)
+## 🏗️ Infrastructure & DevOps
 
+### 🔐 Security & Identity Management
+* **Principle of Least Privilege:** Implemented granular **AWS IAM Policies** to restrict application access to specific S3 buckets, preventing broad account exposure.
+* **Environment Secret Management:** Sensitive credentials (DB strings, AWS keys) are managed via **GitHub Actions Secrets** and Railway Environment Variables, ensuring zero plain-text exposure in the codebase.
 
+### 💾 Storage Strategy (Hybrid Architecture)
+* **Stateless Design:** The application is fully stateless, utilizing **Django-Storages** to offload persistent media to **Amazon S3**.
+* **Cost Optimization (S3 Lifecycle):** Implemented **S3 Lifecycle Policies** to transition aging media (90+ days) to **Glacier Instant Retrieval**, reducing storage overhead by ~60% while maintaining millisecond access latency.
+* **Static Assets:** Optimized delivery using **WhiteNoise** with Brotli compression for high-performance frontend serving.
+
+### 🤖 Automation & Reliability
+* **Nightly Backups:** Integrated a **GitHub Actions** workflow that performs nightly logical dumps of the **Postgres 17** database.
+* **Version Parity:** Engineered the CI/CD runner to maintain version parity between the local client and the PostgreSQL 17 server, ensuring reliable, non-breaking database backups.
+* **Disaster Recovery:** Backups are stored in an encrypted S3 bucket with automated **Expiration Policies** (30-day retention) to manage costs and data compliance.
+
+---
 
 ## ✨ Key Features
-* **Shared Logic, Isolated Data:** Efficiently manages multiple tenants within a single database instance using PostgreSQL's native capabilities.
-* **Domain-Based Routing:** Automatically identifies the tenant based on the incoming request domain to serve the correct branding and dataset.
-* **Branding Management:** Centralized management for tenant-specific assets, including logos, site titles, and dedicated SMTP configurations.
-* **Enhanced Security:** Hardened CORS and CSRF configurations specifically tailored for multi-domain production environments.
+* **Shared Logic, Isolated Data:** Manages multiple tenants within a single database instance using native PostgreSQL isolation.
+* **Domain-Based Routing:** Automatically identifies the tenant based on the incoming request domain to serve correct branding and datasets.
+* **Branding Management:** Centralized management for tenant-specific assets, including logos and dedicated SMTP configurations.
+* **Enhanced Security:** JWT (JSON Web Tokens) for stateless authentication and hardened CORS/CSRF configurations for multi-domain production.
+
+---
 
 ## 🛠 Setup & Installation
 
 ### Prerequisites
-* Python 3.9+
-* PostgreSQL 13+
-* Virtualenv
+* Python 3.11+
+* PostgreSQL 17+
+* AWS IAM Credentials (for S3)
 
 ### 1. Clone the repository
 ```bash
