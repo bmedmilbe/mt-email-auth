@@ -9,12 +9,17 @@ jobs:
   backup:
     runs-on: ubuntu-latest
     steps:
-      - name: Install PostgreSQL Client
-        run: sudo apt-get install -y postgresql-client
+      - name: Install PostgreSQL 17 Client
+        run: |
+          # Add the official PostgreSQL repo to get the latest version (17)
+          sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+          wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+          sudo apt-get update
+          sudo apt-get install -y postgresql-client-17
 
       - name: Dump Database
         env:
-          # This URL comes from your Railway Postgres "Variables" tab
+          # This URL comes from Railway Postgres "Variables" tab
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: |
           pg_dump $DATABASE_URL > backup_$(date +%Y-%m-%d).sql
