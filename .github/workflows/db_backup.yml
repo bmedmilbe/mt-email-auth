@@ -11,11 +11,8 @@ jobs:
     steps:
       - name: Install PostgreSQL 17 Client
         run: |
-          # 1. Add official PostgreSQL repository for version 17
           sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
-          # 2. Add the repository GPG key
           wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
-          # 3. Update and install only the version 17 client
           sudo apt-get update
           sudo apt-get install -y postgresql-client-17
 
@@ -23,13 +20,14 @@ jobs:
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: |
-          # Use the newly installed v17 client
-          pg_dump "$DATABASE_URL" > backup_$(date +%Y-%m-%d).sql
+          # Use the explicit path to version 17 to avoid version mismatch
+          /usr/lib/postgresql/17/bin/pg_dump "$DATABASE_URL" > backup_$(date +%Y-%m-%d).sql
 
       - name: Upload to S3
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_REGION: ${{ secrets.AWS_REGION }}
+          AWS_STORAGE_BUCKET_NAME: ${{ secrets.AWS_STORAGE_BUCKET_NAME }}
         run: |
-          aws s3 cp backup_*.sql s3://${{ secrets.AWS_STORAGE_BUCKET_NAME }}/backups/
+          aws s3 cp backup_*.sql s3://$AWS_STORAGE_BUCKET_NAME/backups/
