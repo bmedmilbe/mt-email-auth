@@ -1,0 +1,28 @@
+name: Nightly Database Backup to S3
+
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Runs at 00:00 UTC every day
+  workflow_dispatch:      # Allows you to click a button and run it manually
+
+jobs:
+  backup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install PostgreSQL Client
+        run: sudo apt-get install -y postgresql-client
+
+      - name: Dump Database
+        env:
+          # This URL comes from your Railway Postgres "Variables" tab
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          pg_dump $DATABASE_URL > backup_$(date +%Y-%m-%d).sql
+
+      - name: Upload to S3
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: ${{ secrets.AWS_REGION }}
+        run: |
+          aws s3 cp backup_*.sql s3://${{ secrets.AWS_STORAGE_BUCKET_NAME }}/backups/
