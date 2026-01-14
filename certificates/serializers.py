@@ -2721,6 +2721,16 @@ class CertificateUpdateSerializer(ModelSerializer):
         ]
 
 
+class BootstrapMetadataSerializer(serializers.Serializer):
+    countries = CountrySerializer(many=True)
+    idtypes = IDTypeSerializer(many=True)
+    institutions = InstituitionSerializer(many=True)
+    streets = StreetSerializer(many=True)
+    towns = TownSerializer(many=True)
+    countys = CountySerializer(many=True)
+    titles = CertificateTitleSerializer(many=True)
+
+
 # class CartSerializer(ModelSerializer):
 #     weigth = WeigthSerializer()
 #     country_from = CountrySerializer()

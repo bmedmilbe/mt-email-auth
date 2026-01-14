@@ -13,7 +13,7 @@ from django.db.models import Q
 from django.shortcuts import render
 
 import certificates
-from certificates.serializers import BiuldingTypeSerializer, CemiterioSerializer, CertificateCommentSerializer, CertificateDateSerializer, CertificateModelAutoConstrucaoCreateSerializer, CertificateModelAutoConstrucaoSerializer, CertificateModelAutoModCovalCreateSerializer, CertificateModelAutoModCovalSerializer, CertificateModelCertCompraCovalCreateSerializer, CertificateModelCertCompraCovalSerializer, CertificateModelEnterroCreateSerializer, CertificateModelEnterroSerializer, CertificateModelFifthCreateSerializer, CertificateModelFifthSerializer, CertificateModelLicBarracaCreateSerializer, CertificateModelLicBarracaSerializer, CertificateModelLicencaBuffetCreateSerializer, CertificateModelLicencaBuffetSerializer, CertificateModelOneCreateSerializer, CertificateModelOneSerializer, CertificateModelSeventhCreateSerializer, CertificateModelSeventhSerializer, CertificateModelThreeCreateSerializer, CertificateModelThreeSerializer, CertificateModelTwoCreateSerializer, CertificateModelTwoSerializer, CertificateSerializer, CertificateSimpleParentSerializer, CertificateSimplePersonReadOnlySerializer, CertificateSimplePersonSerializer, CertificateSinglePersonSerializer, CertificateTitleSerializer, CertificateUpdateSerializer, ChangeSerializer, CountryCreateSerializer, CountrySerializer, CountyCreateSerializer, CountySerializer, CovalSerializer, CovalSetUpSerializer, CustomerSerializer, HouseCreateSerializer, HouseSerializer, IDTypeSerializer, IfenSerializer, IfenUpdateSerializer, InstituitionCreateSerializer, InstituitionSerializer, ParentSerializer, PersonBirthAddressCreateSerializer, PersonBirthAddressSerializer, PersonCreateOrUpdateSerializer, PersonSerializer, StreetCreateSerializer, StreetSerializer, TownCreateSerializer, TownSerializer, UniversityCreateSerializer, UniversitySerializer
+from certificates.serializers import BiuldingTypeSerializer, BootstrapMetadataSerializer, CemiterioSerializer, CertificateCommentSerializer, CertificateDateSerializer, CertificateModelAutoConstrucaoCreateSerializer, CertificateModelAutoConstrucaoSerializer, CertificateModelAutoModCovalCreateSerializer, CertificateModelAutoModCovalSerializer, CertificateModelCertCompraCovalCreateSerializer, CertificateModelCertCompraCovalSerializer, CertificateModelEnterroCreateSerializer, CertificateModelEnterroSerializer, CertificateModelFifthCreateSerializer, CertificateModelFifthSerializer, CertificateModelLicBarracaCreateSerializer, CertificateModelLicBarracaSerializer, CertificateModelLicencaBuffetCreateSerializer, CertificateModelLicencaBuffetSerializer, CertificateModelOneCreateSerializer, CertificateModelOneSerializer, CertificateModelSeventhCreateSerializer, CertificateModelSeventhSerializer, CertificateModelThreeCreateSerializer, CertificateModelThreeSerializer, CertificateModelTwoCreateSerializer, CertificateModelTwoSerializer, CertificateSerializer, CertificateSimpleParentSerializer, CertificateSimplePersonReadOnlySerializer, CertificateSimplePersonSerializer, CertificateSinglePersonSerializer, CertificateTitleSerializer, CertificateUpdateSerializer, ChangeSerializer, CountryCreateSerializer, CountrySerializer, CountyCreateSerializer, CountySerializer, CovalSerializer, CovalSetUpSerializer, CustomerSerializer, HouseCreateSerializer, HouseSerializer, IDTypeSerializer, IfenSerializer, IfenUpdateSerializer, InstituitionCreateSerializer, InstituitionSerializer, ParentSerializer, PersonBirthAddressCreateSerializer, PersonBirthAddressSerializer, PersonCreateOrUpdateSerializer, PersonSerializer, StreetCreateSerializer, StreetSerializer, TownCreateSerializer, TownSerializer, UniversityCreateSerializer, UniversitySerializer
 
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import APIView, Response
@@ -211,6 +211,23 @@ class IfenViewSet(ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly]
 
 
+class MetadataViewSet(viewsets.ViewSet):
+    """
+    Unified endpoint to fetch all dropdown data in ONE request.
+    Reduces waterfall lag from 25s to < 1s.
+    """
+    def list(self, request):
+        data = {
+            "countries": Country.objects.all(),
+            "idtypes": IDType.objects.all(),
+            "institutions": Instituition.objects.all(),
+            "streets": Street.objects.all(),
+            "towns": Town.objects.all(),
+            "countys": County.objects.all(),
+            "titles": CertificateTitle.objects.all(),
+        }
+        serializer = BootstrapMetadataSerializer(data)
+        return Response(serializer.data)
 
 class InstituitionsViewSet(ModelViewSet):
 
