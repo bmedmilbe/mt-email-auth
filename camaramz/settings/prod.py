@@ -13,18 +13,22 @@ CORS_ALLOW_ALL_ORIGINS = False
 CSRF_COOKIE_SAMESITE = 'None'  
 SESSION_COOKIE_SAMESITE = 'None' 
 CORS_ALLOWED_ORIGINS = [
-    "https://cmz.st",
+   "https://cmz.st",
+    "https://www.cmz.st",
     "https://cecab.st",
-    "https://*.vercel.app",
-    "https://*.railway.app",
+    "https://www.cecab.st",
 ]
 
+CORS_ALLOWED_ORIGIN_REGEXES = [
+    r"^https://.*\.vercel\.app$",
+    r"^https://.*\.railway\.app$",
+    r"^https://.*\.up\.railway\.app$",
+]
 # Required for POST/PUT requests in production
 CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS + [
-    "https://cmz.st",
-    "https://cecab.st",
-    "https://*.vercel.app",
+   "https://*.vercel.app",  
     "https://*.railway.app",
+    "https://*.up.railway.app",
 ]
 
 # HTTPS Security Headers
