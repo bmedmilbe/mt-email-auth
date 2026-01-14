@@ -10,13 +10,13 @@ ALLOWED_HOSTS = ["camaramzapi-6cf2b687304f.herokuapp.com", ".railway.app", ".up.
 
 # --- CORS & CSRF CONFIGURATION ---
 CORS_ALLOW_ALL_ORIGINS = False
-
+CSRF_COOKIE_SAMESITE = 'None'  
+SESSION_COOKIE_SAMESITE = 'None' 
 CORS_ALLOWED_ORIGINS = [
     "https://cmz.st",
-    "https://www.cmz.st",
     "https://cecab.st",
-    "https://www.cecab.st",
-    "https://troca-4apd.vercel.app",
+    "https://*.vercel.app",
+    "https://*.railway.app",
 ]
 
 # Required for POST/PUT requests in production
