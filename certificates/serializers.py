@@ -2721,15 +2721,20 @@ class CertificateUpdateSerializer(ModelSerializer):
         ]
 
 
-class BootstrapMetadataSerializer(serializers.Serializer):
+class MetadataSerializer(serializers.Serializer):
     countries = CountrySerializer(many=True)
-    idtypes = IDTypeSerializer(many=True)
-    institutions = InstituitionSerializer(many=True)
+    universities = UniversitySerializer(many=True)
+    ifens = IfenSerializer(many=True)
+    buildings = BiuldingTypeSerializer(many=True)
+    cemiterios = CemiterioSerializer(many=True)
     streets = StreetSerializer(many=True)
+    changes = ChangeSerializer(many=True)
     towns = TownSerializer(many=True)
     countys = CountySerializer(many=True)
-    titles = CertificateTitleSerializer(many=True)
-
+    certificateTitles = CertificateTitleSerializer(many=True)
+    covals = CovalSerializer(many=True)
+    idtypes = IDTypeSerializer(many=True)
+    intituitions = InstituitionSerializer(many=True)
 
 # class CartSerializer(ModelSerializer):
 #     weigth = WeigthSerializer()
