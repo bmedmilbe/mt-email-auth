@@ -21,13 +21,17 @@ CORS_ALLOWED_ORIGINS = [
 
 # Required for POST/PUT requests in production
 CSRF_TRUSTED_ORIGINS = CORS_ALLOWED_ORIGINS + [
-    "https://*.railway.app",  
-    "https://*.up.railway.app"
+    "https://cmz.st",
+    "https://cecab.st",
+    "https://*.vercel.app",
+    "https://*.railway.app",
 ]
 
 # HTTPS Security Headers
 CSRF_COOKIE_SECURE = True
 SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SAMESITE = 'None'  
+SESSION_COOKIE_SAMESITE = 'None' 
 SECURE_SSL_REDIRECT = False
 SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
 
