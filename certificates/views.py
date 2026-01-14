@@ -5,6 +5,7 @@ from certificates.permission import IsStaff
 import stripe
 
 import os
+from rest_framework import viewsets
 from io import BytesIO
 from django.conf import settings
 from django.shortcuts import get_object_or_404
@@ -13,7 +14,7 @@ from django.db.models import Q
 from django.shortcuts import render
 
 import certificates
-from certificates.serializers import BiuldingTypeSerializer, CemiterioSerializer, CertificateCommentSerializer, CertificateDateSerializer, CertificateModelAutoConstrucaoCreateSerializer, CertificateModelAutoConstrucaoSerializer, CertificateModelAutoModCovalCreateSerializer, CertificateModelAutoModCovalSerializer, CertificateModelCertCompraCovalCreateSerializer, CertificateModelCertCompraCovalSerializer, CertificateModelEnterroCreateSerializer, CertificateModelEnterroSerializer, CertificateModelFifthCreateSerializer, CertificateModelFifthSerializer, CertificateModelLicBarracaCreateSerializer, CertificateModelLicBarracaSerializer, CertificateModelLicencaBuffetCreateSerializer, CertificateModelLicencaBuffetSerializer, CertificateModelOneCreateSerializer, CertificateModelOneSerializer, CertificateModelSeventhCreateSerializer, CertificateModelSeventhSerializer, CertificateModelThreeCreateSerializer, CertificateModelThreeSerializer, CertificateModelTwoCreateSerializer, CertificateModelTwoSerializer, CertificateSerializer, CertificateSimpleParentSerializer, CertificateSimplePersonReadOnlySerializer, CertificateSimplePersonSerializer, CertificateSinglePersonSerializer, CertificateTitleSerializer, CertificateUpdateSerializer, ChangeSerializer, CountryCreateSerializer, CountrySerializer, CountyCreateSerializer, CountySerializer, CovalSerializer, CovalSetUpSerializer, CustomerSerializer, HouseCreateSerializer, HouseSerializer, IDTypeSerializer, IfenSerializer, IfenUpdateSerializer, InstituitionCreateSerializer, InstituitionSerializer, ParentSerializer, PersonBirthAddressCreateSerializer, PersonBirthAddressSerializer, PersonCreateOrUpdateSerializer, PersonSerializer, StreetCreateSerializer, StreetSerializer, TownCreateSerializer, TownSerializer, UniversityCreateSerializer, UniversitySerializer
+from certificates.serializers import BiuldingTypeSerializer, CemiterioSerializer, CertificateCommentSerializer, CertificateDateSerializer, CertificateModelAutoConstrucaoCreateSerializer, CertificateModelAutoConstrucaoSerializer, CertificateModelAutoModCovalCreateSerializer, CertificateModelAutoModCovalSerializer, CertificateModelCertCompraCovalCreateSerializer, CertificateModelCertCompraCovalSerializer, CertificateModelEnterroCreateSerializer, CertificateModelEnterroSerializer, CertificateModelFifthCreateSerializer, CertificateModelFifthSerializer, CertificateModelLicBarracaCreateSerializer, CertificateModelLicBarracaSerializer, CertificateModelLicencaBuffetCreateSerializer, CertificateModelLicencaBuffetSerializer, CertificateModelOneCreateSerializer, CertificateModelOneSerializer, CertificateModelSeventhCreateSerializer, CertificateModelSeventhSerializer, CertificateModelThreeCreateSerializer, CertificateModelThreeSerializer, CertificateModelTwoCreateSerializer, CertificateModelTwoSerializer, CertificateSerializer, CertificateSimpleParentSerializer, CertificateSimplePersonReadOnlySerializer, CertificateSimplePersonSerializer, CertificateSinglePersonSerializer, CertificateTitleSerializer, CertificateUpdateSerializer, ChangeSerializer, CountryCreateSerializer, CountrySerializer, CountyCreateSerializer, CountySerializer, CovalSerializer, CovalSetUpSerializer, CustomerSerializer, HouseCreateSerializer, HouseSerializer, IDTypeSerializer, IfenSerializer, IfenUpdateSerializer, InstituitionCreateSerializer, InstituitionSerializer, MetadataSerializer, ParentSerializer, PersonBirthAddressCreateSerializer, PersonBirthAddressSerializer, PersonCreateOrUpdateSerializer, PersonSerializer, StreetCreateSerializer, StreetSerializer, TownCreateSerializer, TownSerializer, UniversityCreateSerializer, UniversitySerializer
 
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.views import APIView, Response
@@ -211,6 +212,30 @@ class IfenViewSet(ModelViewSet):
     permission_classes = [IsAuthenticatedOrReadOnly]
 
 
+# views.py
+
+class MetadataViewSet(viewsets.ViewSet):
+    """
+    Unified metadata endpoint to prevent 25s waterfall lag.
+    """
+    def list(self, request):
+        data = {
+            "countries": Country.objects.all().order_by('name'),
+            "universities": University.objects.all().order_by('name'),
+            "ifens": Ifen.objects.all().order_by('name'),
+            "buildings": BiuldingType.objects.all().order_by('name'),
+            "cemiterios": Cemiterio.objects.all().order_by('name'),
+            "streets": Street.objects.all().order_by('name'),
+            "changes": Change.objects.all().order_by('name'),
+            "towns": Town.objects.all().order_by('name'),
+            "countys": County.objects.all().order_by('name'),
+            "certificateTitles": CertificateTitle.objects.all().order_by('name'),
+            "covals": Coval.objects.all().order_by('number'),
+            "idtypes": IDType.objects.all().order_by('name'),
+            "intituitions": Instituition.objects.all().order_by('name'),
+        }
+        serializer = MetadataSerializer(data)
+        return Response(serializer.data)
 
 class InstituitionsViewSet(ModelViewSet):
 

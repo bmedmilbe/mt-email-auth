@@ -27,7 +27,7 @@ router.register("covalsetup", views.CovalSetUpViewSet, basename="covalsetup")
 router.register("parents", views.ParentViewSet, basename="parents")
 router.register("idtypes", views.IdTypeViewSet, basename="idtypes")
 router.register("intituitions", views.InstituitionsViewSet, basename="intituitions")
-
+router.register("metadata", views.MetadataViewSet, basename="metadata")
 # 3. Initialize the Nested Router (ONLY ONCE) with trailing_slash=False
 titles_router = routers.NestedSimpleRouter(router, r"titles", lookup="title", trailing_slash=False)
 
