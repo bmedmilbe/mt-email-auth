@@ -9,7 +9,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 ROOT_URLCONF = "camaramz.urls"
 WSGI_APPLICATION = "camaramz.wsgi.application"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
-APPEND_SLASH = True
+APPEND_SLASH = False
 
 # --- APPS ---
 INSTALLED_APPS = [
@@ -108,7 +108,14 @@ WHITENOISE_KEEP_ONLY_HASHED_FILES = True
 WHITENOISE_IGNORE_MISSING_FILES = True
 
 CORS_ALLOW_METHODS = ["DELETE", "GET", "OPTIONS", "PATCH", "POST", "PUT"]
-CORS_ALLOW_HEADERS = ["*"]
+CORS_ALLOW_HEADERS = [
+    "accept",
+    "authorization",
+    "content-type",
+    "user-agent",
+    "x-csrftoken",
+    "x-requested-with",
+    ]
 
 CSRF_COOKIE_HTTPONLY = False  
 SESSION_COOKIE_SECURE = False
