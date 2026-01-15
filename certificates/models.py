@@ -1,10 +1,7 @@
 from django.conf import settings
 from django.db import models
-from uuid import uuid4
-from pprint import pprint
-from django.core.validators import MinValueValidator
-from datetime import datetime
-
+from django.core.exceptions import ValidationError
+from datetime import date
 
 # Create your models here.
 
@@ -270,8 +267,20 @@ class Person(models.Model):
         max_length=1, choices=GENDER_CHOICES, null=True
     )
 
+    def clean(self):
+        super().clean()
+        if self.birth_date:
+            if self.birth_date > date.today():
+                raise ValidationError({
+                    'birth_date': "A data de nascimento não pode estar no futuro."
+                })
+            
     def __str__(self) -> str:
         return f"{self.name} {self.surname} with {self.id_type.name} {self.id_number} from {self.nationality.name if self.nationality != None else '' }"
+
+    def save(self, *args, **kwargs):
+        self.full_clean() 
+        super().save(*args, **kwargs)
 
 
 class CertificateTypes(models.Model):
