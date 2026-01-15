@@ -313,9 +313,6 @@ class StreetCreateSerializer(ModelSerializer):
         return super().create(validate_data)
 
 class StreetSerializer(ModelSerializer):
-    # town = serializers.SerializerMethodField(method_name="get_town")
-    # county = serializers.SerializerMethodField(method_name="get_county")
-    # country = serializers.SerializerMethodField(method_name="get_country")
     town = TownSerializer()
     
 
@@ -326,8 +323,7 @@ class StreetSerializer(ModelSerializer):
             "id",
             "name",
             "town",
-            # "county",
-            # "country",
+           
         ]
 
     # def get_town(self, street):
