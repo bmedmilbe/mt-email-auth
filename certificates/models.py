@@ -279,7 +279,6 @@ class Person(models.Model):
         return f"{self.name} {self.surname} with {self.id_type.name} {self.id_number} from {self.nationality.name if self.nationality != None else '' }"
 
     def save(self, *args, **kwargs):
-        self.full_clean() 
         super().save(*args, **kwargs)
 
 
