@@ -4,6 +4,6 @@ from bespoketour.models import Customer
 
 # Register your models here.
 
-# @admin.register(Customer)
-# class CustomerAdmin(admin.ModelAdmin):
-#     list_display = ["id"]
+@admin.register(Customer)
+class CustomerAdmin(admin.ModelAdmin):
+    list_display = ["id"]
