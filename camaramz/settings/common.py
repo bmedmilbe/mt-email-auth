@@ -33,6 +33,7 @@ INSTALLED_APPS = [
     "fly",
     "ground",
     "boleia",
+    "bespoketour",
     "setup",
     "core",
     "storages",
