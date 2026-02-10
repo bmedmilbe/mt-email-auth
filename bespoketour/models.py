@@ -21,7 +21,7 @@ class ProfileTag(models.Model):
 
 class Customer(models.Model):
     user = models.OneToOneField(
-        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="troca_customer")
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="bespoketour_customer")
     def __str__(self):
         return self.user.first_name
 
