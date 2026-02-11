@@ -1,11 +1,13 @@
 from django.contrib import admin
 
-from bespoketour.models import BespokeTag, Customer, ProfileTag, ProfileType
+from bespoketour.models import BespokeTag, Customer, CustomerTag, ProfileTag, ProfileType
 
 
 
 class ProfileTagInline(admin.TabularInline):
     model = ProfileTag
+class CustomerTagInline(admin.TabularInline):
+    model = CustomerTag
     
 
 # Register your models here.
@@ -27,6 +29,7 @@ class CustomerAdmin(admin.ModelAdmin):
     list_display = ["user"]
     ordering = ["user"]
     autocomplete_fields = ["profile_type"]
+    inlines = [CustomerTagInline]
 
 
 

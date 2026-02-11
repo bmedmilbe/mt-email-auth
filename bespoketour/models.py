@@ -17,8 +17,8 @@ class BespokeTag(models.Model):
         return self.title
 
 class ProfileTag(models.Model):
-    profile_type = models.ForeignKey(ProfileType, on_delete=models.CASCADE)
-    bespoke_tag = models.ForeignKey(BespokeTag, on_delete=models.CASCADE)
+    profile_type = models.ForeignKey(ProfileType, on_delete=models.CASCADE, related_name='profile_tags')
+    bespoke_tag = models.ForeignKey(BespokeTag, on_delete=models.CASCADE, related_name='profile_tags')
     
     class Meta():
         unique_together = ["profile_type", "bespoke_tag"]
@@ -29,7 +29,7 @@ class Customer(models.Model):
     def __str__(self):
         return self.user.first_name
 
-    profile_type = models.ForeignKey(ProfileType, on_delete=models.SET_NULL, null=True)
+    profile_type = models.ForeignKey(ProfileType, on_delete=models.SET_NULL, null=True, related_name='customer_profile')
 
 class CustomerTag(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
