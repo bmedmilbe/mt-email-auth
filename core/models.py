@@ -16,6 +16,6 @@ class User(AbstractUser):
     # REQUIRED_FIELDS = []  # removes email from REQUIRED_FIELDS
 
     def __str__(self) -> str:
-        return f'{self.first_name} {self.last_name}'
+        return f'{self.first_name} {self.last_name} {self.email}'
 
 

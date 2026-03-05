@@ -39,6 +39,10 @@ class UserCreateSerializer(UserCreateSerializer):
             "username",
         ]
 
+    def validate_email(self, value):
+        if User.objects.filter(email=value).exists():
+            raise serializers.ValidationError({"email":["This email is already in use."]})
+        return value
 
 class UserSerializer(UserSerializer):
     class Meta:
