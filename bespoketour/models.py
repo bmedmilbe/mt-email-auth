@@ -7,6 +7,7 @@ class ProfileType(models.Model):
     title = models.CharField(max_length=255, unique=True)
     slug = models.SlugField(max_length=255, unique=True)
     image=models.CharField(max_length=255, unique=True)
+    weight = models.DecimalField(decimal_places=1,max_digits=2,default=1.0)
     def __str__(self):
         return self.title
 class BespokeTag(models.Model):
@@ -29,10 +30,10 @@ class Customer(models.Model):
     def __str__(self):
         return self.user.first_name
 
-    profile_type = models.ForeignKey(ProfileType, on_delete=models.SET_NULL, null=True, related_name='customer_profile')
+    profile_type = models.ForeignKey(ProfileType, on_delete=models.SET_NULL, null=True, related_name='customer_profile', blank=True)
 
 class CustomerTag(models.Model):
-    customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
-    bespoke_tag = models.ForeignKey(BespokeTag, on_delete=models.CASCADE)
+    customer = models.ForeignKey(Customer, on_delete=models.CASCADE, related_name="customer_tags")
+    bespoke_tag = models.ForeignKey(BespokeTag, on_delete=models.CASCADE, related_name="customer_tags")
 
 
