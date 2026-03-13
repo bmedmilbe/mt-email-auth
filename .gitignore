@@ -45,3 +45,6 @@ staticfiles/
 
 docker-compose.yml
 *.dump
+
+backup_before_cleanup.sql
+backupo.sql
