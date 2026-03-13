@@ -36,3 +36,6 @@ general.log
 docker-compose.yml
 
 .dockerignore
+
+backup_before_cleanup.sql
+backupo.sql

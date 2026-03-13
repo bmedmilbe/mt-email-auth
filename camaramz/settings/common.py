@@ -29,7 +29,6 @@ INSTALLED_APPS = [
     "store",
     "ormed",
     "cecab",
-    "nanehouse",
     "fly",
     "ground",
     "boleia",

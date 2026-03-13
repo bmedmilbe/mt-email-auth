@@ -29,7 +29,6 @@ urlpatterns = [
     path("cmz/", include("cmz.urls")),
     path("ormed/", include("ormed.urls")),
     path("cecab/", include("cecab.urls")),
-    path("nanehouse/", include("nanehouse.urls")),
     path("fly/", include("fly.urls")),
     path("troca/", include("troca.urls")),
     path("ground/", include("ground.urls")),
