@@ -1,48 +1,69 @@
+from pprint import pprint
+
+from django.contrib.auth import get_user_model
+from django.contrib.contenttypes.models import ContentType
 from djoser.serializers import (
-    UserCreateSerializer,
-    UserSerializer,
+    PasswordResetConfirmRetypeSerializer,
     SetPasswordRetypeSerializer,
     SetUsernameSerializer,
-    # SendEmailResetSerializer,
-    PasswordResetConfirmRetypeSerializer,
+    UserCreateSerializer,
+    UserSerializer,
 )
-from django.db.transaction import atomic
-from rest_framework.serializers import ModelSerializer
 from rest_framework import serializers
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
+
 from .models import User
-from pprint import pprint
-import random
-import string
-from django.conf import settings
 
-from django.core.mail import get_connection, send_mail
-from django.core.mail.message import EmailMessage
-from django.template.loader import render_to_string
-from django.core.mail import EmailMultiAlternatives
-from django.template.loader import get_template
-from django.template import Context
-from django.contrib.contenttypes.models import ContentType
-# from django.contrib.auth.models import User
+User = get_user_model()
 
-# https://stackoverflow.com/questions/2809547/creating-email-templates-with-django
 
 class UserCreateSerializer(UserCreateSerializer):
-    class Meta:
+    class Meta(UserCreateSerializer.Meta):
         model = User
-        fields = [
-            "id",
-            "first_name",
-            "last_name",
-            "email",
-            "parthner",
-            "password",
-            "username",
-        ]
+        fields = ('id', 'username', 'email', 'phone', 'password', 'tenant', 'partner')
+        validators = []
 
-    def validate_email(self, value):
-        if User.objects.filter(email=value).exists():
-            raise serializers.ValidationError({"email":["This email is already in use."]})
-        return value
+    def validate(self, attrs):
+        # 1. Extract values from the data
+        email = attrs.get('email')
+        username = phone = attrs.get('phone')
+        tenant = attrs.get('tenant')
+        
+        if phone == '':
+            attrs['phone'] = None
+            phone=None
+
+        if email == '':
+            attrs['email'] = None
+            email = None
+        else:
+            username = email
+
+        # 2. Logic: Require at least one (as requested previously)
+        if not email and not phone:
+            raise serializers.ValidationError(
+                {"username": ["You must provide either an email or a phone number."]}
+            )
+
+        # 3. Validate duplicated Email per Tenant
+        if email:
+            if User.objects.filter(email=email, tenant=tenant).exists():
+                raise serializers.ValidationError(
+                    {"email": ["An user with this email already exists in this tenant."]}
+                )
+
+        # 4. Validate duplicated Phone per Tenant
+        if phone:
+            if User.objects.filter(phone=phone, tenant=tenant).exists():
+                raise serializers.ValidationError(
+                    {"phone": ["An user with this phone number already exists in this tenant."]}
+                )
+
+        attrs['username'] = f"{tenant.id}_{username}"
+
+        return super().validate(attrs)
+    
+
 
 class UserSerializer(UserSerializer):
     class Meta:
@@ -98,3 +119,13 @@ class SetUsernameSerializer(SetUsernameSerializer):
     class Meta:
         model = User
         fields = ["id", "new_email", "re_new_email", "current_password"]
+
+
+
+class TenantTokenObtainPairSerializer(TokenObtainPairSerializer):
+    @classmethod
+    def get_token(cls, user):
+        token = super().get_token(user)
+        # Add custom claims
+        token['tenant_id'] = user.tenant_id 
+        return token
