@@ -32,3 +32,7 @@ class UserAdmin(admin.ModelAdmin):
             # pass
             return qs  # Superusers see all records
         return qs.filter(parthner=request.user.parthner)  # Others see only their own records
+
+@admin.register(models.Tenant)
+class TenantAdmin(admin.ModelAdmin):
+    list_display = ["id", "name"]

@@ -76,6 +76,14 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
 
+# --- TENANT ---
+TENANT_MODEL = "core.Tenant"
+
+AUTHENTICATION_BACKENDS = [
+    'core.backends.TenantEmailOrPhoneBackend',
+    'django.contrib.auth.backends.ModelBackend',
+]
+
 # --- INTERNATIONALIZATION ---
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
@@ -141,6 +149,8 @@ DJOSER = {
     "PASSWORD_RESET_CONFIRM_URL": "auth/reset-password/{uid}/{token}",
     "PASSWORD_RESET_CONFIRM_RETYPE": True,
     "PASSWORD_RESET_SHOW_EMAIL_NOT_FOUND": True,
+    'LOGIN_FIELD': 'email',  
+    'USER_ID_FIELD': 'id',
     "SERIALIZERS": {
         "user_create": "core.serializers.UserCreateSerializer",
         "user": "core.serializers.UserSerializer",
@@ -150,12 +160,16 @@ DJOSER = {
         "password_reset": "core.serializers.SendEmailResetSerializer",
         "password_reset_confirm_retype": "core.serializers.PasswordResetConfirmRetypeSerializer",
     },
+
+    
+   
 }
 
 SIMPLE_JWT = {
     "AUTH_HEADER_TYPES": ("JWT",),
     "ACCESS_TOKEN_LIFETIME": timedelta(days=1),
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+    "TOKEN_OBTAIN_PAIR_SERIALIZER": 'core.serializers.TenantTokenObtainPairSerializer',
 }
 
 # --- EMAIL SETTINGS ---

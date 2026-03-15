@@ -8,6 +8,6 @@ from pprint import pprint
 @receiver(post_save, sender=settings.AUTH_USER_MODEL)
 def create_new_customer_for_new_user(sender, **kwargs):
     if kwargs["created"]:
-        if kwargs["instance"].parthner==6:
+        if kwargs["instance"].partner==6:
             Customer.objects.create(user=kwargs["instance"])
 

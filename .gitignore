@@ -48,3 +48,4 @@ docker-compose.yml
 
 backup_before_cleanup.sql
 backupo.sql
+cms/
