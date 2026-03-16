@@ -11,7 +11,7 @@ class Customer(models.Model):
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
     level = models.IntegerField(default=1, null=True)
-
+    backstaff = models.BooleanField(default=False)
     def __str__(self) -> str:
         return f"{self.user.first_name} {self.user.last_name}"
 
