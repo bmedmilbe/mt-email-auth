@@ -15,8 +15,9 @@ class BaseAdmin(admin.ModelAdmin):
 
 @admin.register(models.Customer)
 class CustomerAdmin(admin.ModelAdmin):
-    list_display = ["user"]
+    list_display = ["user", "backstaff"]
     ordering = ["user"]
+    list_editable = ["backstaff"]
 
 @admin.register(models.Country, models.County, models.Town)
 class LocationAdmin(BaseAdmin):
