@@ -88,7 +88,7 @@ class CustomerSerializer(ModelSerializer):
         return customer.user.first_name
     
     def get_back_staff(self, customer: Customer):
-        return customer.user.backstaff
+        return customer.backstaff
 
     def get_last_name(self, customer: Customer):
         return customer.user.last_name
