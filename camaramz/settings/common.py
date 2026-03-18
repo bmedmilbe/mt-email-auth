@@ -28,6 +28,7 @@ INSTALLED_APPS = [
     "troca",
     "ormed",
     "cecab",
+    "cms",
     "fly",
     "ground",
     "bespoketour",
