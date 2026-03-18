@@ -27,8 +27,6 @@ class SecreatarySection(models.Model):
     secretary = models.ForeignKey(Secretary,
                              on_delete=models.CASCADE)
     
-    
-
 
 class Tour(models.Model):
     title = models.CharField(max_length=255)
