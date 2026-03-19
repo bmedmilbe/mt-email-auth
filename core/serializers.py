@@ -20,7 +20,7 @@ User = get_user_model()
 class UserCreateSerializer(UserCreateSerializer):
     class Meta(UserCreateSerializer.Meta):
         model = User
-        fields = ('id', 'username', 'email', 'phone', 'password', 'partner')
+        fields = ('id', 'username', 'email','first_name','last_name', 'phone', 'password', 'partner')
         validators = []
 
     def validate(self, attrs):
