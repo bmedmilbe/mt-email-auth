@@ -206,34 +206,7 @@ class CertificateViewSet(
     mixins.DestroyModelMixin, 
     GenericViewSet
     ):
-    queryset = Certificate.objects.select_related(
-        "type__certificate_type", 
-        'main_person__id_type',
-        'main_person__id_issue_local',
-        'main_person__id_issue_country',
-        'main_person__nationality',
-        'main_person__birth_address',
-        'main_person__address',
-        'main_person__birth_address__birth_street__town__county__country',
-        'main_person__birth_address__birth_town__county__country',
-        'main_person__birth_address__birth_county__country',
-        'main_person__birth_address__birth_country',
-        'main_person__address__street__town__county__country',
-        'main_person__address__street__county__country',
-        "house__street__county__country", 
-        "secondary_person",
-        'secondary_person__id_type',
-        'secondary_person__id_issue_local',
-        'secondary_person__id_issue_country',
-        'secondary_person__nationality',
-        'secondary_person__birth_address',
-        'secondary_person__address',
-        'secondary_person__birth_address__birth_street__town__county__country',
-        'secondary_person__birth_address__birth_town__county__country',
-        'secondary_person__birth_address__birth_county__country',
-        'secondary_person__birth_address__birth_country',
-        'secondary_person__address__street__town__county__country',
-        'secondary_person__address__street__county__country').order_by("-id")
+    queryset = Certificate.objects.optimized().order_by("-id")
     
     
     pagination_class = PageNumberPagination
@@ -268,7 +241,34 @@ class CertificateTitleViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, 
 
 class CertificateModelViewSet(ModelViewSet):
     def get_queryset(self):
-        return Certificate.objects.select_related("type", "main_person", "house", "secondary_person").order_by("-id")
+        return Certificate.objects.select_related(
+        "type__certificate_type", 
+        'main_person__id_type',
+        'main_person__id_issue_local',
+        'main_person__id_issue_country',
+        'main_person__nationality',
+        'main_person__birth_address',
+        'main_person__address',
+        'main_person__birth_address__birth_street__town__county__country',
+        'main_person__birth_address__birth_town__county__country',
+        'main_person__birth_address__birth_county__country',
+        'main_person__birth_address__birth_country',
+        'main_person__address__street__town__county__country',
+        'main_person__address__street__county__country',
+        "house__street__county__country", 
+        "secondary_person",
+        'secondary_person__id_type',
+        'secondary_person__id_issue_local',
+        'secondary_person__id_issue_country',
+        'secondary_person__nationality',
+        'secondary_person__birth_address',
+        'secondary_person__address',
+        'secondary_person__birth_address__birth_street__town__county__country',
+        'secondary_person__birth_address__birth_town__county__country',
+        'secondary_person__birth_address__birth_county__country',
+        'secondary_person__birth_address__birth_country',
+        'secondary_person__address__street__town__county__country',
+        'secondary_person__address__street__county__country').order_by("-id")
 
     def get_serializer_class(self):
         type_id = int(self.kwargs.get('title_pk'))
@@ -444,22 +444,7 @@ class PersonViewSet(
     ordering_fields = ["name", "id_number", "birth_date", "id_issue_date"]
 
     def get_queryset(self):
-        return Person.objects.select_related(
-        'id_type',
-        'id_issue_local',
-        'id_issue_country',
-        'nationality',
-        'birth_address',
-        'address',
-
-        'birth_address__birth_street__town__county__country',
-        'birth_address__birth_town__county__country',
-        'birth_address__birth_county__country',
-        'birth_address__birth_country',
-
-        'address__street__town__county__country',
-        'address__street__county__country',
-    ).all()
+        return Person.objects.optimized().all()
 
     def get_serializer_class(self):
         if self.request.method in ["POST", "PUT"]:

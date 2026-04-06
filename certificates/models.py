@@ -188,8 +188,26 @@ class Instituition(models.Model):
     def __str__(self) -> str:
         return f"{self.name}"
 
+class PersonQuerySet(models.QuerySet):
+    def optimized(self):
+        return self.select_related(
+            'id_type',
+            'id_issue_local',
+            'id_issue_country',
+            'nationality',
+            'birth_address',
+            'birth_address__birth_street__town__county__country',
+            'birth_address__birth_town__county__country',
+            'birth_address__birth_county__country',
+            'birth_address__birth_country',
+            'address__street__town__county__country',
+            'address__street__county__country',
+        )
+
 class Person(models.Model):
     id = models.AutoField(primary_key=True)
+    objects = PersonQuerySet.as_manager()
+
     name = models.TextField()
     surname = models.TextField(db_index=True)
     id_number = models.TextField(db_index=True)
@@ -323,9 +341,43 @@ class CertificateTitle(models.Model):
     def __str__(self) -> str:
         return f"{self.certificate_type.name} {self.goal} {self.name}"
 
+class CertificateQuerySet(models.QuerySet):
+    def optimized(self):
+        return self.select_related(
+            "type__certificate_type", 
+            'main_person__id_type',
+            'main_person__id_issue_local',
+            'main_person__id_issue_country',
+            'main_person__nationality',
+            'main_person__birth_address',
+            'main_person__address',
+            'main_person__birth_address__birth_street__town__county__country',
+            'main_person__birth_address__birth_town__county__country',
+            'main_person__birth_address__birth_county__country',
+            'main_person__birth_address__birth_country',
+            'main_person__address__street__town__county__country',
+            'main_person__address__street__county__country',
+            "house__street__county__country", 
+            "secondary_person",
+            'secondary_person__id_type',
+            'secondary_person__id_issue_local',
+            'secondary_person__id_issue_country',
+            'secondary_person__nationality',
+            'secondary_person__birth_address',
+            'secondary_person__address',
+            'secondary_person__birth_address__birth_street__town__county__country',
+            'secondary_person__birth_address__birth_town__county__country',
+            'secondary_person__birth_address__birth_county__country',
+            'secondary_person__birth_address__birth_country',
+            'secondary_person__address__street__town__county__country',
+            'secondary_person__address__street__county__country'
+        )
+
 
 class Certificate(models.Model):
     id = models.AutoField(primary_key=True)
+
+    objects = CertificateQuerySet.as_manager()
 
     type = models.ForeignKey(
         'CertificateTitle', on_delete=models.PROTECT, null=True, db_index=True)
