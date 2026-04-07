@@ -10,19 +10,16 @@ WORKDIR /app
 
 # Install system dependencies for psycopg2/pillow
 RUN apt-get update && apt-get install -y \
-    libpq-dev \
-    gcc \
-    python3-dev \
-    libjpeg-dev \
-    zlib1g-dev \
-    && pip install --no-cache-dir pipenv \
+    libpq-dev gcc python3-dev libjpeg-dev zlib1g-dev \
+    libcairo2-dev pkg-config \
     && rm -rf /var/lib/apt/lists/*
 
-# 1. Copy only Pipfiles first (Better for build caching)
+RUN pip install --no-cache-dir pipenv
+
 COPY Pipfile Pipfile.lock /app/
 
-# 2. Install dependencies
 RUN pipenv install --deploy --system
+
 
 # 3. NOW copy the rest of your project code
 COPY . /app/

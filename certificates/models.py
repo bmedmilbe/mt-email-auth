@@ -3,7 +3,12 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from datetime import date
 
+class CustomerQuerySet(models.QuerySet):
+    def optimized(self):
+        return self.select_related("user__tenant")
+
 class Customer(models.Model):
+    objects = CustomerQuerySet.as_manager()
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
@@ -40,8 +45,12 @@ class Parent(models.Model):
     def __str__(self) -> str:
         return f"{self.title}"
 
+class CountyQuerySet(models.QuerySet):
+    def optimized(self):
+        return self.select_related('country')
 
 class County(models.Model):
+    objects = CountyQuerySet.as_manager()
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255)
     country = models.ForeignKey(Country, on_delete=models.CASCADE)
@@ -49,8 +58,12 @@ class County(models.Model):
     def __str__(self) -> str:
         return f"{self.name} - {self.country.name}"
 
+class TownQuerySet(models.QuerySet):
+    def optimized(self):
+        return self.select_related('county__country')
 
 class Town(models.Model):
+    objects = TownQuerySet.as_manager() 
     name = models.CharField(max_length=255)
     slug = models.SlugField(max_length=255)
 
@@ -59,8 +72,12 @@ class Town(models.Model):
     def __str__(self) -> str:
         return f"{self.name} - {self.county.name}"
 
+class CemiterioQuerySet(models.QuerySet):
+    def optimized(self):
+        return self.select_related('county__country')
 
 class Cemiterio(models.Model):
+    objects = CemiterioQuerySet.as_manager()
     name = models.CharField(max_length=255)
 
     county = models.ForeignKey(County, on_delete=models.CASCADE)
@@ -70,7 +87,12 @@ class Cemiterio(models.Model):
         return f"{self.name}"
 
 
+class CovalQuerySet(models.QuerySet):
+    def optimized(self):
+        return self.select_related('cemiterio__county__country')
+
 class Coval(models.Model):
+    objects = CovalQuerySet.as_manager()
     nick_number = models.CharField(max_length=255)
     number = models.CharField(max_length=255, null=True, blank=True)
     name = models.CharField(max_length=255, null=True, blank=True)
@@ -121,8 +143,12 @@ class BiuldingType(models.Model):
     def __str__(self) -> str:
         return f"{self.prefix} {self.name}"
 
+class StreetQuerySet(models.QuerySet):
+    def optimized(self):
+        return self.select_related('town__county__country', 'county__country')
 
 class Street(models.Model):
+    objects = StreetQuerySet.as_manager()
     name = models.CharField(max_length=255)
     town = models.ForeignKey(Town, on_delete=models.CASCADE, null=True)
     slug = models.SlugField(max_length=255)
@@ -132,8 +158,11 @@ class Street(models.Model):
         
         return f"{self.name}"
 
-
+class HouseQuerySet(models.QuerySet):
+    def optimized(self):
+        return self.select_related('street__town__county__country', 'street__county__country')
 class House(models.Model):
+    objects = HouseQuerySet.as_manager()
     house_number = models.CharField(max_length=255, null=True)
     street = models.ForeignKey(Street, on_delete=models.CASCADE)
 
@@ -141,7 +170,6 @@ class House(models.Model):
 
     def __str__(self) -> str:
         return f""
-        return f"{self.house_number} {self.street.name}, {self.street.town.name}, {self.street.town.county.country.name}"
 
 
 class IDType(models.Model):
@@ -150,8 +178,11 @@ class IDType(models.Model):
     def __str__(self) -> str:
         return f"{self.name}"
 
-
+class PersonBirthAddressQuerySet(models.QuerySet):
+    def optimized(self):
+        return self.select_related('birth_street__town__county__country', 'birth_town__county__country', 'birth_county__country', 'birth_country')
 class PersonBirthAddress(models.Model):
+    objects = PersonBirthAddressQuerySet.as_manager()
     birth_street = models.ForeignKey(
         Street, on_delete=models.PROTECT, null=True, related_name="birth_person_address")
     birth_town = models.ForeignKey(
@@ -188,18 +219,34 @@ class Instituition(models.Model):
     def __str__(self) -> str:
         return f"{self.name}"
 
+class PersonQuerySet(models.QuerySet):
+    def optimized(self):
+        return self.select_related(
+            'id_type',
+            'id_issue_local',
+            'id_issue_country',
+            'nationality',
+            'birth_address',
+            'birth_address__birth_street__town__county__country',
+            'birth_address__birth_town__county__country',
+            'birth_address__birth_county__country',
+            'birth_address__birth_country',
+            'address__street__town__county__country',
+            'address__street__county__country',
+        )
 
 class Person(models.Model):
     id = models.AutoField(primary_key=True)
+    objects = PersonQuerySet.as_manager()
 
-    name = models.CharField(max_length=255)
-    surname = models.CharField(max_length=255, default="", null=True)
-    birth_date = models.DateField(
-        null=True, blank=True)
+    name = models.TextField()
+    surname = models.TextField(db_index=True)
+    id_number = models.TextField(db_index=True)
+    
+    birth_date = models.DateField(null=True, blank=True, db_index=True)
     birth_day = models.IntegerField(null=True)
     birth_month = models.IntegerField(null=True)
     birth_year = models.IntegerField(null=True)
-
 
     bi_nasc_loc = models.IntegerField(null=True)
     birth_address = models.ForeignKey(
@@ -207,13 +254,12 @@ class Person(models.Model):
 
     id_type = models.ForeignKey(IDType, on_delete=models.PROTECT)
 
-    id_number = models.CharField(max_length=255)
     id_issue_local = models.ForeignKey(
         Instituition, on_delete=models.PROTECT, related_name="id_issue_person")
     id_issue_country = models.ForeignKey(
         Country, on_delete=models.PROTECT, related_name="id_issue_person", null=True)
     
-    id_issue_date = models.DateField(null=True)
+    id_issue_date = models.DateField(null=True, db_index=True)
     id_issue_day = models.IntegerField(null=True, default=1)
     id_issue_month = models.IntegerField(null=True, default=1)
     id_issue_year = models.IntegerField(null=True, default=1)
@@ -222,8 +268,8 @@ class Person(models.Model):
     nationality = models.ForeignKey(
         Country, on_delete=models.PROTECT, related_name="person_nationality", null=True)
 
-    father_name = models.CharField(max_length=255, null=True)
-    mother_name = models.CharField(max_length=255, null=True)
+    father_name = models.TextField(null=True)
+    mother_name = models.TextField(null=True)
 
     address = models.ForeignKey(
         House, on_delete=models.PROTECT, related_name='person', null=True)
@@ -244,8 +290,9 @@ class Person(models.Model):
     bi_estado = models.IntegerField(null=True)
     bi_sexo = models.IntegerField(null=True)
 
-    status = models.CharField(
-        max_length=1, choices=MARRITIAL_STATUS_CHOICES, null=True
+    # Kept TextField here to match your request, but limited by choices
+    status = models.TextField(
+        choices=MARRITIAL_STATUS_CHOICES, null=True
     )
 
     GENDER_MALE = "M"
@@ -254,9 +301,15 @@ class Person(models.Model):
         (GENDER_MALE, "Male"),
         (GENDER_FEMALE, "Female"),
     ]
-    gender = models.CharField(
-        max_length=1, choices=GENDER_CHOICES, null=True
+    gender = models.TextField(
+        choices=GENDER_CHOICES, null=True
     )
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['name', 'surname']),
+        ]
+
 
     def clean(self):
         super().clean()
@@ -305,9 +358,12 @@ class Ifen(models.Model):
     def __str__(self) -> str:
         return str(self.size)
 
+class CertificateTitleQuerySet(models.QuerySet):
+    def optimized(self):
+        return self.select_related('certificate_type')
 
 class CertificateTitle(models.Model):
-
+    objects = CertificateTitleQuerySet.as_manager()
     name = models.CharField(max_length=255)  
     certificate_type = models.ForeignKey(
         CertificateTypes, on_delete=models.CASCADE, null=True)
@@ -319,54 +375,95 @@ class CertificateTitle(models.Model):
     def __str__(self) -> str:
         return f"{self.certificate_type.name} {self.goal} {self.name}"
 
+class CertificateQuerySet(models.QuerySet):
+    def optimized(self):
+        return self.select_related(
+            "type__certificate_type", 
+            'main_person__id_type',
+            'main_person__id_issue_local',
+            'main_person__id_issue_country',
+            'main_person__nationality',
+            'main_person__birth_address',
+            'main_person__address',
+            'main_person__birth_address__birth_street__town__county__country',
+            'main_person__birth_address__birth_town__county__country',
+            'main_person__birth_address__birth_county__country',
+            'main_person__birth_address__birth_country',
+            'main_person__address__street__town__county__country',
+            'main_person__address__street__county__country',
+            "house__street__county__country", 
+            "secondary_person",
+            'secondary_person__id_type',
+            'secondary_person__id_issue_local',
+            'secondary_person__id_issue_country',
+            'secondary_person__nationality',
+            'secondary_person__birth_address',
+            'secondary_person__address',
+            'secondary_person__birth_address__birth_street__town__county__country',
+            'secondary_person__birth_address__birth_town__county__country',
+            'secondary_person__birth_address__birth_county__country',
+            'secondary_person__birth_address__birth_country',
+            'secondary_person__address__street__town__county__country',
+            'secondary_person__address__street__county__country'
+        )
+
 
 class Certificate(models.Model):
-
-    
     id = models.AutoField(primary_key=True)
 
+    objects = CertificateQuerySet.as_manager()
+
     type = models.ForeignKey(
-        CertificateTitle, on_delete=models.PROTECT, null=True)
-    number = models.CharField(max_length=255, null=True)
-    date_issue = models.DateTimeField(auto_now=True, null=True)
-    text = models.TextField(default="", null=True)
-    main_person = models.ForeignKey(
-        Person, on_delete=models.PROTECT, related_name="main_person_certificates", null=True)
-    secondary_person = models.ForeignKey(
-        Person, on_delete=models.PROTECT, null=True, related_name="second_person_certificates")
-    house = models.ForeignKey(
-        House, on_delete=models.PROTECT, related_name="certificates", null=True)
-    file = models.FileField(
-        upload_to='camaramz/certificates', null=True, blank=True)
-
-    STATUS_COMPLETED = "C"
-    STATUS_FAILD = "F"
-    STATUS_PENDENT = "P"
-    STATUS_REVIEWED = "R"
-    STATUS_ARCHIVED = "A"
-    STATUS_CHOICES = [
-        (STATUS_COMPLETED, "Concluído"),
-        (STATUS_FAILD, "Incorrecto"),
-        (STATUS_PENDENT, "Pendente"),
-        (STATUS_REVIEWED, "Revisto"),
-        (STATUS_ARCHIVED, "Archived"),
-    ]
-
-    status = models.CharField(
-        max_length=1, choices=STATUS_CHOICES, default=STATUS_PENDENT, null=True
+        'CertificateTitle', on_delete=models.PROTECT, null=True, db_index=True)
+    
+    number = models.TextField(null=True, db_index=True)
+    
+    status = models.TextField(
+        choices=[
+            ("C", "Concluído"),
+            ("F", "Incorrecto"),
+            ("P", "Pendente"),
+            ("R", "Revisto"),
+            ("A", "Archived"),
+        ], 
+        default="P", 
+        null=True,
+        db_index=True 
     )
 
+    date_issue = models.DateTimeField(auto_now=True, null=True, db_index=True)
+    
+    text = models.TextField(default="", null=True)
+    
+    main_person = models.ForeignKey(
+        'Person', on_delete=models.PROTECT, related_name="main_person_certificates", null=True)
+    secondary_person = models.ForeignKey(
+        'Person', on_delete=models.PROTECT, null=True, related_name="second_person_certificates")
+    house = models.ForeignKey(
+        'House', on_delete=models.PROTECT, related_name="certificates", null=True)
+    
+    file = models.FileField(upload_to='camaramz/certificates', null=True, blank=True)
     obs = models.TextField(null=True)
 
     atestado_state = models.IntegerField(null=True, default=1)
     type_id1 = models.IntegerField(null=True)
 
+    class Meta:
+        indexes = [
+            models.Index(fields=['number', 'status']),
+        ]
+
+
     def __str__(self) -> str:
         return f"{self.type.name} {self.number}"
 
 
-class CertificateSimplePerson(models.Model):
+class CertificateSimplePersonQuerySet(models.QuerySet):
+    def optimized(self):
+        return self.select_related('type__certificate_type')
 
+class CertificateSimplePerson(models.Model):
+    objects = CertificateSimplePersonQuerySet.as_manager()
     type = models.ForeignKey(CertificateTitle, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
 
@@ -385,10 +482,12 @@ class CertificateSimplePerson(models.Model):
         return f"{self.name}"
 
  
-
+class CertificateSimpleParentQuerySet(models.QuerySet):
+    def optimized(self):
+        return self.select_related('type__certificate_type', 'parent')
 
 class CertificateSimpleParent(models.Model):
-
+    objects = CertificateSimpleParentQuerySet.as_manager()
     type = models.ForeignKey(CertificateTitle, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
 
@@ -406,8 +505,12 @@ class CertificateSimpleParent(models.Model):
         return f"{self.name}"
 
 
-class CertificateSinglePerson(models.Model):
 
+class CertificateSinglePersonQuerySet(models.QuerySet):
+    def optimized(self):
+        return self.select_related('type__certificate_type')
+class CertificateSinglePerson(models.Model):
+    objects = CertificateSinglePersonQuerySet.as_manager()
     type = models.ForeignKey(CertificateTitle, on_delete=models.CASCADE)
     name = models.CharField(max_length=255)
 
@@ -441,22 +544,50 @@ class CertificateRange(models.Model):
     )
     price = models.DecimalField(max_digits=8, decimal_places=2)
 
-class CertificateDate(models.Model):
+class CertificateDateQuerySet(models.QuerySet):
+    def optimized(self):
+        return self.select_related('type__certificate_type')
 
+class CertificateDate(models.Model):
+    objects = CertificateDateQuerySet.as_manager()
     type = models.ForeignKey(CertificateTitle, on_delete=models.CASCADE)
     date = models.DateField()
 
 
+class CertificateDataQuerySet(models.QuerySet):
+    def optimized(self):
+        return self.select_related(
+            'certificate__type__certificate_type',
+            'house__street__town__county__country',
+        )
+
+
 class CertificateData(models.Model):
-
-
+    objects = CertificateDataQuerySet.as_manager()
     certificate = models.ForeignKey(Certificate, on_delete=models.CASCADE)
     house = models.ForeignKey(House, on_delete=models.PROTECT)
 
     def __str__(self) -> str:
         return f"{self.certificate}"
 
+class CovalSallesQuerySet(models.QuerySet):
+    def optimized(self):
+        return self.select_related(
+            'coval__cemiterio__county__country',
+            'person__id_type',
+            'person__id_issue_local',
+            'person__id_issue_country',
+            'person__nationality',
+            'person__birth_address',
+            'person__birth_address__birth_street__town__county__country',
+            'person__birth_address__birth_town__county__country',
+            'person__birth_address__birth_county__country',
+            'person__birth_address__birth_country',
+            'person__address__street__town__county__country',
+            'person__address__street__county__country',)
+
 class CovalSalles(models.Model):
+    objects = CovalSallesQuerySet.as_manager()
     coval = models.ForeignKey(Coval, on_delete=models.PROTECT)
     person = models.ForeignKey(Person, on_delete=models.PROTECT)
 
