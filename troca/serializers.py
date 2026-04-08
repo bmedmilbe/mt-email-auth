@@ -66,9 +66,8 @@ class TransactionDeleteSerializer(ModelSerializer):
         ]
 
     def delete(self, instance):
-        if not self.context['boss']:
-            raise ValidationError('You are not boss!')
-        return Transaction.objects.get(id=instance.id).delete()
+
+        return instance.delete()
 
 
 class TransactionCreateSerializer(ModelSerializer):
@@ -111,17 +110,14 @@ class TransactionCreateSerializer(ModelSerializer):
 class TransactionCompleteSerializer(ModelSerializer):
     class Meta:
         model = Transaction
-        fields = [
-            "id"
-        ]
+        fields = ["id"]
 
-    @transaction.atomic()
-    def update(self, instance, validated_data):
-        validated_data = dict()
-        current_transaction = Transaction.objects.select_for_update().get(id=instance.id)
-        if current_transaction.completed:
+    def validate(self, attrs):
+        if self.instance.completed:
             raise ValidationError('Transaction already completed!')
+        return attrs
 
+    def update(self, instance, validated_data):
         validated_data['completed_by_id'] = self.context['customer_id']
         validated_data['completed'] = True
         validated_data['completed_date'] = datetime.now()
