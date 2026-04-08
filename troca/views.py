@@ -6,7 +6,8 @@ from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.permissions import BasePermission
 from rest_framework import status
-
+from django.db import transaction, DatabaseError
+from django.shortcuts import get_object_or_404
 from pprint import pprint
 from django.db.models import Q, Sum
 from .helpers import get_boss, get_customer
@@ -76,21 +77,34 @@ class TransactionViewSet(ModelViewSet):
         customer = get_customer(self.request.user)
         context = {'customer_id': customer.id}
 
-        transaction = self.get_object()
-        serializer = TransactionCompleteSerializer(data=request.data, context=context)
+        try:
+            with transaction.atomic():
+                transaction_obj = get_object_or_404(self.get_queryset().select_for_update(), pk=pk)
+                serializer = TransactionCompleteSerializer(transaction_obj,
+                                                           data=request.data,
+                                                           context=context,
+                                                           partial=True)
+                serializer.is_valid(raise_exception=True)
+                updated_transaction = serializer.save()
+            return Response(TransactionCreateSerializer(updated_transaction).data)
+        except DatabaseError:
+            return Response(
+                {"detail": "This transaction is currently being processed by another user. Please try again in a moment."},
+                status=status.HTTP_409_CONFLICT
+            )
 
-        transaction = serializer.update(transaction, request.data)
-        pprint(transaction.completed)
-        return Response(TransactionCreateSerializer(transaction).data)
-
-    @action(detail=True, methods=['delete'], permission_classes=[IsAuthenticated])
+    @action(detail=True, methods=['delete'], permission_classes=[IsBoss])
     def delete(self, request, pk=None):
-        customer = get_customer(self.request.user)
-        context = {'customer_id': customer.id, 'boss': customer.boss}
-
-        transaction = self.get_object()
-        serializer = TransactionDeleteSerializer(data=request.data, context=context)
-        transaction = serializer.delete(transaction)
+        with transaction.atomic():
+            transaction_obj = get_object_or_404(
+                self.get_queryset().select_for_update(),
+                pk=pk,
+                boss__user=self.request.user)
+            serializer = TransactionDeleteSerializer(transaction_obj,
+                                                     data=request.data or {},
+                                                     context={'request': request})
+            serializer.is_valid(raise_exception=True)
+            transaction_obj.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
     @action(detail=False, methods=['get'], permission_classes=[IsAuthenticated])
